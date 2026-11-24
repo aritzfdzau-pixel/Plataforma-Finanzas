@@ -97,6 +97,30 @@
    "descripcion": "Variación tipo BCE (muestra inventada): 161,20 / 162,35 - 1",
    "valor": -0.00708346165691409
   },
+  "mm3_primera": {
+   "descripcion": "Media móvil 3 de la serie de precios: primera (100, 102, 101)",
+   "valor": 101.0
+  },
+  "mm3_ultima": {
+   "descripcion": "Media móvil 3 de la serie de precios: última (105, 104, 108)",
+   "valor": 105.666666666667
+  },
+  "ewma_var": {
+   "descripcion": "EWMA lambda 0,94 de las rentabilidades log de la serie de precios: varianza final",
+   "valor": 0.000481604536685956
+  },
+  "ewma_vol_252": {
+   "descripcion": "EWMA: volatilidad anualizada (raíz de varianza x 252)",
+   "valor": 0.34837385557022
+  },
+  "correl_xy": {
+   "descripcion": "Correlación de Pearson de dos series inventadas",
+   "valor": 0.962493577471181
+  },
+  "mdd_q": {
+   "descripcion": "Máximo drawdown de 100, 110, 105, 95, 120, 90, 100",
+   "valor": -0.25
+  },
   "fr_trim_cuota": {
    "descripcion": "Francés 50.000; TIN 6% trimestral; 3 años (12 cuotas)",
    "valor": 4583.99964531145

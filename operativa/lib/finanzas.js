@@ -297,8 +297,100 @@ export function costeEfectivoAnual(recibido, pagado, dias) {
 }
 
 // ---------------------------------------------------------------------------
+// P-011 · Medias móviles y diferencias
+// ---------------------------------------------------------------------------
+/** Media móvil simple de n periodos; null en los n − 1 primeros (como PROMEDIO() deslizante). */
+export function mediaMovil(x, n) {
+  comprobarSerie(x, 1);
+  comprobarPeriodos(n);
+  const salida = new Array(x.length).fill(null);
+  let suma = 0;
+  for (let t = 0; t < x.length; t++) {
+    suma += x[t];
+    if (t >= n) suma -= x[t - n];
+    if (t >= n - 1) salida[t] = suma / n;
+  }
+  return salida;
+}
+
+/** Diferencias x_t − x_{t−1} (para series de tipos de interés, en las que no hay "rentabilidad"). */
+export function diferencias(x) {
+  comprobarSerie(x, 2);
+  return x.slice(1).map((v, k) => v - x[k]);
+}
+
+// ---------------------------------------------------------------------------
+// P-012 · Volatilidad EWMA (RiskMetrics)
+// ---------------------------------------------------------------------------
+/**
+ * Varianza con media exponencial (media de rentabilidades supuesta 0):
+ *   σ²_1 = r_1²;   σ²_t = λ·σ²_{t−1} + (1 − λ)·r_t²   (t = 2…n)
+ * σ²_n es la estimación para el periodo siguiente. λ = 0,94 (RiskMetrics, datos diarios).
+ * @returns {{ varianzas: number[], volatilidad: number, anualizada: number|null }}
+ */
+export function volatilidadEWMA(rentabilidades, lambda = 0.94, periodosPorAnio = null) {
+  comprobarSerie(rentabilidades, 2);
+  comprobarFinito(lambda, 'lambda');
+  if (!(lambda > 0 && lambda < 1)) throw new Error('λ debe estar entre 0 y 1');
+  const varianzas = [rentabilidades[0] ** 2];
+  for (let t = 1; t < rentabilidades.length; t++) {
+    varianzas.push(lambda * varianzas[t - 1] + (1 - lambda) * rentabilidades[t] ** 2);
+  }
+  const ultima = varianzas.at(-1);
+  if (periodosPorAnio !== null) comprobarPeriodos(periodosPorAnio);
+  return {
+    varianzas,
+    volatilidad: Math.sqrt(ultima),
+    anualizada: periodosPorAnio === null ? null : Math.sqrt(ultima * periodosPorAnio),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// P-013 · Correlación de Pearson
+// ---------------------------------------------------------------------------
+/** Coeficiente de correlación de Pearson, como COEF.DE.CORREL()/CORREL(). */
+export function correlacion(x, y) {
+  comprobarSerie(x, 2);
+  comprobarSerie(y, 2);
+  if (x.length !== y.length) throw new Error('Las dos series deben tener la misma longitud');
+  const mx = media(x);
+  const my = media(y);
+  let sxy = 0, sxx = 0, syy = 0;
+  for (let k = 0; k < x.length; k++) {
+    sxy += (x[k] - mx) * (y[k] - my);
+    sxx += (x[k] - mx) ** 2;
+    syy += (y[k] - my) ** 2;
+  }
+  if (sxx === 0 || syy === 0) throw new Error('Una serie constante no tiene correlación');
+  return sxy / Math.sqrt(sxx * syy);
+}
+
+// ---------------------------------------------------------------------------
+// P-014 · Máximo drawdown
+// ---------------------------------------------------------------------------
+/**
+ * Mayor caída desde un máximo previo: min_t (P_t / max_{s≤t} P_s − 1). Valor ≤ 0.
+ * @returns {{ drawdown: number, pico: number, valle: number }}  índices del pico y del valle
+ */
+export function maximoDrawdown(precios) {
+  comprobarPrecios(precios);
+  let pico = 0, mejor = { drawdown: 0, pico: 0, valle: 0 };
+  for (let t = 1; t < precios.length; t++) {
+    if (precios[t] > precios[pico]) pico = t;
+    const dd = precios[t] / precios[pico] - 1;
+    if (dd < mejor.drawdown) mejor = { drawdown: dd, pico, valle: t };
+  }
+  return mejor;
+}
+
+// ---------------------------------------------------------------------------
 // Validaciones comunes
 // ---------------------------------------------------------------------------
+function comprobarSerie(x, minimo) {
+  if (!Array.isArray(x) || x.length < minimo) throw new Error(`Se necesitan al menos ${minimo} observaciones`);
+  x.forEach((v) => comprobarFinito(v, 'serie'));
+}
+
 function comprobarFinito(x, nombre) {
   if (typeof x !== 'number' || !Number.isFinite(x)) throw new Error(`Valor no válido en ${nombre}`);
 }

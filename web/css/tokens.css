@@ -76,6 +76,11 @@
   --cat-real-estate: #F08CAE;
   --cat-macroeconomia: #B5CF5A;
   --cat-institucional: #A8B3C2;
+
+  /* Series de las gráficas (paleta categórica validada: ΔE CVD ≥ 8, contraste ≥ 3:1) */
+  --serie-1: #3987E5;
+  --serie-2: #D95926;
+  --serie-3: #199E70;
 }
 
 /* ---------- Tema claro (opcional) ---------- */
@@ -103,4 +108,8 @@
   --cat-real-estate: #B3315F;
   --cat-macroeconomia: #5C7A00;
   --cat-institucional: #56606E;
+
+  --serie-1: #2A78D6;
+  --serie-2: #EB6834;
+  --serie-3: #1BAF7A; /* 2,8:1 sobre blanco: lleva etiqueta directa y tabla de datos */
 }

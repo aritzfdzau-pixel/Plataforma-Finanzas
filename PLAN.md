@@ -11,8 +11,8 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 | 0 | Cimientos | Cerrada | `claude/intelligent-bardeen-t224t5` | #1 (fusionada) |
 | 1 | Operativa (modo simple) | Cerrada | `claude/intelligent-bardeen-t224t5` | #2 (fusionada) |
 | 2 | Divisas | Cerrada | `claude/intelligent-bardeen-t224t5` | #3 (fusionada) |
-| 3 | Noticias | En revisión | `claude/intelligent-bardeen-t224t5` | #4 |
-| 4 | Históricos | Pendiente | — | — |
+| 3 | Noticias | Cerrada | `claude/intelligent-bardeen-t224t5` | #4 (fusionada) |
+| 4 | Históricos | En revisión | `claude/intelligent-bardeen-t224t5` | #5 |
 | 5 | Proyecciones y escenarios | Pendiente | — | — |
 | 6 | Aprendizaje continuo y mapa de conocimiento | Pendiente | — | — |
 
@@ -49,8 +49,10 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 - [x] Estado de cada feed visible en el panel (comprobación de feeds activos en cada ejecución).
 
 ## Fase 4 — Históricos
-Series oficiales (BCE, €STR, Euribor medio BdE), subida de CSV en el navegador, gráficas
-SVG y estadísticos (volatilidad histórica y EWMA, correlación, drawdown, medias móviles).
+- [x] Tarea diaria: tipos BCE (DFR, MRO, MLF), €STR, tipos de cambio BCE y Euribor medio del Banco de España → `datos/historicos.json` (D-023).
+- [x] Subida de CSV en el navegador (no sale de él), con validación de formato y errores por línea.
+- [x] Pantalla grande: gráfica SVG con medias móviles, rentabilidades, varianza, volatilidad histórica y EWMA, correlación y máximo drawdown.
+- [x] Patrones P-011 a P-014 con referencias de LibreOffice; ficha de conocimiento.
 
 ## Fase 5 — Proyecciones y escenarios
 Escenarios de impacto, Montecarlo con bandas 5 %–95 %, validación frente al paseo aleatorio.

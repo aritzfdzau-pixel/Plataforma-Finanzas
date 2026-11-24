@@ -5,6 +5,7 @@ import { pintarFichas, pintarFicha } from './ui/conocimiento.js';
 import { iniciarPaleta } from './ui/paleta.js';
 import { pintarCabeceraDivisas, pintarPanelDivisas } from './ui/divisas.js';
 import { pintarCabeceraNoticias, pintarPanelNoticias } from './ui/noticias.js';
+import { pintarHistoricos } from './ui/historicos.js';
 import { h } from './ui/dom.js';
 
 // ---- Tema ----
@@ -32,15 +33,23 @@ const listaFichas = document.getElementById('lista-fichas');
 const visorFicha = document.getElementById('visor-ficha');
 const botonExpandir = document.getElementById('expandir-operativa');
 
-function expandir(si) {
-  zonaOp.classList.toggle('zona--expandida', si);
-  botonExpandir.setAttribute('aria-pressed', String(si));
-  botonExpandir.textContent = si ? 'Cerrar pantalla grande' : 'Pantalla grande';
+/** Pantalla grande de una zona (Operativa o Históricos); solo una a la vez. */
+function expandir(zona, boton, si) {
+  document.querySelectorAll('.zona--expandida').forEach((z) => { if (z !== zona) z.classList.remove('zona--expandida'); });
+  document.querySelectorAll('[id^="expandir-"]').forEach((b) => { if (b !== boton) { b.setAttribute('aria-pressed', 'false'); b.textContent = 'Pantalla grande'; } });
+  zona.classList.toggle('zona--expandida', si);
+  boton.setAttribute('aria-pressed', String(si));
+  boton.textContent = si ? 'Cerrar pantalla grande' : 'Pantalla grande';
   document.body.classList.toggle('sin-scroll', si);
 }
-botonExpandir.addEventListener('click', () => expandir(!zonaOp.classList.contains('zona--expandida')));
+const zonaHist = document.getElementById('zona-historicos');
+const botonHist = document.getElementById('expandir-historicos');
+botonExpandir.addEventListener('click', () => expandir(zonaOp, botonExpandir, !zonaOp.classList.contains('zona--expandida')));
+botonHist.addEventListener('click', () => expandir(zonaHist, botonHist, !zonaHist.classList.contains('zona--expandida')));
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && zonaOp.classList.contains('zona--expandida') && !document.getElementById('paleta').open && !panelDivisas.open && !panelNoticias.open) expandir(false);
+  if (e.key !== 'Escape' || document.getElementById('paleta').open || panelDivisas.open || panelNoticias.open) return;
+  if (zonaOp.classList.contains('zona--expandida')) expandir(zonaOp, botonExpandir, false);
+  if (zonaHist.classList.contains('zona--expandida')) expandir(zonaHist, botonHist, false);
 });
 
 // ---- Divisas ----
@@ -64,6 +73,7 @@ document.getElementById('abrir-noticias').addEventListener('click', () => {
 });
 document.getElementById('cerrar-noticias').addEventListener('click', () => panelNoticias.close());
 pintarCabeceraNoticias(document.getElementById('cuerpo-noticias'));
+pintarHistoricos(document.getElementById('cuerpo-historicos'));
 
 async function iniciar() {
   let indice;
@@ -92,7 +102,7 @@ async function iniciar() {
     } else if (ruta.tipo === 'ficha') {
       listaFichas.hidden = true; visorFicha.hidden = false;
       await pintarFicha(visorFicha, ruta.ruta, indice.fichas);
-      expandir(false);
+      expandir(zonaOp, botonExpandir, false);
       visorFicha.closest('.zona').scrollIntoView({ block: 'start', behavior: 'smooth' });
     } else {
       listaFichas.hidden = false; visorFicha.hidden = true;

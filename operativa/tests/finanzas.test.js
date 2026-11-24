@@ -194,3 +194,44 @@ test('P-009 costeEfectivoAnual = (N/E)^(365/d) − 1 en LibreOffice', () => {
   cerca(F.costeEfectivoAnual(787, 800, 30), ref('dto2_tae'), 1e-10);
   cerca(F.costeEfectivoAnual(49312.5, 50000, 90), ref('conf_tae'), 1e-10);
 });
+
+// --- P-011 a P-014 (fase 4: históricos) -----------------------------------
+test('P-011 mediaMovil = PROMEDIO() deslizante de LibreOffice; null al principio', () => {
+  const mm = F.mediaMovil(PRECIOS, 3);
+  assert.deepEqual(mm.slice(0, 2), [null, null]);
+  cerca(mm[2], ref('mm3_primera'));
+  cerca(mm[5], ref('mm3_ultima'));
+  assert.deepEqual(F.mediaMovil([1, 2, 3], 1), [1, 2, 3]);
+  assert.throws(() => F.mediaMovil([1, 2], 0));
+});
+
+test('P-011 diferencias: x_t − x_{t−1} (definición)', () => {
+  assert.deepEqual(F.diferencias([4, 4.25, 4.1]).map((d) => F.redondear(d, 10)), [0.25, -0.15]);
+  assert.throws(() => F.diferencias([1]));
+});
+
+test('P-012 volatilidadEWMA (λ = 0,94) = recursión escrita en LibreOffice', () => {
+  const r = F.volatilidadEWMA(F.rentabilidadesLog(PRECIOS), 0.94, 252);
+  assert.equal(r.varianzas.length, 5);
+  cerca(r.varianzas.at(-1), ref('ewma_var'), 1e-10);
+  cerca(r.anualizada, ref('ewma_vol_252'), 1e-10);
+  cerca(r.volatilidad, Math.sqrt(ref('ewma_var')), 1e-10);
+  assert.equal(F.volatilidadEWMA([0.01, 0.02]).anualizada, null);
+  assert.throws(() => F.volatilidadEWMA([0.01, 0.02], 1));
+});
+
+test('P-013 correlacion = COEF.DE.CORREL()/CORREL() de LibreOffice', () => {
+  cerca(F.correlacion([0.02, -0.0098, 0.0396, -0.0095, 0.0385], [0.01, -0.005, 0.03, -0.02, 0.025]), ref('correl_xy'), 1e-10);
+  cerca(F.correlacion([1, 2, 3], [2, 4, 6]), 1);
+  cerca(F.correlacion([1, 2, 3], [3, 2, 1]), -1);
+  assert.throws(() => F.correlacion([1, 2], [1, 2, 3]));
+  assert.throws(() => F.correlacion([1, 1, 1], [1, 2, 3]));
+});
+
+test('P-014 maximoDrawdown = MIN(P_t / MAX(P_1..P_t) − 1) en LibreOffice; pico y valle', () => {
+  const d = F.maximoDrawdown([100, 110, 105, 95, 120, 90, 100]);
+  cerca(d.drawdown, ref('mdd_q'));
+  assert.equal(d.pico, 4);
+  assert.equal(d.valle, 5);
+  assert.deepEqual(F.maximoDrawdown([1, 2, 3]), { drawdown: 0, pico: 0, valle: 0 });
+});
