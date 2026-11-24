@@ -42,7 +42,7 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 - [x] "Calcular seguro de cambio" abre la operación 1 con el par; la operación 2 usa el tipo BCE automáticamente.
 
 ## Fase 3 — Noticias
-- [x] Tarea programada cada hora: RSS de elEconomista, FT, BCE y Banco de España → `datos/noticias.json` (D-022).
+- [x] Tarea programada cada hora: RSS de prensa económica española (Cinco Días, El Confidencial, Expansión; D-026), FT, BCE y Banco de España → `datos/noticias.json` (D-022).
 - [x] Un feed caído no para la tarea: se registra (Actions y estado publicado) y se sigue.
 - [x] Etiquetado por sección del feed y por palabras clave editables en `decisiones.md`; varias etiquetas.
 - [x] Cabecera con 5 titulares; panel «Ver todas» con filtros por fuente, categoría y texto; FT marcada «de pago».

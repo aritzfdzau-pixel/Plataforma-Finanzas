@@ -247,3 +247,19 @@ test('escenario-euribor: +100 pb = PAGO() de LibreOffice; tabla de choques y sue
   const suelo = await ejecutar('escenario-euribor', { euribor: '0,5', diferencial: '0,5', choque: '-200' });
   assert.equal(valor(suelo, 'tin1'), 0);
 });
+
+test('D-013: las variaciones de cuota e intereses se marcan como coste (color invertido)', async () => {
+  for (const [id, campos] of [['hipoteca-variable', ['variacion', 'variacionAnual']], ['escenario-euribor', ['diferencia', 'diferenciaAnual', 'interesesExtra']]]) {
+    const r = await ejecutar(id);
+    for (const c of campos) assert.equal(r.resultados.find((x) => x.id === c).variacion, 'coste', `${id}.${c}`);
+  }
+  const css = (await import('node:fs')).readFileSync(new URL('../../web/css/base.css', import.meta.url), 'utf8');
+  assert.match(css, /\.var-up\.var--coste\s*\{\s*color:\s*var\(--color-down\)/);
+  assert.match(css, /\.var-down\.var--coste\s*\{\s*color:\s*var\(--color-up\)/);
+});
+
+test('D-013: el CSS de resultados no anula la inversión de color de los costes', async () => {
+  const css = (await import('node:fs')).readFileSync(new URL('../../web/css/componentes.css', import.meta.url), 'utf8');
+  assert.match(css, /\.res__valor\.var-up\.var--coste\s*\{\s*color:\s*var\(--color-down\)/);
+  assert.match(css, /\.res__valor\.var-down\.var--coste\s*\{\s*color:\s*var\(--color-up\)/);
+});

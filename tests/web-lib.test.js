@@ -1,7 +1,7 @@
 // Tests de los módulos puros de la interfaz (web/js/lib).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { leerNumero, leerSerie, numero, eur, pct, divisa, esMilesConPunto, formatear } from '../web/js/lib/formato.js';
+import { leerNumero, leerSerie, numero, eur, pct, divisa, esMilesConPunto, formatear, sentidoVariacion } from '../web/js/lib/formato.js';
 import { leerFicha } from '../web/js/lib/frontmatter.js';
 import { markdownAHtml, enLinea, quitarComentarios } from '../web/js/lib/markdown.js';
 import { buscar, normalizar } from '../web/js/lib/buscar.js';
@@ -132,4 +132,13 @@ test('leerCampo: un número vacío es obligatorio (mensaje claro)', () => {
   const { errores } = leerCampos([{ id: 'x', tipo: 'porcentaje' }, { id: 'y', tipo: 'numero' }], { x: '', y: '  ' });
   assert.equal(errores.x, 'Obligatorio: introduce un valor');
   assert.equal(errores.y, 'Obligatorio: introduce un valor');
+});
+
+test('sentidoVariacion (D-013): flecha por dirección; en costes el color se invierte', () => {
+  assert.deepEqual(sentidoVariacion(5), { clase: 'var-up', texto: 'sube ' });
+  assert.deepEqual(sentidoVariacion(-5), { clase: 'var-down', texto: 'baja ' });
+  assert.deepEqual(sentidoVariacion(5, 'coste'), { clase: 'var-up var--coste', texto: 'sube (desfavorable) ' });
+  assert.deepEqual(sentidoVariacion(-5, 'coste'), { clase: 'var-down var--coste', texto: 'baja (favorable) ' });
+  assert.equal(sentidoVariacion(0, 'coste'), null);
+  assert.equal(sentidoVariacion(Number.NaN), null);
 });

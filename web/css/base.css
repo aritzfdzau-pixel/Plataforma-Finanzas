@@ -41,6 +41,9 @@ a { color: var(--color-accent); text-underline-offset: 2px; }
 .var-down { color: var(--color-down); }
 .var-up::before   { content: "▲\00a0"; }
 .var-down::before { content: "▼\00a0"; }
+/* Costes (D-013): la flecha sigue la dirección; el color, si es favorable (subir = rojo) */
+.var-up.var--coste   { color: var(--color-down); }
+.var-down.var--coste { color: var(--color-up); }
 
 /* Etiquetas de categoría: un color fijo por categoría */
 .cat { --cat-color: var(--color-text-muted); }

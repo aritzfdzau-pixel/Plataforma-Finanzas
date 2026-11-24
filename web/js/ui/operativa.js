@@ -3,7 +3,7 @@ import { h, vaciar, chipCategoria } from './dom.js';
 import { cargarOperacion } from '../../../operativa/operaciones/indice.js';
 import { AVISO_ESTUDIO } from '../../../operativa/operaciones/_comun.js';
 import { leerCampo } from '../lib/campos.js';
-import { formatear, leerNumero, esMilesConPunto, numero } from '../lib/formato.js';
+import { formatear, leerNumero, esMilesConPunto, numero, sentidoVariacion } from '../lib/formato.js';
 import { buscar } from '../lib/buscar.js';
 import { CATEGORIAS, nombreCategoria } from '../lib/categorias.js';
 import { tablaACsv } from '../lib/csv.js';
@@ -151,12 +151,13 @@ function lectura(c, texto, valor) {
 function pintarResultado(salida, res) {
   const filas = res.resultados.map((r) => {
     const clases = ['num', 'res__valor'];
-    if (r.variacion && Number.isFinite(r.valor) && r.valor !== 0) clases.push(r.valor > 0 ? 'var-up' : 'var-down');
+    const sv = r.variacion ? sentidoVariacion(r.valor, r.variacion) : null;
+    if (sv) clases.push(sv.clase);
     const texto = r.variacion && Number.isFinite(r.valor) ? formatear(Math.abs(r.valor), r.formato) : formatear(r.valor, r.formato);
     return h('div', { class: `res${r.destacado ? ' res--destacado' : ''}` },
       h('dt', { class: 'res__etiqueta' }, r.etiqueta, r.nota ? h('small', { class: 'res__nota' }, r.nota) : null),
       h('dd', { class: clases.join(' ') },
-        r.variacion && Number.isFinite(r.valor) && r.valor !== 0 ? h('span', { class: 'visually-hidden' }, r.valor > 0 ? 'sube ' : 'baja ') : null,
+        sv ? h('span', { class: 'visually-hidden' }, sv.texto) : null,
         texto));
   });
   salida.append(...[

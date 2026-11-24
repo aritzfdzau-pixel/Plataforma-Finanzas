@@ -114,6 +114,8 @@ body.sin-scroll { overflow: hidden; }
 .res--destacado .res__valor { font-size: var(--fs-xl); color: var(--color-accent); font-weight: var(--fw-medium); }
 .res__valor.var-up { color: var(--color-up); }
 .res__valor.var-down { color: var(--color-down); }
+.res__valor.var-up.var--coste { color: var(--color-down); }
+.res__valor.var-down.var--coste { color: var(--color-up); }
 
 .convenciones { margin-top: var(--space-4); }
 .convenciones h4, .tabla-op summary {

@@ -85,6 +85,21 @@ export function pct(x, decimales = 2) {
 }
 
 /**
+ * Variación con flecha y color (D-013). La flecha ▲ ▼ indica siempre la dirección; el color,
+ * si es favorable: por defecto subir es verde, y con sentido 'coste' (cuota, intereses…)
+ * subir es rojo y bajar verde. Devuelve null si no hay variación (0 o no finita).
+ */
+export function sentidoVariacion(valor, sentido) {
+  if (!Number.isFinite(valor) || valor === 0) return null;
+  const sube = valor > 0;
+  const coste = sentido === 'coste';
+  return {
+    clase: `${sube ? 'var-up' : 'var-down'}${coste ? ' var--coste' : ''}`,
+    texto: `${sube ? 'sube' : 'baja'}${coste ? (sube ? ' (desfavorable)' : ' (favorable)') : ''} `,
+  };
+}
+
+/**
  * Formatea un resultado según su código de formato:
  * 'eur' · 'entero' · 'texto' · 'pct' · 'pct:N' · 'num:N' · 'divisa:COD:N'.
  */

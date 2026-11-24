@@ -106,8 +106,8 @@ test('construirNoticias: un feed caído no impide el resto; etiqueta "con retras
   for (const n of d.noticias) assert.deepEqual(Object.keys(n).sort(), ['dePago', 'enlace', 'etiquetas', 'fecha', 'fuente', 'titulo']);
 });
 
-test('fuentes configuradas: las cuatro del plan, https, ids únicos, FT marcada de pago', () => {
-  assert.deepEqual([...new Set(FUENTES_NOTICIAS.map((f) => f.fuente))].sort(), ['BCE', 'Banco de España', 'Financial Times', 'elEconomista']);
+test('fuentes configuradas: prensa española en abierto, FT, BCE y BdE; https, ids únicos, FT marcada de pago', () => {
+  assert.deepEqual([...new Set(FUENTES_NOTICIAS.map((f) => f.fuente))].sort(), ['BCE', 'Banco de España', 'Cinco Días', 'El Confidencial', 'Expansión', 'Financial Times']);
   assert.equal(new Set(FUENTES_NOTICIAS.map((f) => f.id)).size, FUENTES_NOTICIAS.length);
   for (const f of FUENTES_NOTICIAS) {
     assert.match(f.url, /^https:\/\//);
@@ -121,7 +121,7 @@ test('fuentes configuradas: las cuatro del plan, https, ids únicos, FT marcada 
 test('web: filtros por fuente, categoría y texto', () => {
   const d = construirNoticias([{ feed: FUENTES_NOTICIAS[0], items: parsearFeed(RSS) }], [], PALABRAS, AHORA);
   assert.equal(filtrarNoticias(d.noticias, { categoria: 'fx' }).length, 1);
-  assert.equal(filtrarNoticias(d.noticias, { fuente: 'elEconomista' }).length, 3);
+  assert.equal(filtrarNoticias(d.noticias, { fuente: FUENTES_NOTICIAS[0].fuente }).length, 3);
   assert.equal(filtrarNoticias(d.noticias, { fuente: 'BCE' }).length, 0);
   assert.equal(filtrarNoticias(d.noticias, { texto: 'EURIBOR' }).length, 1); // sin tildes ni mayúsculas
   assert.deepEqual(fuentesDe({ fuentes: [{ fuente: 'Financial Times', dePago: true }, { fuente: 'BCE' }], noticias: [] }),
