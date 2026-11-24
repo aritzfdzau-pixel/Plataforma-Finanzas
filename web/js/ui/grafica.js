@@ -21,13 +21,16 @@ const s = (tag, attrs = {}, ...hijos) => {
  * @param {string} p.titulo   descripción accesible
  * @param {string} p.unidad
  * @param {number} [p.ancho]  ancho disponible en px (el texto se dibuja a tamaño real)
+ * @param {Array<{nombre: string, inferior: Array<number|null>, superior: Array<number|null>, n: number}>} [p.bandas]
+ *        bandas sombreadas (p. ej. percentiles 5–95 %); `n` = color de serie (1…3)
  */
-export function graficaLineas({ fechas, series, titulo, unidad, ancho = 900 }) {
+export function graficaLineas({ fechas, series, titulo, unidad, ancho = 900, bandas = [] }) {
   const W = Math.max(320, Math.round(ancho)), H = W < 600 ? 260 : 340;
   const M = { t: 16, r: W < 600 ? 84 : 110, b: 32, l: 52 };
   const iw = W - M.l - M.r, ih = H - M.t - M.b;
   const idx = submuestrear(fechas.length);
-  const todos = series.flatMap((se) => idx.map((i) => se.valores[i])).filter((v) => Number.isFinite(v));
+  const todos = [...series.flatMap((se) => idx.map((i) => se.valores[i])),
+    ...bandas.flatMap((b) => idx.flatMap((i) => [b.inferior[i], b.superior[i]]))].filter((v) => Number.isFinite(v));
   const ey = marcasY(Math.min(...todos), Math.max(...todos));
   const dec = Math.max(decimalesDePaso(ey.paso), 0);
   const X = (k) => M.l + (idx.length === 1 ? iw / 2 : (k / (idx.length - 1)) * iw);
@@ -43,6 +46,14 @@ export function graficaLineas({ fechas, series, titulo, unidad, ancho = 900 }) {
   for (const k of marcasX(idx.length, W < 600 ? 3 : 6)) {
     const f = fechas[idx[k]];
     svg.append(s('text', { x: X(k), y: H - 10, class: 'grafica__eje', 'text-anchor': k === 0 ? 'start' : k === idx.length - 1 ? 'end' : 'middle' }, W < 600 ? `${f.slice(5, 7)}/${f.slice(2, 4)}` : fechaEs(f)));
+  }
+  // Bandas (debajo de las líneas)
+  for (const b of bandas) {
+    const tramo = idx.map((i, k) => [k, b.inferior[i], b.superior[i]]).filter(([, a, c]) => Number.isFinite(a) && Number.isFinite(c));
+    if (tramo.length < 2) continue;
+    const ida = tramo.map(([k, , c], j) => `${j ? 'L' : 'M'}${X(k).toFixed(1)},${Y(c).toFixed(1)}`).join('');
+    const vuelta = [...tramo].reverse().map(([k, a]) => `L${X(k).toFixed(1)},${Y(a).toFixed(1)}`).join('');
+    svg.append(s('path', { d: `${ida}${vuelta}Z`, class: `grafica__banda serie-${b.n} ${b.clase ?? ''}` }));
   }
   // Series
   const etiquetasY = [];
@@ -79,7 +90,10 @@ export function graficaLineas({ fechas, series, titulo, unidad, ancho = 900 }) {
     cruceta.setAttribute('x1', X(k)); cruceta.setAttribute('x2', X(k)); cruceta.setAttribute('visibility', 'visible');
     tooltip.replaceChildren(h('strong', {}, fechaEs(fechas[i])),
       ...series.map((se, n) => h('span', { class: 'grafica__tooltip-fila' }, h('span', { class: `grafica__muestra serie-${n + 1}` }),
-        `${se.nombre}: `, h('span', { class: 'num' }, Number.isFinite(se.valores[i]) ? `${numero(se.valores[i], dec + 2)} ${unidad}` : '—'))));
+        `${se.nombre}: `, h('span', { class: 'num' }, Number.isFinite(se.valores[i]) ? `${numero(se.valores[i], dec + 2)} ${unidad}` : '—'))),
+      ...bandas.filter((b) => Number.isFinite(b.inferior[i])).map((b) => h('span', { class: 'grafica__tooltip-fila' },
+        h('span', { class: `grafica__muestra grafica__muestra--banda serie-${b.n} ${b.clase ?? ''}` }), `${b.nombre}: `,
+        h('span', { class: 'num' }, `${numero(b.inferior[i], dec + 2)} – ${numero(b.superior[i], dec + 2)} ${unidad}`))));
     marcas.forEach((m, n) => {
       const v = series[n].valores[i];
       if (Number.isFinite(v)) { m.setAttribute('cx', X(k)); m.setAttribute('cy', Y(v)); m.setAttribute('visibility', 'visible'); } else m.setAttribute('visibility', 'hidden');
@@ -105,8 +119,10 @@ export function graficaLineas({ fechas, series, titulo, unidad, ancho = 900 }) {
   });
   svg.addEventListener('blur', ocultar);
 
-  const leyenda = series.length > 1
-    ? h('ul', { class: 'grafica__leyenda' }, series.map((se, n) => h('li', {}, h('span', { class: `grafica__muestra serie-${n + 1}` }), se.nombre)))
+  const leyenda = series.length + bandas.length > 1
+    ? h('ul', { class: 'grafica__leyenda' },
+      series.map((se, n) => h('li', {}, h('span', { class: `grafica__muestra serie-${n + 1}` }), se.nombre)),
+      bandas.map((b) => h('li', {}, h('span', { class: `grafica__muestra grafica__muestra--banda serie-${b.n} ${b.clase ?? ''}` }), b.nombre)))
     : null;
   return h('figure', { class: 'grafica-figura' }, leyenda, contenedor);
 }

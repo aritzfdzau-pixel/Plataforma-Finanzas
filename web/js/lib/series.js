@@ -191,3 +191,35 @@ export function mediasMoviles(puntos, ventanas) {
   const v = puntos.map((p) => p[1]);
   return ventanas.filter((n) => n < v.length).map((n) => ({ n, valores: mediaMovil(v, n) }));
 }
+
+/**
+ * Fechas futuras para dibujar una proyección de `h` periodos tras `ultima`:
+ * días hábiles (lunes a viernes) si la serie es diaria; si no, saltos de 7 días, 1, 3 o 12 meses.
+ */
+export function fechasFuturas(ultima, h, periodosPorAnio) {
+  const d = new Date(`${ultima}T00:00:00Z`);
+  const out = [];
+  while (out.length < h) {
+    if (periodosPorAnio === 252) {
+      do d.setUTCDate(d.getUTCDate() + 1); while (d.getUTCDay() === 0 || d.getUTCDay() === 6);
+    } else if (periodosPorAnio === 52) d.setUTCDate(d.getUTCDate() + 7);
+    else d.setUTCMonth(d.getUTCMonth() + (periodosPorAnio === 12 ? 1 : periodosPorAnio === 4 ? 3 : 12));
+    out.push(d.toISOString().slice(0, 10));
+  }
+  return out;
+}
+
+/** Horizontes que se ofrecen según la periodicidad: [periodos, etiqueta]. */
+export function horizontes(periodosPorAnio) {
+  if (periodosPorAnio === 252) return [[21, '1 mes (21 sesiones)'], [63, '3 meses (63 sesiones)'], [126, '6 meses (126 sesiones)'], [252, '1 año (252 sesiones)']];
+  if (periodosPorAnio === 52) return [[4, '1 mes (4 semanas)'], [13, '3 meses (13 semanas)'], [26, '6 meses (26 semanas)'], [52, '1 año (52 semanas)']];
+  if (periodosPorAnio === 12) return [[3, '3 meses'], [6, '6 meses'], [12, '1 año'], [24, '2 años']];
+  return [[1, '1 periodo'], [2, '2 periodos'], [4, '4 periodos']];
+}
+
+/** μ y σ por periodo de las variaciones (log o diferencias) de las últimas `ventana` observaciones. */
+export function parametrosPaseo(valores, tipo, ventana = 250) {
+  const tramo = valores.slice(-Math.min(ventana + 1, valores.length));
+  const v = tipo === 'tipo' ? diferencias(tramo) : rentabilidadesLog(tramo);
+  return { media: media(v), desviacion: desviacionMuestral(v), n: v.length, modelo: tipo === 'tipo' ? 'aditivo' : 'log' };
+}

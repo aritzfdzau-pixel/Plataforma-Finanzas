@@ -12,8 +12,8 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 | 1 | Operativa (modo simple) | Cerrada | `claude/intelligent-bardeen-t224t5` | #2 (fusionada) |
 | 2 | Divisas | Cerrada | `claude/intelligent-bardeen-t224t5` | #3 (fusionada) |
 | 3 | Noticias | Cerrada | `claude/intelligent-bardeen-t224t5` | #4 (fusionada) |
-| 4 | Históricos | En revisión | `claude/intelligent-bardeen-t224t5` | #5 |
-| 5 | Proyecciones y escenarios | Pendiente | — | — |
+| 4 | Históricos | Cerrada | `claude/intelligent-bardeen-t224t5` | #5 (fusionada) |
+| 5 | Proyecciones y escenarios | En revisión | `claude/intelligent-bardeen-t224t5` | #6 |
 | 6 | Aprendizaje continuo y mapa de conocimiento | Pendiente | — | — |
 
 ## Fase 0 — Cimientos
@@ -55,7 +55,11 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 - [x] Patrones P-011 a P-014 con referencias de LibreOffice; ficha de conocimiento.
 
 ## Fase 5 — Proyecciones y escenarios
-Escenarios de impacto, Montecarlo con bandas 5 %–95 %, validación frente al paseo aleatorio.
+- [x] Escenarios de impacto: EUR/USD −5 % (operación `escenario-tipo-cambio`) y Euribor +100 pb (`escenario-euribor`).
+- [x] Montecarlo con bandas 5 %–95 % y 25 %–75 % (nunca una sola línea), reproducible.
+- [x] Validación frente al paseo aleatorio con datos pasados: MAE, RMSE, U de Theil y cobertura, con gráfica del error.
+- [x] En la interfaz: "Proyecciones y escenarios", nunca "predicciones" (test).
+- [x] Patrones P-015 a P-017 con referencias de LibreOffice; fichas nuevas (escenarios FX, Montecarlo).
 
 ## Fase 6 — Aprendizaje continuo y mapa de conocimiento
 Procedimiento de revisión mensual y mapa SVG 2D fichas ↔ patrones ↔ operaciones.

@@ -348,3 +348,21 @@ a.noticia__titulo:hover { color: var(--color-accent); text-decoration: underline
 .campo--check input { width: auto; margin: 0; }
 .estadisticos { max-width: 44rem; }
 .estadisticos h4 { margin: 0 0 var(--space-2); font-size: var(--fs-xs); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--color-text-muted); }
+
+/* ---------- Proyecciones y escenarios ---------- */
+.proyecciones { padding: var(--space-3) var(--space-4); display: grid; gap: var(--space-3); min-width: 0; }
+.proyecciones .aviso { margin: 0; }
+.proyecciones__panel, .proyecciones__contenido { display: grid; gap: var(--space-3); min-width: 0; }
+.proyecciones__operacion .op__cabecera .op__acciones { margin: 0; }
+.zona--proyecciones.zona--expandida .proyecciones { max-width: var(--max-width); margin: 0 auto; width: 100%; }
+.grafica__banda { stroke: none; }
+.grafica__banda.serie-1 { fill: var(--serie-1); }
+.grafica__banda.serie-2 { fill: var(--serie-2); }
+.grafica__banda.serie-3 { fill: var(--serie-3); }
+.grafica__banda.banda--ancha { opacity: 0.18; }
+.grafica__banda.banda--estrecha { opacity: 0.32; }
+.grafica__muestra--banda.banda--ancha { opacity: 0.35; }
+.grafica__muestra--banda.banda--estrecha { opacity: 0.6; }
+.tabla-proy { max-width: 40rem; }
+.tabla-proy caption { text-align: left; font-size: var(--fs-xs); color: var(--color-text-muted); padding-bottom: var(--space-1); }
+.tabla-proy th[scope="row"], .tabla-proy thead th:first-child { text-align: left; }

@@ -115,6 +115,8 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 - Fondo casi negro, paneles con borde fino, acento ámbar (contraste WCAG AA verificado por test).
 - Números en monoespaciada con cifras tabulares (`.num`), alineados a la derecha.
 - Subidas/bajadas en verde/rojo **siempre** con ▲ ▼ (nunca solo color).
+- Futuro: se habla de **"Proyecciones y escenarios"**, nunca de "predicciones" (lo comprueba
+  un test); las simulaciones se muestran con bandas (5 %–95 %), nunca con una sola línea.
 - Divulgación progresiva: resumen compacto → detalle al hacer clic.
 - Modo oscuro por defecto; modo claro opcional (`data-theme="light"` en `<html>`).
 - Móvil: secciones apiladas.
@@ -131,7 +133,7 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | `scripts/` | Utilidades Node sin dependencias (`generar-indice.js`, `descargar-bce.js`, `descargar-noticias.js`, `fuentes-noticias.js`, `descargar-historicos.js`, `series-oficiales.js` y sus funciones puras) |
 | `datos/` | Archivos generados por tareas programadas (no editar a mano; ver `datos/README.md`) |
 | `web/` | Interfaz publicada en GitHub Pages |
-| `tests/` | Tests de infraestructura y de la web (estructura, tokens, fichas, divisas, BCE, noticias, históricos); muestras inventadas en `tests/fixtures/` |
+| `tests/` | Tests de infraestructura y de la web (estructura, tokens, fichas, divisas, BCE, noticias, históricos, proyecciones); muestras inventadas en `tests/fixtures/` |
 | `.github/` | Workflows y plantillas de issue/PR |
 
 ## 14. Cómo añadir una operación (fase 1 en adelante)

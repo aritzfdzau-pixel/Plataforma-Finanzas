@@ -239,6 +239,28 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
   en claro la tercera tiene 2,8:1 y por eso lleva etiqueta directa y tabla).
 - **Pantalla grande**: botón en la zona Históricos (la misma mecánica que en Operativa).
 
+## D-024 · 2026-11-24 · Fase 5 · Proyecciones y escenarios
+- **Escenarios** como operaciones declarativas (reutilizan formulario, tests y fichas):
+  `escenario-tipo-cambio` (FX, P-017: contravalor = importe / tipo; impacto con signo según
+  cobro o pago; tabla de ±1, ±2, ±5 y ±10 %) y `escenario-euribor` (Real Estate, P-005: cuota
+  francesa con el nuevo TIN en todo el plazo restante; tabla de ±50, ±100 y ±200 pb; suelo del
+  TIN en 0 % opcional). Aparecen en Operativa y en la zona nueva. El escenario de Euribor parte
+  de la última media mensual del Banco de España si está en Históricos.
+- **Montecarlo** (P-015): paseo aleatorio sobre el logaritmo (precios) o sobre el nivel (tipos),
+  μ y σ de las últimas 250 variaciones, **μ = 0 por defecto** (la tendencia histórica es
+  ruidosa; se puede activar), 2.000 trayectorias con semilla fija (reproducible). Se dibujan
+  bandas 5–95 % y 25–75 % y la mediana, **nunca una sola línea**. Test: los percentiles
+  simulados coinciden con la banda analítica calculada en LibreOffice (error < 0,5 %).
+- **Validación** (P-016): origen móvil sin solapes (cada *h* periodos), μ y σ con la ventana
+  anterior a cada origen; se compara la mediana del modelo con el **paseo aleatorio** (último
+  valor): MAE, RMSE, U de Theil y cobertura de la banda (ideal ≈ 90 %), con gráfica de reales
+  frente a proyecciones. Para la banda se usa su expresión analítica (la misma distribución que
+  simula el Montecarlo) para que sea rápido.
+- **Vocabulario**: "Proyecciones y escenarios", nunca "predicciones" (test en
+  `tests/proyecciones.test.js`).
+- Los formularios admiten un prefijo de id (`pintarOperacion(…, { prefijo })`) para poder mostrar
+  la misma operación en Operativa y en Proyecciones sin id repetidos.
+
 ## Palabras clave para etiquetar noticias
 Editable por Aritz. La tarea de noticias (`scripts/descargar-noticias.js`) lee esta tabla en
 cada ejecución: una fila por categoría (slug entre comillas invertidas) y las palabras o
