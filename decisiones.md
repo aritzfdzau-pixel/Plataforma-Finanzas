@@ -201,7 +201,7 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - **Tarea:** el mismo workflow de publicación (`pages.yml`) pasa a ejecutarse **cada hora**
   (minuto 17). Descarga los feeds (`scripts/descargar-noticias.js`) y vuelve a comprobar los
   tipos del BCE. Igual que en D-018, `datos/noticias.json` se genera al publicar y no se versiona.
-- **Feeds** (`scripts/fuentes-noticias.js`): elEconomista (mercados, economía, empresas,
+- **Feeds** (`scripts/fuentes-noticias.js`; elEconomista sustituido en D-026): elEconomista (mercados, economía, empresas,
   vivienda), Financial Times (mercados, empresas, economía global, divisas; **de pago**), BCE
   (notas de prensa) y Banco de España (noticias). ⚠️ Pendiente de verificar: desde el entorno de
   desarrollo no hay red, y las búsquedas no confirman direcciones oficiales de elEconomista
@@ -225,8 +225,7 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
   - BCE, API del Portal de Datos (`format=csvdata`, documentado): DFR, MRO, MLF, €STR y tipos
     de referencia EUR/USD, EUR/GBP y EUR/JPY; últimas 780 observaciones (~3 años hábiles).
   - Banco de España, API BIEST: Euribor a un año, media mensual (índice oficial), 60 meses.
-    ⚠️ Pendiente de verificar: el código `D_1NBAF472`, el host `app.bde.es` y el formato JSON
-    solo constan en fuentes de terceros. El lector acepta las dos formas descritas y la tabla
+    Código `D_1NBAF472`, host `app.bde.es` y formato JSON comprobados el 2026-11-24 (D-026). El lector acepta las dos formas descritas y la tabla
     de Históricos muestra ⚠️ con el error si la serie falla (conserva los datos anteriores).
   - El Euribor diario no se usa (licencia de EMMI), como fija el plan.
 - **CSV propio**: se lee en el navegador con `FileReader`/`File.text()`, nunca sale de él.
@@ -294,3 +293,16 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
 | `real-estate` | vivienda, viviendas, hipoteca, hipotecas, inmobiliario, inmobiliaria, alquiler, euríbor, euribor, promotora, socimi, housing, mortgage, mortgages, property, real estate |
 | `macroeconomia` | inflación, ipc, ipca, pib, paro, desempleo, empleo, déficit, deuda pública, prima de riesgo, tipos de interés, política monetaria, recesión, crecimiento económico, inflation, gdp, unemployment, interest rates, monetary policy, recession, central bank |
 | `institucional` | bce, banco central europeo, banco de españa, eurosistema, supervisión bancaria, ecb, eurosystem, banking supervision |
+
+## D-026 · 2026-11-24 · Ajuste · Verificación de fuentes en la web publicada
+- **Noticias:** elEconomista responde HTTP 403 a GitHub Actions (bloqueo de servidores; no se
+  disfraza la petición). Se sustituye por prensa española en abierto: Cinco Días (portada y
+  compañías), El Confidencial (economía, empresas, mercados y vivienda) y Expansión (portada,
+  mercados, economía y empresas). Probado con una ejecución manual del workflow en la rama:
+  16 de 17 candidatas responden; la sección de mercados de Cinco Días (HTTP 370) se descarta.
+- **Históricos:** las 8 series se descargan. El Euribor a un año del Banco de España
+  (`D_1NBAF472`) da 3,239 % en octubre de 2026, igual que el dato oficial publicado; se
+  quita la marca ⚠️ de la serie. El registro de Actions muestra ahora el último dato de
+  cada serie para repetir este contraste.
+- **TradingView:** pendiente de que Aritz lo compruebe en la web (no se puede ver desde el
+  entorno de desarrollo).

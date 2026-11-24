@@ -3,9 +3,9 @@
 //
 // BCE — API del Portal de Datos del BCE (formato csvdata, documentado en
 //   https://data.ecb.europa.eu/help/api/data). lastNObservations limita el tamaño (~3 años hábiles).
-// Banco de España — API de estadísticas (BIEST). ⚠️ Pendiente de verificar: el código
-//   D_1NBAF472 (Euribor a un año, media mensual) y el formato JSON solo constan en fuentes de
-//   terceros; desde el entorno de desarrollo no hay red. La tarea publica el estado de cada serie.
+// Banco de España — API de estadísticas (BIEST): D_1NBAF472 = Euribor a un año, media mensual.
+//   Comprobado el 2026-11-24 desde GitHub Actions: octubre de 2026 = 3,239 %, el dato oficial
+//   publicado (D-026). La tarea publica el estado de cada serie.
 
 const BCE = (clave) => `https://data-api.ecb.europa.eu/service/data/${clave}?format=csvdata&lastNObservations=780`;
 

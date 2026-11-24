@@ -3,15 +3,14 @@
 // `institucional`: noticias del BCE y del Banco de España (categoría "Institucional").
 // `dePago`: la fuente tiene muro de pago; la web lo indica junto al titular.
 //
-// ⚠️ Pendiente de verificar: las direcciones no se han podido probar desde el entorno de
-// desarrollo (sin red). La tarea comprueba cada feed en cada ejecución y publica su estado
-// en datos/noticias.json ("fuentes"); la web lo muestra en el panel "Ver todas".
+// Direcciones comprobadas desde GitHub Actions el 2026-11-24 (todas responden). La tarea
+// comprueba cada feed en cada ejecución y publica su estado en datos/noticias.json
+// ("fuentes"); la web lo muestra en el panel "Ver todas".
 
 export const FUENTES_NOTICIAS = Object.freeze([
   // Prensa económica española en abierto (sustituye a elEconomista, que responde HTTP 403 a
-  // GitHub Actions). ⚠️ Pendiente de verificar: candidatas; se dejan solo las que respondan.
+  // GitHub Actions; D-026). La sección de mercados de Cinco Días no responde y no se usa.
   { id: 'cincodias-portada', fuente: 'Cinco Días', url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/portada', seccion: null },
-  { id: 'cincodias-mercados', fuente: 'Cinco Días', url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/section/mercados/portada', seccion: 'bolsa-inversion' },
   { id: 'cincodias-empresas', fuente: 'Cinco Días', url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/section/companias/portada', seccion: 'empresas' },
   { id: 'elconfidencial-economia', fuente: 'El Confidencial', url: 'https://rss.elconfidencial.com/economia/', seccion: 'macroeconomia' },
   { id: 'elconfidencial-empresas', fuente: 'El Confidencial', url: 'https://rss.elconfidencial.com/empresas/', seccion: 'empresas' },
