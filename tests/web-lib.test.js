@@ -49,11 +49,11 @@ test('leerFicha: cabecera YAML sencilla', () => {
 });
 
 test('markdownAHtml: bloques y escape de HTML', () => {
-  const html = markdownAHtml('# Título\n\nTexto **fuerte** y <script>x</script>\n\n- a\n- b\n\n$$\nF = S\n$$\n\n| A | B |\n| --- | --- |\n| 1 | 2 |\n<!-- oculto -->');
+  const html = markdownAHtml('# Título\n\nTexto **fuerte** y <script>x</script> <SCRIPT>y</SCRIPT>\n\n- a\n- b\n\n$$\nF = S\n$$\n\n| A | B |\n| --- | --- |\n| 1 | 2 |\n<!-- oculto -->');
   assert.match(html, /<h1>Título<\/h1>/);
   assert.match(html, /<strong>fuerte<\/strong>/);
   assert.match(html, /&lt;script&gt;/);
-  assert.doesNotMatch(html, /<script>/);
+  assert.doesNotMatch(html, /<\s*script/i);
   assert.match(html, /<ul><li>a<\/li><li>b<\/li><\/ul>/);
   assert.match(html, /<pre class="formula"[^>]*>F = S<\/pre>/);
   assert.match(html, /<td>1<\/td><td>2<\/td>/);
@@ -124,6 +124,6 @@ test('quitarComentarios y caracteres nulos', () => {
   assert.equal(quitarComentarios('a<!-- sin cerrar'), 'a');
   assert.equal(quitarComentarios('<!<!-- x -->-- z -->'), '<!-- z -->');
   // Tras quitar comentarios, el resto se escapa: nunca queda HTML activo.
-  assert.doesNotMatch(markdownAHtml('<!<!-- x -->-- z --><script>'), /<script>|<!--/);
+  assert.doesNotMatch(markdownAHtml('<!<!-- x -->-- z --><SCRIPT>'), /<\s*script|<!--/i);
   assert.doesNotMatch(markdownAHtml('texto \u00000\u0000 fin'), /\u0000/);
 });
