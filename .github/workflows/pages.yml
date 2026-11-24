@@ -49,6 +49,8 @@ jobs:
             || echo "::warning::Sin tipos de referencia del BCE en esta publicación"
       - name: Noticias RSS → datos/noticias.json (sin claves; un feed caído no para la tarea)
         run: node scripts/descargar-noticias.js _site/datos/noticias.json "${{ steps.pages.outputs.base_url }}/datos/noticias.json"
+      - name: Series oficiales → datos/historicos.json (BCE y Banco de España; una descarga al día)
+        run: node scripts/descargar-historicos.js _site/datos/historicos.json "${{ steps.pages.outputs.base_url }}/datos/historicos.json"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

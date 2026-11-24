@@ -203,6 +203,32 @@
       "ultima_revision": "2026-11-24"
     },
     {
+      "ruta": "conocimiento/bolsa-inversion/volatilidad-ewma-correlacion-drawdown.md",
+      "titulo": "Volatilidad EWMA, correlación, drawdown y medias móviles",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "bolsa-inversion",
+      "etiquetas": [
+        "volatilidad",
+        "ewma",
+        "riskmetrics",
+        "correlacion",
+        "drawdown",
+        "medias-moviles",
+        "historicos",
+        "riesgo"
+      ],
+      "operaciones": [],
+      "patrones": [
+        "P-006",
+        "P-011",
+        "P-012",
+        "P-013",
+        "P-014"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
       "ruta": "conocimiento/real-estate/hipoteca-variable.md",
       "titulo": "Hipoteca a tipo variable (Euribor + diferencial)",
       "idioma": "es",

@@ -10,6 +10,7 @@
     "topbar      topbar"
     "noticias    divisas"
     "operativa   operativa"
+    "historicos  historicos"
     "conocimiento conocimiento"
     "pie         pie";
 }
@@ -18,6 +19,7 @@
 .zona--noticias     { grid-area: noticias; }
 .zona--divisas      { grid-area: divisas; }
 .zona--operativa    { grid-area: operativa; }
+.zona--historicos   { grid-area: historicos; }
 .zona--conocimiento { grid-area: conocimiento; }
 .pie      { grid-area: pie; }
 
@@ -108,6 +110,7 @@
       "noticias"
       "divisas"
       "operativa"
+      "historicos"
       "conocimiento"
       "pie";
   }

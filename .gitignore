@@ -5,3 +5,4 @@ _site/
 # Generado en la publicación por la tarea diaria (no se versiona)
 datos/tipos-bce.json
 datos/noticias.json
+datos/historicos.json

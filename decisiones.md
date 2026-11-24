@@ -215,6 +215,30 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
   titulares se pintan como texto (nunca HTML) y se abren con `rel="noopener noreferrer"`.
 - **Etiqueta del dato:** "con retraso" (hasta ~1 h más el retraso de cada feed).
 
+## D-023 · 2026-11-24 · Fase 4 · Históricos: series oficiales, CSV propio y estadísticos
+- **Series oficiales** (`scripts/series-oficiales.js`), tarea diaria dentro del workflow
+  horario: solo descarga una vez al día (reutiliza el archivo publicado si es de hoy y no hubo
+  errores). Como en D-018, `datos/historicos.json` se genera al publicar y no se versiona.
+  - BCE, API del Portal de Datos (`format=csvdata`, documentado): DFR, MRO, MLF, €STR y tipos
+    de referencia EUR/USD, EUR/GBP y EUR/JPY; últimas 780 observaciones (~3 años hábiles).
+  - Banco de España, API BIEST: Euribor a un año, media mensual (índice oficial), 60 meses.
+    ⚠️ Pendiente de verificar: el código `D_1NBAF472`, el host `app.bde.es` y el formato JSON
+    solo constan en fuentes de terceros. El lector acepta las dos formas descritas y la tabla
+    de Históricos muestra ⚠️ con el error si la serie falla (conserva los datos anteriores).
+  - El Euribor diario no se usa (licencia de EMMI), como fija el plan.
+- **CSV propio**: se lee en el navegador con `FileReader`/`File.text()`, nunca sale de él.
+  Formatos: `fecha;valor` (coma decimal), `fecha,valor` (punto decimal) o exportaciones con
+  cabecera `Date … Close / Adj Close`. Validación con número de línea, máximo 5 MB y 20.000 filas.
+- **Estadísticos**: precios → rentabilidades simples y log, varianza, volatilidad histórica
+  y EWMA (λ = 0,94), máximo drawdown; tipos de interés → variaciones en pb (no hay
+  "rentabilidad" de un tipo). Correlación de Pearson sobre las variaciones en fechas comunes.
+  Patrones nuevos P-011 a P-014 con referencias de LibreOffice.
+- **Gráfica**: SVG propio con un solo eje, medias móviles (20/50 sesiones o 3/12 meses),
+  leyenda + etiquetas directas, cruceta y tooltip (también con teclado) y tabla de datos.
+  Colores `--serie-1…3`: paleta categórica validada (CVD ΔE ≥ 8 y contraste ≥ 3:1 en oscuro;
+  en claro la tercera tiene 2,8:1 y por eso lleva etiqueta directa y tabla).
+- **Pantalla grande**: botón en la zona Históricos (la misma mecánica que en Operativa).
+
 ## Palabras clave para etiquetar noticias
 Editable por Aritz. La tarea de noticias (`scripts/descargar-noticias.js`) lee esta tabla en
 cada ejecución: una fila por categoría (slug entre comillas invertidas) y las palabras o
