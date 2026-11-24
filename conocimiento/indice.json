@@ -2,6 +2,29 @@
   "_aviso": "Archivo generado con «node scripts/generar-indice.js». No editar a mano.",
   "fichas": [
     {
+      "ruta": "conocimiento/fx/mercado-de-divisas.md",
+      "titulo": "Mercado de divisas: cotizaciones, horquilla, tipos cruzados y fechas valor",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "fx",
+      "etiquetas": [
+        "forex",
+        "cotizacion",
+        "bid-ask",
+        "tipo-cruzado",
+        "spot",
+        "tom-next",
+        "swap",
+        "riesgo-de-cambio"
+      ],
+      "operaciones": [],
+      "patrones": [
+        "P-007",
+        "P-008"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
       "ruta": "conocimiento/fx/seguro-de-cambio.md",
       "titulo": "Seguro de cambio (forward de divisas)",
       "idioma": "es",
@@ -109,6 +132,51 @@
         "P-003",
         "P-004",
         "P-005"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/empresas/tipos-de-referencia-del-euro.md",
+      "titulo": "Tipos de referencia del euro: tipos del BCE, €STR y Euribor",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "empresas",
+      "etiquetas": [
+        "bce",
+        "politica-monetaria",
+        "estr",
+        "euribor",
+        "eonia",
+        "interbancario",
+        "facilidad-de-deposito",
+        "t2"
+      ],
+      "operaciones": [],
+      "patrones": [
+        "P-001",
+        "P-002"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/bolsa-inversion/deuda-publica-espanola.md",
+      "titulo": "Deuda pública española: Letras, Bonos y Obligaciones, y la curva de tipos",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "bolsa-inversion",
+      "etiquetas": [
+        "renta-fija",
+        "letras-del-tesoro",
+        "bonos",
+        "obligaciones",
+        "curva-de-tipos",
+        "tesoro-publico"
+      ],
+      "operaciones": [],
+      "patrones": [
+        "P-001",
+        "P-002",
+        "P-004"
       ],
       "ultima_revision": "2026-11-24"
     },

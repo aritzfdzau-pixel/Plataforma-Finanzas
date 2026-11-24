@@ -37,6 +37,10 @@ se vuelve a cambiar a plazo, ambos caminos deben dar lo mismo (paridad cubierta)
 - Si la divisa tiene un tipo **mayor** que el euro, el forward EUR/divisa queda **por encima**
   del spot (el euro cotiza con prima); si es menor, por debajo (descuento).
 - El precio de un banco incluye además su **margen**: aquí se calcula el precio teórico.
+- Es un contrato **firme**: se liquida aunque la operación comercial no llegue a producirse.
+  Un *outright* es una sola compraventa a plazo; un *FX swap* combina una operación al contado
+  y la contraria a plazo (ver la ficha [Mercado de divisas](#ficha=conocimiento%2Ffx%2Fmercado-de-divisas.md)).
+- Los **puntos swap** se expresan en *pips* (cuarto decimal), no en porcentaje.
 
 ## Fórmulas
 $$

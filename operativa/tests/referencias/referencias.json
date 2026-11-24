@@ -173,6 +173,46 @@
    "descripcion": "Idem: revisión semestral con 3,25%+1%: nueva cuota",
    "valor": 929.675510909358
   },
+  "fwd_libro_12m": {
+   "descripcion": "Forward EUR/USD: spot 1,10; EUR 1,2%; USD 1,8%; 360 días (Act/360 ambas)",
+   "valor": 1.10652173913044
+  },
+  "fwd_libro_3m": {
+   "descripcion": "Forward EUR/USD: spot 1,12; EUR 1%; USD 0,5%; 90 días (Act/360 ambas)",
+   "valor": 1.11860349127182
+  },
+  "cruce_eurchf": {
+   "descripcion": "Tipo cruzado EUR/CHF = EUR/USD 1,0850 x USD/CHF 0,8800",
+   "valor": 0.9548
+  },
+  "cruce_eurjpy": {
+   "descripcion": "Tipo cruzado EUR/JPY = EUR/USD 1,0850 x USD/JPY 150,00",
+   "valor": 162.75
+  },
+  "cruce_gbpusd_eurgbp": {
+   "descripcion": "Tipo cruzado EUR/GBP = EUR/USD 1,0850 / GBP/USD 1,2700",
+   "valor": 0.854330708661417
+  },
+  "bidask_usd_a_eur": {
+   "descripcion": "Cliente vende 100.000 USD y compra EUR al ask 1,0852 (EUR/USD 1,0850/1,0852)",
+   "valor": 92148.91
+  },
+  "bidask_eur_a_usd": {
+   "descripcion": "Cliente vende 100.000 EUR y recibe USD al bid 1,0850",
+   "valor": 108500.0
+  },
+  "bidask_mid": {
+   "descripcion": "Precio medio de 1,0850/1,0852",
+   "valor": 1.0851
+  },
+  "letra_precio": {
+   "descripcion": "Letra del Tesoro: nominal 1.000; 364 días; tipo 2,50% (Act/360, simple)",
+   "valor": 975.345434841506
+  },
+  "letra_precio_6m": {
+   "descripcion": "Letra del Tesoro: nominal 1.000; 182 días; tipo 2,25% (Act/360, simple)",
+   "valor": 988.752935360277
+  },
   "precios": {
    "descripcion": "Serie inventada (6 precios)",
    "valor": [

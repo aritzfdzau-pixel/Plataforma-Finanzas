@@ -55,6 +55,18 @@ f('hip_cuota2', 'Idem: revisión con Euribor 2,1% + 0,9%: nueva cuota', 'PMT(0.0
 f('hip6_pend', 'Hipoteca 150.000; 20 años; 3,75%+1%: pendiente a 6 meses', '-FV(0.0475/12;6;-PMT(0.0475/12;240;-150000);150000)')
 f('hip6_cuota2', 'Idem: revisión semestral con 3,25%+1%: nueva cuota', 'PMT(0.0425/12;234;FV(0.0475/12;6;-PMT(0.0475/12;240;-150000);150000))')
 
+# --- Contraste con material de estudio externo (fase 1, revisión) ---
+f('fwd_libro_12m', 'Forward EUR/USD: spot 1,10; EUR 1,2%; USD 1,8%; 360 días (Act/360 ambas)', '1.1*(1+0.018*360/360)/(1+0.012*360/360)')
+f('fwd_libro_3m', 'Forward EUR/USD: spot 1,12; EUR 1%; USD 0,5%; 90 días (Act/360 ambas)', '1.12*(1+0.005*90/360)/(1+0.01*90/360)')
+f('cruce_eurchf', 'Tipo cruzado EUR/CHF = EUR/USD 1,0850 x USD/CHF 0,8800', '1.085*0.88')
+f('cruce_eurjpy', 'Tipo cruzado EUR/JPY = EUR/USD 1,0850 x USD/JPY 150,00', '1.085*150')
+f('cruce_gbpusd_eurgbp', 'Tipo cruzado EUR/GBP = EUR/USD 1,0850 / GBP/USD 1,2700', '1.085/1.27')
+f('bidask_usd_a_eur', 'Cliente vende 100.000 USD y compra EUR al ask 1,0852 (EUR/USD 1,0850/1,0852)', 'ROUND(100000/1.0852;2)')
+f('bidask_eur_a_usd', 'Cliente vende 100.000 EUR y recibe USD al bid 1,0850', 'ROUND(100000*1.085;2)')
+f('bidask_mid', 'Precio medio de 1,0850/1,0852', '(1.085+1.0852)/2')
+f('letra_precio', 'Letra del Tesoro: nominal 1.000; 364 días; tipo 2,50% (Act/360, simple)', '1000/(1+0.025*364/360)')
+f('letra_precio_6m', 'Letra del Tesoro: nominal 1.000; 182 días; tipo 2,25% (Act/360, simple)', '1000/(1+0.0225*182/360)')
+
 # --- 6. Rentabilidades: bloque de datos en celdas ---
 precios = [100, 102, 101, 105, 104, 108]
 

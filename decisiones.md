@@ -98,5 +98,24 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - **Decisión:** el visor de fichas muestra las fórmulas en texto LaTeX (sin librería de
   renderizado: no hay CDN ni dependencias). GitHub sí las renderiza al ver la ficha en el repo.
 
+## D-015 · 2026-11-24 · Fase 1 (revisión) · Uso de material de estudio de terceros
+- **Decisión:** Aritz aportó apuntes de un curso (material con derechos de autor). No se
+  copia su texto ni se cita por nombre en el repositorio (es público y lo identificaría).
+  Se usaron solo para **contrastar** y se escribieron fichas propias:
+  `fx/mercado-de-divisas.md`, `empresas/tipos-de-referencia-del-euro.md` y
+  `bolsa-inversion/deuda-publica-espanola.md`; además, se ampliaron `seguro-de-cambio` e
+  `hipoteca-variable`.
+- **Contraste numérico:** los dos ejemplos de forward del material (1,1065 y 1,1186) se
+  reproducen con la operación `fx-forward` (test en `operativa/tests/operaciones.test.js`).
+- **Información del material que estaba desactualizada y se ha corregido en las fichas:**
+  EONIA → €STR (2019/2022); LIBOR en euros desaparecido (2021); TARGET/TARGET2 → T2 (2023);
+  Euribor administrado por EMMI con metodología híbrida y plazos 1s, 1m, 3m, 6m y 12m;
+  objetivo del BCE simétrico del 2 % (2021); señal de política a través de la facilidad de
+  depósito y diferencial MRO−DFR de 15 pb (2024); "Pagarés del Tesoro" → Letras del Tesoro.
+- **Fichas sin operación:** se permiten (`operaciones: []`) cuando el contenido es de
+  conocimiento; sus ejemplos se calculan en LibreOffice (referencias en `referencias.fods`).
+- **Propuesta pendiente para Aritz:** añadir una categoría "Fundamentos" (macroeconomía,
+  sistema financiero, supervisión) para conocimiento que no encaja en las cuatro categorías.
+
 ## Palabras clave para etiquetar noticias
 (Se rellenará en la fase 3; editable por Aritz.)

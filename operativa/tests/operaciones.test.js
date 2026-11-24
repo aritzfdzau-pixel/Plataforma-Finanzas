@@ -170,3 +170,15 @@ test('hipoteca-variable: TIN negativo se fija en 0 % (cuota = capital / meses)',
   assert.equal(valor(r, 'tin1'), 0);
   cerca(valor(r, 'cuota1'), 200000 / 300); // definición: sin intereses
 });
+
+// --- Contraste con ejemplos de un manual externo de mercado de divisas ----
+// (resultados del manual: 1,1065 y 1,1186; aquí se comparan con LibreOffice a 15 cifras)
+test('fx-forward reproduce los ejemplos de manual (12 meses y 3 meses, Act/360)', async () => {
+  const a = await ejecutar('fx-forward', { spot: '1,10', tipoEur: '1,2', tipoDivisa: '1,8', dias: '360' });
+  cerca(valor(a, 'forward'), ref('fwd_libro_12m'));
+  assert.equal(valor(a, 'forward').toFixed(4), '1.1065');
+  const b = await ejecutar('fx-forward', { spot: '1,12', tipoEur: '1', tipoDivisa: '0,5', dias: '90' });
+  cerca(valor(b, 'forward'), ref('fwd_libro_3m'));
+  assert.equal(valor(b, 'forward').toFixed(4), '1.1186');
+  assert.ok(valor(b, 'puntos') < 0); // el euro (tipo mayor) cotiza con descuento
+});
