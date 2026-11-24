@@ -37,7 +37,12 @@
 }
 .marca__acento { color: var(--color-accent); }
 .topbar__acciones { display: flex; align-items: center; gap: var(--space-3); }
-.topbar__buscar { font-size: var(--fs-xs); color: var(--color-text-muted); }
+.topbar__buscar {
+  font: inherit; font-size: var(--fs-xs); color: var(--color-text-muted);
+  background: none; border: var(--border-width) solid var(--color-border); border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-3); cursor: pointer;
+}
+.topbar__buscar:hover { border-color: var(--color-accent); color: var(--color-text); }
 
 /* ---------- Paneles ---------- */
 .zona {
@@ -47,6 +52,7 @@
   background: var(--color-surface);
 }
 .zona--operativa { min-height: 22rem; }
+.zona__herramientas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 
 .zona__cabecera {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2);
@@ -107,7 +113,7 @@
   }
   .zona__cuerpo { padding: var(--space-5) var(--space-4); }
   .zona--operativa { min-height: 14rem; }
-  .topbar__buscar { display: none; }
+  .solo-escritorio { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

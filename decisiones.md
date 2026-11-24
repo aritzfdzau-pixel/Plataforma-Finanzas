@@ -38,5 +38,106 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - **Decisión:** el esqueleto muestra cuatro zonas marcadas "Próximamente": Noticias,
   Divisas, Operativa y Conocimiento (zona secundaria), siguiendo la tabla de la pantalla final.
 
+## D-007 · 2026-11-24 · Fase 1 · Valores de referencia de los tests: LibreOffice Calc
+- **Decisión:** los valores de referencia de los tests financieros los calcula **LibreOffice
+  Calc 24.2** (hoja de cálculo independiente del código) a partir de
+  `operativa/tests/referencias/referencias.fods`, que contiene las fórmulas a la vista
+  (`PAGO`, `VF`, `TIR`, `VNA`, `INT.EFECTIVO`, `TASA.NOMINAL`, `TASA`, `VAR`, `DESVEST`, `LN`…).
+  `extraer.py` vuelca los resultados a `referencias.json`, que leen los tests.
+- **Motivo:** la norma "ninguna IA calcula". No había acceso a Google Sheets desde el entorno;
+  el `.fods` se puede abrir en Google Sheets o Excel para comprobarlo.
+- **Tolerancia:** relativa de 1e-10 a 1e-11 (LibreOffice exporta 15 cifras significativas).
+
+## D-008 · 2026-11-24 · Fase 1 · Lectura de números en convención es-ES
+- **Decisión:** coma = decimal; punto seguido de grupos de 3 cifras = miles ("100.000",
+  y también "1.085" → 1085); un único punto sin grupo de 3 cifras = decimal ("1.0850").
+  Si hay coma y punto, el último es el decimal. La interfaz muestra bajo cada campo cómo se
+  ha interpretado el número y avisa cuando un punto se toma como separador de miles.
+- **Riesgo:** escribir un tipo de cambio como "1.085" se lee como 1.085 (mil ochenta y cinco).
+  El aviso de interpretación lo hace visible.
+
+## D-009 · 2026-11-24 · Fase 1 · Listado generado desde las fichas
+- **Decisión:** `node scripts/generar-indice.js` lee las cabeceras de `conocimiento/**.md` y
+  escribe `conocimiento/indice.json` (fichas + operaciones que generan). La web lee ese JSON.
+  Un test falla si el índice no está al día, y el workflow de Pages lo vuelve a comprobar.
+- **Motivo:** GitHub Pages no permite listar carpetas y no queremos paso de build.
+
+## D-010 · 2026-11-24 · Fase 1 · Estructura del sitio publicado (sustituye parte de D-001)
+- **Decisión:** el sitio publicado replica la estructura del repo (`web/`, `operativa/lib`,
+  `operativa/operaciones`, `conocimiento/`, `datos/`), y la raíz redirige a `web/`.
+- **Motivo:** la web importa módulos de `operativa/` y lee fichas con rutas relativas
+  (`../operativa/…`, `../conocimiento/…`); así funcionan igual en local y en Pages.
+- **Probar en local:** servir la **raíz** del repo (`python3 -m http.server`) y abrir `/web/`.
+
+## D-011 · 2026-11-24 · Fase 1 · Operaciones declarativas
+- **Decisión:** cada operación (`operativa/operaciones/<id>.js`) declara campos, una función
+  `calcular` pura y sus convenciones (base, periodicidad, nominal/efectivo, comisiones). Una
+  única interfaz genérica (`web/js/ui/operativa.js`) pinta todas. La lógica financiera solo
+  está en `operativa/`; un test impide usar el DOM allí.
+
+## D-012 · 2026-11-24 · Fase 1 · Detalles de cálculo
+- Cuadros de amortización **sin redondear** cada cuota a céntimos (pueden diferir en
+  céntimos de un banco). Intereses totales = total pagado − capital prestado.
+- Carencia **total**: los intereses se capitalizan (amortización negativa en el cuadro).
+- TIR: Newton-Raphson (estimación 10 %, tolerancia 1e-10, 100 iteraciones); si falla,
+  bisección entre −99,99 % y 10.000 %. Con más de un cambio de signo se avisa de posibles TIR múltiples.
+- Varianza y desviación **muestrales** (n − 1). Volatilidad anualizada por √252 / √52 / √12.
+- Coste efectivo de descuento/confirming: compuesto en base 365, $(N/E)^{365/d} − 1$.
+- TAE con comisiones: TIR del préstamo con periodos iguales de 1/m año. ⚠️ Pendiente de
+  verificar frente al cómputo en días/365 de la normativa del Banco de España.
+- Hipoteca: TIN mínimo 0 % por defecto (⚠️ Pendiente de verificar el alcance de la Ley 5/2019).
+- Bases del forward por divisa: USD y CHF Act/360; GBP y JPY Act/365 (⚠️ Pendiente de verificar).
+- CSV: separador ";", coma decimal, sin miles, BOM UTF-8, porcentajes como número (columna "(%)").
+
+## D-013 · 2026-11-24 · Fase 1 · Flechas ▲ ▼ indican dirección, no "bueno/malo"
+- **Decisión:** verde ▲ = el valor sube, rojo ▼ = baja, también en costes (una cuota que
+  baja sale en rojo ▼). Así se cumple la norma de forma uniforme.
+- **Duda para Aritz:** ¿prefieres que en costes se invierta el color (bajar = verde)?
+
+## D-014 · 2026-11-24 · Fase 1 · Fórmulas en la web
+- **Decisión:** el visor de fichas muestra las fórmulas en texto LaTeX (sin librería de
+  renderizado: no hay CDN ni dependencias). GitHub sí las renderiza al ver la ficha en el repo.
+
+## D-015 · 2026-11-24 · Fase 1 (revisión) · Uso de material de estudio de terceros
+- **Decisión:** Aritz aportó apuntes de un curso (material con derechos de autor). No se
+  copia su texto ni se cita por nombre en el repositorio (es público y lo identificaría).
+  Se usaron solo para **contrastar** y se escribieron fichas propias:
+  `fx/mercado-de-divisas.md`, `empresas/tipos-de-referencia-del-euro.md` y
+  `bolsa-inversion/deuda-publica-espanola.md`; además, se ampliaron `seguro-de-cambio` e
+  `hipoteca-variable`.
+- **Contraste numérico:** los dos ejemplos de forward del material (1,1065 y 1,1186) se
+  reproducen con la operación `fx-forward` (test en `operativa/tests/operaciones.test.js`).
+- **Información del material que estaba desactualizada y se ha corregido en las fichas:**
+  EONIA → €STR (2019/2022); LIBOR en euros desaparecido (2021); TARGET/TARGET2 → T2 (2023);
+  Euribor administrado por EMMI con metodología híbrida y plazos 1s, 1m, 3m, 6m y 12m;
+  objetivo del BCE simétrico del 2 % (2021); señal de política a través de la facilidad de
+  depósito y diferencial MRO−DFR de 15 pb (2024); "Pagarés del Tesoro" → Letras del Tesoro.
+- **Fichas sin operación:** se permiten (`operaciones: []`) cuando el contenido es de
+  conocimiento; sus ejemplos se calculan en LibreOffice (referencias en `referencias.fods`).
+- **Propuesta pendiente para Aritz:** añadir una categoría "Fundamentos" (macroeconomía,
+  sistema financiero, supervisión) para conocimiento que no encaja en las cuatro categorías.
+  → Resuelta en D-016.
+
+## D-016 · 2026-11-24 · Fase 1 (revisión) · Categoría Macroeconomía
+- **Decisión:** Aritz pide la categoría `macroeconomia` ("Macroeconomía") en lugar de
+  "Fundamentos". Cubre política monetaria, indicadores (PIB, inflación, M3) y sistema
+  financiero. Color fijo `--cat-macroeconomia`: #B5CF5A (oscuro) y #5C7A00 (claro), ambos
+  ≥ 4,5:1 sobre los tres fondos (test de contraste).
+- **Cambios:** `tipos-de-referencia-del-euro.md` pasa de `empresas/` a `macroeconomia/`;
+  nueva ficha `macroeconomia/indicadores-macroeconomicos.md` (ejemplos calculados en
+  LibreOffice: referencias `macro_*`).
+- **Pendiente:** las noticias de la fase 3 también usarán esta categoría (palabras clave por definir).
+
+## D-017 · 2026-11-24 · Fase 1 (revisión) · Sistemas de amortización y sistema americano
+- **Decisión:** a petición de Aritz se añade el sistema **americano (bullet)** al cuadro de
+  amortización (P-005): solo intereses y todo el capital en la última cuota.
+- La operación pasa a llamarse «Préstamo: cuadro de amortización (francés, alemán,
+  americano)» (id `prestamo-amortizacion`, antes `prestamo-frances-aleman`) y la ficha a
+  `empresas/prestamos-sistemas-de-amortizacion.md`. Motivo: "francés/alemán/americano" son
+  nombres de método, no de país; la interfaz los muestra como «Cuota constante (francés)»,
+  «Amortización constante (alemán)» y «Todo al vencimiento (americano / bullet)».
+- El cambio de id no rompe enlaces publicados: la fase 1 aún no estaba en `main`.
+- Referencias LibreOffice nuevas: `am_cuota`, `am_ultima`, `am_int`, `am_cart_int`.
+
 ## Palabras clave para etiquetar noticias
 (Se rellenará en la fase 3; editable por Aritz.)

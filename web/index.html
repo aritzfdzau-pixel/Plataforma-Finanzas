@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/componentes.css">
   <!-- Aplica el tema guardado antes de pintar (evita parpadeo). -->
   <script src="js/tema.js"></script>
   <script type="module" src="js/main.js"></script>
@@ -23,7 +24,7 @@
     <header class="topbar">
       <h1 class="marca">Terminal <span class="marca__acento">financiero</span></h1>
       <div class="topbar__acciones">
-        <span class="topbar__buscar" title="Barra de comandos (fase 1)"><kbd>/</kbd> Buscar operaciones y fichas · próximamente</span>
+        <button type="button" class="topbar__buscar" id="abrir-paleta" aria-keyshortcuts="/"><kbd>/</kbd> Buscar<span class="solo-escritorio"> operaciones y fichas</span></button>
         <button type="button" class="button" id="cambiar-tema" aria-pressed="false">Modo claro</button>
       </div>
     </header>
@@ -50,19 +51,29 @@
       </div>
     </section>
 
-    <section class="zona zona--operativa" aria-labelledby="t-operativa">
+    <section class="zona zona--operativa" id="zona-operativa" aria-labelledby="t-operativa">
       <div class="zona__cabecera">
         <h2 class="zona__titulo" id="t-operativa">Operativa</h2>
-        <ul class="leyenda" aria-label="Categorías">
-          <li class="chip cat cat--fx">FX</li>
-          <li class="chip cat cat--empresas">Empresas</li>
-          <li class="chip cat cat--bolsa-inversion">Bolsa e Inversión</li>
-          <li class="chip cat cat--real-estate">Real Estate</li>
-        </ul>
+        <div class="zona__herramientas">
+          <ul class="leyenda" aria-label="Categorías">
+            <li class="chip cat cat--fx">FX</li>
+            <li class="chip cat cat--empresas">Empresas</li>
+            <li class="chip cat cat--bolsa-inversion">Bolsa e Inversión</li>
+            <li class="chip cat cat--real-estate">Real Estate</li>
+            <li class="chip cat cat--macroeconomia">Macroeconomía</li>
+          </ul>
+          <button type="button" class="button" id="expandir-operativa" aria-pressed="false">Pantalla grande</button>
+        </div>
       </div>
-      <div class="zona__cuerpo">
-        <span class="proximamente">Próximamente</span>
-        <p class="zona__descripcion">Listado de operaciones por categoría (cálculos, históricos y escenarios), desplegable a pantalla grande. Cada operación enlaza a su ficha.</p>
+      <div class="operativa">
+        <nav class="operativa__lista" aria-label="Operaciones">
+          <label class="visually-hidden" for="filtro-operaciones">Filtrar operaciones</label>
+          <input type="search" id="filtro-operaciones" class="filtro" placeholder="Filtrar operaciones…" autocomplete="off">
+          <div id="lista-operaciones"><p class="vacio">Cargando…</p></div>
+        </nav>
+        <div class="operativa__detalle" id="detalle-operacion">
+          <p class="vacio">Elige una operación de la lista o pulsa <kbd>/</kbd> para buscar.</p>
+        </div>
       </div>
     </section>
 
@@ -71,9 +82,10 @@
         <h2 class="zona__titulo" id="t-conocimiento">Conocimiento</h2>
         <span class="chip">Fichas</span>
       </div>
-      <div class="zona__cuerpo">
-        <span class="proximamente">Próximamente</span>
-        <p class="zona__descripcion">Añadir y consultar fichas de finanzas: qué es, para qué se usa, fórmulas, ejemplo resuelto, riesgos y operaciones relacionadas.</p>
+      <div class="conocimiento">
+        <div id="lista-fichas"><p class="vacio">Cargando…</p></div>
+        <div id="visor-ficha" hidden></div>
+        <p class="conocimiento__nota">Las fichas se añaden mediante pull request a partir de la plantilla del repositorio.</p>
       </div>
     </section>
 
@@ -82,5 +94,12 @@
       <p>Ningún dato que introduzcas sale de tu navegador.</p>
     </footer>
   </div>
+
+  <dialog id="paleta" class="paleta" aria-label="Barra de comandos">
+    <label class="visually-hidden" for="paleta-input">Buscar operaciones y fichas</label>
+    <input id="paleta-input" class="paleta__input" type="search" placeholder="Buscar operaciones y fichas…" autocomplete="off" role="combobox" aria-controls="paleta-resultados" aria-expanded="true">
+    <ul id="paleta-resultados" class="paleta__resultados" role="listbox"></ul>
+    <p class="paleta__ayuda"><kbd>↑</kbd> <kbd>↓</kbd> moverse · <kbd>Enter</kbd> abrir · <kbd>Esc</kbd> cerrar</p>
+  </dialog>
 </body>
 </html>

@@ -24,13 +24,16 @@ jobs:
           node-version: 22
       - name: Tests antes de publicar
         run: node --test
-      - name: Componer el sitio (web/ + datos/ + conocimiento/)
+      - name: Comprobar que el índice de fichas está al día
+        run: node scripts/generar-indice.js && git diff --exit-code conocimiento/indice.json
+      - name: Componer el sitio (misma estructura que el repo)
         run: |
-          mkdir -p _site
-          cp -r web/. _site/
-          mkdir -p _site/datos _site/conocimiento
-          rsync -a --exclude 'README.md' datos/ _site/datos/
+          mkdir -p _site/operativa _site/conocimiento _site/datos
+          cp -r web _site/web
+          cp -r operativa/lib operativa/operaciones _site/operativa/
           rsync -a --exclude '_plantilla.md' --exclude '.gitkeep' conocimiento/ _site/conocimiento/
+          rsync -a --exclude 'README.md' datos/ _site/datos/
+          cp web/redireccion.html _site/index.html
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

@@ -1,6 +1,8 @@
 /* Estilos base. Solo var(--…) de tokens.css; sin colores literales. */
 *, *::before, *::after { box-sizing: border-box; }
 
+[hidden] { display: none !important; }
+
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 body {
@@ -46,6 +48,7 @@ a { color: var(--color-accent); text-underline-offset: 2px; }
 .cat--empresas        { --cat-color: var(--cat-empresas); }
 .cat--bolsa-inversion { --cat-color: var(--cat-bolsa-inversion); }
 .cat--real-estate     { --cat-color: var(--cat-real-estate); }
+.cat--macroeconomia   { --cat-color: var(--cat-macroeconomia); }
 .cat--institucional   { --cat-color: var(--cat-institucional); }
 
 .chip {

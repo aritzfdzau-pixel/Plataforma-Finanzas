@@ -98,6 +98,7 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | Empresas | `empresas` | `--cat-empresas` |
 | Bolsa e Inversión | `bolsa-inversion` | `--cat-bolsa-inversion` |
 | Real Estate | `real-estate` | `--cat-real-estate` |
+| Macroeconomía (política monetaria, indicadores, sistema financiero) | `macroeconomia` | `--cat-macroeconomia` |
 | Institucional (solo noticias BCE / Banco de España) | `institucional` | `--cat-institucional` |
 
 ## 12. Estética
@@ -120,7 +121,28 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | `operativa/lib/` | Funciones puras de cálculo |
 | `operativa/operaciones/` | Una operación por archivo (interfaz + uso de la lib) |
 | `operativa/tests/` | Tests de las funciones y operaciones financieras |
+| `operativa/tests/referencias/` | Hoja `.fods` con las fórmulas de referencia y sus resultados (LibreOffice) |
+| `scripts/` | Utilidades Node sin dependencias (p. ej. `generar-indice.js`) |
 | `datos/` | Archivos generados por tareas programadas (no editar a mano) |
 | `web/` | Interfaz publicada en GitHub Pages |
 | `tests/` | Tests de infraestructura (estructura, tokens, plantillas) |
 | `.github/` | Workflows y plantillas de issue/PR |
+
+## 14. Cómo añadir una operación (fase 1 en adelante)
+1. Consultar `patrones/README.md`; reutilizar funciones de `operativa/lib/finanzas.js` o crear
+   un patrón nuevo con tests y registrarlo.
+2. Añadir la fórmula de referencia a `operativa/tests/referencias/generar_fods.py`, regenerar
+   el `.fods`, recalcular con LibreOffice y volcar `referencias.json`:
+   ```
+   python3 generar_fods.py referencias.fods
+   soffice --headless --convert-to csv --outdir /tmp/ref referencias.fods
+   python3 extraer.py /tmp/ref/referencias.csv > referencias.json
+   ```
+3. Crear `operativa/operaciones/<id>.js` (campos, `calcular` pura, convenciones, avisos) y
+   registrarlo en `operativa/operaciones/indice.js`.
+4. Escribir o actualizar la ficha fuente: `operaciones: [<id>]` en la cabecera y enlace
+   `(#op=<id>)` en "Operaciones relacionadas". Los números del ejemplo resuelto salen de la operación.
+5. `node scripts/generar-indice.js` y `node --test`.
+
+Enlaces internos de la web: `#op=<id>` abre una operación (admite valores de campos, p. ej.
+`#op=fx-forward&par=GBP`); `#ficha=<ruta>` abre una ficha.
