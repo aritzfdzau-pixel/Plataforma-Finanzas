@@ -34,12 +34,30 @@ export function enLinea(texto) {
   return t.replace(/\u0000(\d+)\u0000/g, (_, i) => guardados[Number(i)]);
 }
 
+/**
+ * Elimina comentarios HTML (<!-- … -->) sin expresiones regulares. Un comentario sin
+ * cerrar elimina el resto del texto. No es una medida de seguridad: todo se escapa después.
+ */
+export function quitarComentarios(texto) {
+  let out = '';
+  let i = 0;
+  while (i < texto.length) {
+    const ini = texto.indexOf('<!--', i);
+    if (ini === -1) { out += texto.slice(i); break; }
+    out += texto.slice(i, ini);
+    const fin = texto.indexOf('-->', ini + 4);
+    if (fin === -1) break;
+    i = fin + 3;
+  }
+  return out;
+}
+
 function celdas(linea) {
   return linea.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim());
 }
 
 export function markdownAHtml(md) {
-  const lineas = String(md).replace(/<!--[\s\S]*?-->/g, '').split(/\r?\n/);
+  const lineas = quitarComentarios(String(md).split('\u0000').join('')).split(/\r?\n/);
   const out = [];
   let i = 0;
   const esBloqueEspecial = (l) => /^(#{1,6}\s|```|\$\$|>\s?|[-*]\s|\d+\.\s|\|)/.test(l.trim());

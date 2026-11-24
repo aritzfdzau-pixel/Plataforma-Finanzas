@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { leerNumero, leerSerie, numero, eur, pct, divisa, esMilesConPunto, formatear } from '../web/js/lib/formato.js';
 import { leerFicha } from '../web/js/lib/frontmatter.js';
-import { markdownAHtml, enLinea } from '../web/js/lib/markdown.js';
+import { markdownAHtml, enLinea, quitarComentarios } from '../web/js/lib/markdown.js';
 import { buscar, normalizar } from '../web/js/lib/buscar.js';
 import { leerCampos } from '../web/js/lib/campos.js';
 import { tablaACsv, celdaCsv } from '../web/js/lib/csv.js';
@@ -117,4 +117,13 @@ test('markdownAHtml: elementos de lista que ocupan varias líneas', () => {
   const html = markdownAHtml('- uno que sigue\n  en otra línea\n- dos\n\nPárrafo');
   assert.match(html, /<ul><li>uno que sigue en otra línea<\/li><li>dos<\/li><\/ul>/);
   assert.match(html, /<p>Párrafo<\/p>/);
+});
+
+test('quitarComentarios y caracteres nulos', () => {
+  assert.equal(quitarComentarios('a<!-- x -->b<!--y-->c'), 'abc');
+  assert.equal(quitarComentarios('a<!-- sin cerrar'), 'a');
+  assert.equal(quitarComentarios('<!<!-- x -->-- z -->'), '<!-- z -->');
+  // Tras quitar comentarios, el resto se escapa: nunca queda HTML activo.
+  assert.doesNotMatch(markdownAHtml('<!<!-- x -->-- z --><script>'), /<script>|<!--/);
+  assert.doesNotMatch(markdownAHtml('texto \u00000\u0000 fin'), /\u0000/);
 });
