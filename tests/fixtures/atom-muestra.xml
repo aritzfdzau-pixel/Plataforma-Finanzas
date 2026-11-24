@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Muestra Atom INVENTADA para los tests. -->
+<feed xmlns="http://www.w3.org/2005/Atom">
+ <title>Banco central de ejemplo</title>
+ <entry>
+  <title type="html">Decisiones de pol&#237;tica monetaria</title>
+  <link rel="alternate" href="https://ejemplo.test/prensa/decisiones?a=1&amp;b=2"/>
+  <link rel="enclosure" href="https://ejemplo.test/prensa/decisiones.pdf"/>
+  <updated>2026-11-20T13:15:00Z</updated>
+  <category term="Monetary policy"/>
+ </entry>
+</feed>

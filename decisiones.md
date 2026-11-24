@@ -149,6 +149,7 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - **Respaldo:** si el BCE no responde, se reutiliza el último archivo publicado en Pages; si
   tampoco existe, se publica sin él y la web muestra "no disponible".
 - **Variación ▲▼:** frente al día hábil anterior publicado por el BCE (P-010).
+- **Actualización (D-022):** la tarea pasa a ser horaria.
 - **Riesgo:** GitHub desactiva los `schedule` de repositorios sin actividad durante 60 días;
   en ese caso hay que volver a activarlo en Actions (o hacer cualquier commit).
 
@@ -193,5 +194,39 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - **Widgets de TradingView:** no se pueden comprobar desde el entorno de desarrollo (el dominio
   no es accesible ni desde la búsqueda web). Se comprobarán en Pages tras fusionar (D-019).
 
+## D-022 · 2026-11-24 · Fase 3 · Noticias: tarea horaria, feeds y etiquetado
+- **Tarea:** el mismo workflow de publicación (`pages.yml`) pasa a ejecutarse **cada hora**
+  (minuto 17). Descarga los feeds (`scripts/descargar-noticias.js`) y vuelve a comprobar los
+  tipos del BCE. Igual que en D-018, `datos/noticias.json` se genera al publicar y no se versiona.
+- **Feeds** (`scripts/fuentes-noticias.js`): elEconomista (mercados, economía, empresas,
+  vivienda), Financial Times (mercados, empresas, economía global, divisas; **de pago**), BCE
+  (notas de prensa) y Banco de España (noticias). ⚠️ Pendiente de verificar: desde el entorno de
+  desarrollo no hay red, y las búsquedas no confirman direcciones oficiales de elEconomista
+  ni de las secciones del FT. Por eso cada ejecución comprueba cada feed y publica su estado
+  (activo / error / sin noticias en 30 días), visible en «Ver todas → Estado de las fuentes»
+  y como avisos en el registro de Actions.
+- **Si un feed falla:** se registra y se sigue con el resto; los titulares del último archivo
+  publicado se conservan hasta 7 días (máximo 200 titulares).
+- **Etiquetado:** 1) sección del feed; 2) "Institucional" para BCE y Banco de España (solo
+  ellos); 3) palabras clave (tabla siguiente), sobre titular y categorías del feed, en
+  minúsculas, sin tildes y por palabra completa. Varias etiquetas por titular.
+- **Derechos:** solo titular, enlace, fuente, hora y etiquetas; el texto no se guarda (test).
+- **Seguridad:** solo enlaces http(s), comprobados en la tarea y otra vez en la web; los
+  titulares se pintan como texto (nunca HTML) y se abren con `rel="noopener noreferrer"`.
+- **Etiqueta del dato:** "con retraso" (hasta ~1 h más el retraso de cada feed).
+
 ## Palabras clave para etiquetar noticias
-(Se rellenará en la fase 3; editable por Aritz.)
+Editable por Aritz. La tarea de noticias (`scripts/descargar-noticias.js`) lee esta tabla en
+cada ejecución: una fila por categoría (slug entre comillas invertidas) y las palabras o
+expresiones separadas por comas. Se comparan en minúsculas, sin tildes y como palabras
+completas sobre el titular (y las categorías que trae el feed). Un titular puede llevar
+varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco de España.
+
+| Categoría | Palabras clave (español e inglés) |
+| --- | --- |
+| `fx` | divisa, divisas, tipo de cambio, tipos de cambio, euro dólar, eurodólar, dólar, libra esterlina, yen, franco suizo, yuan, renminbi, forex, currency, currencies, dollar, sterling, exchange rate, fx |
+| `empresas` | empresa, empresas, resultados, beneficio, beneficios, facturación, fusión, adquisición, opa, financiación empresarial, pyme, pymes, confirming, factoring, préstamo, préstamos, crédito empresarial, earnings, profit, merger, acquisition, takeover, company, companies |
+| `bolsa-inversion` | bolsa, ibex, ibex 35, acciones, cotización, dividendo, dividendos, bono, bonos, renta fija, renta variable, fondos de inversión, etf, wall street, s&p 500, nasdaq, stocks, shares, equities, bonds, yields, investors |
+| `real-estate` | vivienda, viviendas, hipoteca, hipotecas, inmobiliario, inmobiliaria, alquiler, euríbor, euribor, promotora, socimi, housing, mortgage, mortgages, property, real estate |
+| `macroeconomia` | inflación, ipc, ipca, pib, paro, desempleo, empleo, déficit, deuda pública, prima de riesgo, tipos de interés, política monetaria, recesión, crecimiento económico, inflation, gdp, unemployment, interest rates, monetary policy, recession, central bank |
+| `institucional` | bce, banco central europeo, banco de españa, eurosistema, supervisión bancaria, ecb, eurosystem, banking supervision |

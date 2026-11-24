@@ -41,7 +41,9 @@ Lo aprendido solo existe si queda escrito aquí, en el catálogo de `patrones/` 
 
 ## 3. Derechos de autor
 - Solo se publican fichas propias. Nada de manuales, apuntes de terceros ni texto de artículos.
-- De las noticias, solo titular, fuente, hora y enlace.
+- De las noticias, solo titular, fuente, hora y enlace (lo garantiza `scripts/rss.js` y un test).
+- Fuentes de noticias: `scripts/fuentes-noticias.js`; palabras clave de etiquetado: tabla al final
+  de `decisiones.md` (editable por Aritz).
 - Las fuentes tipográficas alojadas llevan su licencia junto a los archivos (`web/fuentes/`).
 
 ## 4. Ninguna IA calcula
@@ -125,10 +127,10 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | `operativa/operaciones/` | Una operación por archivo (interfaz + uso de la lib) |
 | `operativa/tests/` | Tests de las funciones y operaciones financieras |
 | `operativa/tests/referencias/` | Hoja `.fods` con las fórmulas de referencia y sus resultados (LibreOffice) |
-| `scripts/` | Utilidades Node sin dependencias (`generar-indice.js`, `descargar-bce.js` y sus funciones puras) |
+| `scripts/` | Utilidades Node sin dependencias (`generar-indice.js`, `descargar-bce.js`, `descargar-noticias.js`, `fuentes-noticias.js` y sus funciones puras) |
 | `datos/` | Archivos generados por tareas programadas (no editar a mano; ver `datos/README.md`) |
 | `web/` | Interfaz publicada en GitHub Pages |
-| `tests/` | Tests de infraestructura y de la web (estructura, tokens, fichas, divisas, BCE); muestras en `tests/fixtures/` |
+| `tests/` | Tests de infraestructura y de la web (estructura, tokens, fichas, divisas, BCE, noticias); muestras inventadas en `tests/fixtures/` |
 | `.github/` | Workflows y plantillas de issue/PR |
 
 ## 14. Cómo añadir una operación (fase 1 en adelante)

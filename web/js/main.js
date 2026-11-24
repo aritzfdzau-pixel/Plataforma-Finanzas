@@ -4,6 +4,7 @@ import { pintarListado, pintarOperacion } from './ui/operativa.js';
 import { pintarFichas, pintarFicha } from './ui/conocimiento.js';
 import { iniciarPaleta } from './ui/paleta.js';
 import { pintarCabeceraDivisas, pintarPanelDivisas } from './ui/divisas.js';
+import { pintarCabeceraNoticias, pintarPanelNoticias } from './ui/noticias.js';
 import { h } from './ui/dom.js';
 
 // ---- Tema ----
@@ -39,7 +40,7 @@ function expandir(si) {
 }
 botonExpandir.addEventListener('click', () => expandir(!zonaOp.classList.contains('zona--expandida')));
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && zonaOp.classList.contains('zona--expandida') && !document.getElementById('paleta').open && !panelDivisas.open) expandir(false);
+  if (e.key === 'Escape' && zonaOp.classList.contains('zona--expandida') && !document.getElementById('paleta').open && !panelDivisas.open && !panelNoticias.open) expandir(false);
 });
 
 // ---- Divisas ----
@@ -53,6 +54,16 @@ function abrirDivisas() {
 document.getElementById('abrir-divisas').addEventListener('click', abrirDivisas);
 document.getElementById('cerrar-divisas').addEventListener('click', cerrarDivisas);
 pintarCabeceraDivisas(document.getElementById('cuerpo-divisas'), abrirDivisas);
+
+// ---- Noticias ----
+const panelNoticias = document.getElementById('panel-noticias');
+let noticiasPintadas = false;
+document.getElementById('abrir-noticias').addEventListener('click', () => {
+  if (!noticiasPintadas) { noticiasPintadas = true; pintarPanelNoticias(panelNoticias); }
+  panelNoticias.showModal();
+});
+document.getElementById('cerrar-noticias').addEventListener('click', () => panelNoticias.close());
+pintarCabeceraNoticias(document.getElementById('cuerpo-noticias'));
 
 async function iniciar() {
   let indice;
