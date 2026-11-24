@@ -44,5 +44,11 @@ if (!necesitaDescarga(anterior, ahora)) {
   datos = construirHistoricos(resultados, anterior?.series, ahora);
 }
 
+// Último dato de cada serie en el registro de Actions (para contrastarlo con la fuente oficial).
+for (const s of datos.series) {
+  const u = s.puntos?.at(-1);
+  console.log(`Último ${s.id}: ${u ? `${u[1]} ${s.unidad ?? ''} (${u[0]})` : 'sin datos'}`);
+}
+
 mkdirSync(dirname(salida), { recursive: true });
 writeFileSync(salida, JSON.stringify(datos) + '\n');
