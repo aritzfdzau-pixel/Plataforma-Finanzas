@@ -10,8 +10,8 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 | --- | --- | --- | --- | --- |
 | 0 | Cimientos | Cerrada | `claude/intelligent-bardeen-t224t5` | #1 (fusionada) |
 | 1 | Operativa (modo simple) | Cerrada | `claude/intelligent-bardeen-t224t5` | #2 (fusionada) |
-| 2 | Divisas | En revisión | `claude/intelligent-bardeen-t224t5` | #3 |
-| 3 | Noticias | Pendiente | — | — |
+| 2 | Divisas | Cerrada | `claude/intelligent-bardeen-t224t5` | #3 (fusionada) |
+| 3 | Noticias | En revisión | `claude/intelligent-bardeen-t224t5` | #4 |
 | 4 | Históricos | Pendiente | — | — |
 | 5 | Proyecciones y escenarios | Pendiente | — | — |
 | 6 | Aprendizaje continuo y mapa de conocimiento | Pendiente | — | — |
@@ -42,8 +42,11 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 - [x] "Calcular seguro de cambio" abre la operación 1 con el par; la operación 2 usa el tipo BCE automáticamente.
 
 ## Fase 3 — Noticias
-Tarea programada de RSS → `datos/noticias.json`, etiquetado, cabecera de titulares y panel
-"Ver todas" con filtros.
+- [x] Tarea programada cada hora: RSS de elEconomista, FT, BCE y Banco de España → `datos/noticias.json` (D-022).
+- [x] Un feed caído no para la tarea: se registra (Actions y estado publicado) y se sigue.
+- [x] Etiquetado por sección del feed y por palabras clave editables en `decisiones.md`; varias etiquetas.
+- [x] Cabecera con 5 titulares; panel «Ver todas» con filtros por fuente, categoría y texto; FT marcada «de pago».
+- [x] Estado de cada feed visible en el panel (comprobación de feeds activos en cada ejecución).
 
 ## Fase 4 — Históricos
 Series oficiales (BCE, €STR, Euribor medio BdE), subida de CSV en el navegador, gráficas

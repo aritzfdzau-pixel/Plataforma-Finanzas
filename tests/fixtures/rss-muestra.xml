@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Muestra RSS 2.0 INVENTADA para los tests (titulares ficticios, dominio de ejemplo). -->
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <channel>
+  <title>Diario de ejemplo — Mercados</title>
+  <item>
+   <title><![CDATA[El Ibex 35 sube un 1 % tras el dato de inflación]]></title>
+   <link>https://ejemplo.test/mercados/ibex-sube</link>
+   <pubDate>Tue, 24 Nov 2026 09:15:00 +0100</pubDate>
+   <category>Bolsa</category>
+   <description><![CDATA[Texto del artículo que NO se debe guardar.]]></description>
+  </item>
+  <item>
+   <title>El euro se aprecia frente al d&#243;lar &amp; la libra</title>
+   <link> https://ejemplo.test/divisas/euro-aprecia </link>
+   <dc:date>2026-11-24T07:30:00Z</dc:date>
+  </item>
+  <item>
+   <title>Las hipotecas &lt;b&gt;suben&lt;/b&gt; con el Eur&iacute;bor</title>
+   <guid>https://ejemplo.test/vivienda/hipotecas</guid>
+   <pubDate>Mon, 23 Nov 2026 18:00:00 GMT</pubDate>
+  </item>
+  <item>
+   <title>Enlace peligroso</title>
+   <link>javascript:alert(1)</link>
+  </item>
+  <item>
+   <title></title>
+   <link>https://ejemplo.test/sin-titulo</link>
+  </item>
+ </channel>
+</rss>

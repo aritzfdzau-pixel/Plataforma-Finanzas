@@ -8,7 +8,12 @@ Cada archivo indica su fuente, fecha de descarga y etiqueta ("referencia BCE",
 
 | Archivo | Fuente | Tarea | Etiqueta |
 | --- | --- | --- | --- |
-| `tipos-bce.json` | BCE, XML público `eurofxref-hist-90d.xml` (sin clave) | `.github/workflows/pages.yml`, días hábiles a las 16:17 UTC y en cada publicación | referencia BCE |
+| `tipos-bce.json` | BCE, XML público `eurofxref-hist-90d.xml` (sin clave) | `.github/workflows/pages.yml`, cada hora (minuto 17) y en cada publicación | referencia BCE |
+| `noticias.json` | RSS de elEconomista, Financial Times, BCE y Banco de España (`scripts/fuentes-noticias.js`) | `.github/workflows/pages.yml`, cada hora (minuto 17) y en cada publicación | con retraso |
 
-`tipos-bce.json` **no se versiona** (D-018): se genera al publicar la web y solo existe en
-GitHub Pages (`/datos/tipos-bce.json`). Script: `node scripts/descargar-bce.js <salida>`.
+`tipos-bce.json` y `noticias.json` **no se versionan** (D-018, D-022): se generan al publicar la
+web y solo existen en GitHub Pages (`/datos/…`). Scripts: `node scripts/descargar-bce.js <salida>`
+y `node scripts/descargar-noticias.js <salida>`.
+
+`noticias.json` guarda solo titular, enlace, fuente, hora y etiquetas (nunca el texto), y el
+estado de cada feed (`fuentes`: activo, error o sin noticias recientes).

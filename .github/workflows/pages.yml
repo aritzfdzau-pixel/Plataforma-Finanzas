@@ -3,9 +3,10 @@ name: Despliegue en GitHub Pages
 on:
   push:
     branches: [main]
-  # Tarea diaria: tipos de referencia del BCE (se publican hacia las 16:00 CET los días hábiles).
+  # Tarea programada cada hora (minuto 17): noticias RSS y tipos de referencia del BCE
+  # (el BCE publica hacia las 16:00 CET los días hábiles; el resto de horas se reutiliza).
   schedule:
-    - cron: '17 16 * * 1-5'
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -46,6 +47,8 @@ jobs:
         run: |
           node scripts/descargar-bce.js _site/datos/tipos-bce.json "${{ steps.pages.outputs.base_url }}/datos/tipos-bce.json" \
             || echo "::warning::Sin tipos de referencia del BCE en esta publicación"
+      - name: Noticias RSS → datos/noticias.json (sin claves; un feed caído no para la tarea)
+        run: node scripts/descargar-noticias.js _site/datos/noticias.json "${{ steps.pages.outputs.base_url }}/datos/noticias.json"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
