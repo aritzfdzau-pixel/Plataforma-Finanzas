@@ -38,5 +38,65 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - **Decisión:** el esqueleto muestra cuatro zonas marcadas "Próximamente": Noticias,
   Divisas, Operativa y Conocimiento (zona secundaria), siguiendo la tabla de la pantalla final.
 
+## D-007 · 2026-11-24 · Fase 1 · Valores de referencia de los tests: LibreOffice Calc
+- **Decisión:** los valores de referencia de los tests financieros los calcula **LibreOffice
+  Calc 24.2** (hoja de cálculo independiente del código) a partir de
+  `operativa/tests/referencias/referencias.fods`, que contiene las fórmulas a la vista
+  (`PAGO`, `VF`, `TIR`, `VNA`, `INT.EFECTIVO`, `TASA.NOMINAL`, `TASA`, `VAR`, `DESVEST`, `LN`…).
+  `extraer.py` vuelca los resultados a `referencias.json`, que leen los tests.
+- **Motivo:** la norma "ninguna IA calcula". No había acceso a Google Sheets desde el entorno;
+  el `.fods` se puede abrir en Google Sheets o Excel para comprobarlo.
+- **Tolerancia:** relativa de 1e-10 a 1e-11 (LibreOffice exporta 15 cifras significativas).
+
+## D-008 · 2026-11-24 · Fase 1 · Lectura de números en convención es-ES
+- **Decisión:** coma = decimal; punto seguido de grupos de 3 cifras = miles ("100.000",
+  y también "1.085" → 1085); un único punto sin grupo de 3 cifras = decimal ("1.0850").
+  Si hay coma y punto, el último es el decimal. La interfaz muestra bajo cada campo cómo se
+  ha interpretado el número y avisa cuando un punto se toma como separador de miles.
+- **Riesgo:** escribir un tipo de cambio como "1.085" se lee como 1.085 (mil ochenta y cinco).
+  El aviso de interpretación lo hace visible.
+
+## D-009 · 2026-11-24 · Fase 1 · Listado generado desde las fichas
+- **Decisión:** `node scripts/generar-indice.js` lee las cabeceras de `conocimiento/**.md` y
+  escribe `conocimiento/indice.json` (fichas + operaciones que generan). La web lee ese JSON.
+  Un test falla si el índice no está al día, y el workflow de Pages lo vuelve a comprobar.
+- **Motivo:** GitHub Pages no permite listar carpetas y no queremos paso de build.
+
+## D-010 · 2026-11-24 · Fase 1 · Estructura del sitio publicado (sustituye parte de D-001)
+- **Decisión:** el sitio publicado replica la estructura del repo (`web/`, `operativa/lib`,
+  `operativa/operaciones`, `conocimiento/`, `datos/`), y la raíz redirige a `web/`.
+- **Motivo:** la web importa módulos de `operativa/` y lee fichas con rutas relativas
+  (`../operativa/…`, `../conocimiento/…`); así funcionan igual en local y en Pages.
+- **Probar en local:** servir la **raíz** del repo (`python3 -m http.server`) y abrir `/web/`.
+
+## D-011 · 2026-11-24 · Fase 1 · Operaciones declarativas
+- **Decisión:** cada operación (`operativa/operaciones/<id>.js`) declara campos, una función
+  `calcular` pura y sus convenciones (base, periodicidad, nominal/efectivo, comisiones). Una
+  única interfaz genérica (`web/js/ui/operativa.js`) pinta todas. La lógica financiera solo
+  está en `operativa/`; un test impide usar el DOM allí.
+
+## D-012 · 2026-11-24 · Fase 1 · Detalles de cálculo
+- Cuadros de amortización **sin redondear** cada cuota a céntimos (pueden diferir en
+  céntimos de un banco). Intereses totales = total pagado − capital prestado.
+- Carencia **total**: los intereses se capitalizan (amortización negativa en el cuadro).
+- TIR: Newton-Raphson (estimación 10 %, tolerancia 1e-10, 100 iteraciones); si falla,
+  bisección entre −99,99 % y 10.000 %. Con más de un cambio de signo se avisa de posibles TIR múltiples.
+- Varianza y desviación **muestrales** (n − 1). Volatilidad anualizada por √252 / √52 / √12.
+- Coste efectivo de descuento/confirming: compuesto en base 365, $(N/E)^{365/d} − 1$.
+- TAE con comisiones: TIR del préstamo con periodos iguales de 1/m año. ⚠️ Pendiente de
+  verificar frente al cómputo en días/365 de la normativa del Banco de España.
+- Hipoteca: TIN mínimo 0 % por defecto (⚠️ Pendiente de verificar el alcance de la Ley 5/2019).
+- Bases del forward por divisa: USD y CHF Act/360; GBP y JPY Act/365 (⚠️ Pendiente de verificar).
+- CSV: separador ";", coma decimal, sin miles, BOM UTF-8, porcentajes como número (columna "(%)").
+
+## D-013 · 2026-11-24 · Fase 1 · Flechas ▲ ▼ indican dirección, no "bueno/malo"
+- **Decisión:** verde ▲ = el valor sube, rojo ▼ = baja, también en costes (una cuota que
+  baja sale en rojo ▼). Así se cumple la norma de forma uniforme.
+- **Duda para Aritz:** ¿prefieres que en costes se invierta el color (bajar = verde)?
+
+## D-014 · 2026-11-24 · Fase 1 · Fórmulas en la web
+- **Decisión:** el visor de fichas muestra las fórmulas en texto LaTeX (sin librería de
+  renderizado: no hay CDN ni dependencias). GitHub sí las renderiza al ver la ficha en el repo.
+
 ## Palabras clave para etiquetar noticias
 (Se rellenará en la fase 3; editable por Aritz.)

@@ -11,4 +11,7 @@ alimentada por una base de conocimiento propia (fichas), más divisas y noticias
 
 Tests: `node --test` (se ejecutan solos en cada pull request).
 
+Probar la web en local: desde la raíz del repo, `python3 -m http.server 8000` y abrir
+`http://localhost:8000/web/`.
+
 > Herramienta de estudio; resultados orientativos. Sin datos de clientes ni de ningún banco.

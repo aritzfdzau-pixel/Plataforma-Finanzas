@@ -8,8 +8,8 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 
 | Fase | Nombre | Estado | Rama | PR |
 | --- | --- | --- | --- | --- |
-| 0 | Cimientos | En revisión | `claude/intelligent-bardeen-t224t5` | (ver PR de la fase 0) |
-| 1 | Operativa (modo simple) | Pendiente | — | — |
+| 0 | Cimientos | Cerrada | `claude/intelligent-bardeen-t224t5` | #1 (fusionada) |
+| 1 | Operativa (modo simple) | En revisión | `claude/intelligent-bardeen-t224t5` | — |
 | 2 | Divisas | Pendiente | — | — |
 | 3 | Noticias | Pendiente | — | — |
 | 4 | Históricos | Pendiente | — | — |
@@ -26,8 +26,12 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 - [x] Esqueleto de la pantalla final con las zonas vacías ("Próximamente").
 
 ## Fase 1 — Operativa (modo simple)
-Catálogo de patrones inicial, `operativa/lib/finanzas.js`, 8 fichas + 8 operaciones con
-tests, listado autogenerado desde las fichas, buscador y barra "/".
+- [x] Catálogo de patrones inicial (P-001 a P-009) y `operativa/lib/finanzas.js` con funciones puras.
+- [x] 8 fichas fuente y sus 8 operaciones, con tests contra valores de LibreOffice Calc.
+- [x] Listado generado automáticamente desde la cabecera de las fichas (`conocimiento/indice.json`).
+- [x] Listado por categoría, filtro, barra "/" y enlace de cada operación a su ficha.
+- [x] Aviso "Herramienta de estudio; resultados orientativos" en cada operación.
+- [x] Préstamo exportable a CSV; pantalla grande; visor de fichas.
 
 ## Fase 2 — Divisas
 Cabecera EUR/USD, EUR/GBP, EUR/JPY (TradingView aislado), panel con dos pestañas, tipos de

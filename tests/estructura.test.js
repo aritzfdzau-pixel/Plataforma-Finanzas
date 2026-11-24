@@ -71,9 +71,9 @@ function archivos(dir) {
 }
 
 test('la web no carga recursos externos (sin CDN ni scripts de terceros)', () => {
-  const web = join(RAIZ, 'web');
+  const rutas = [join(RAIZ, 'web'), join(RAIZ, 'operativa/lib'), join(RAIZ, 'operativa/operaciones')];
   const externos = /(src|href)\s*=\s*["']\s*(https?:)?\/\/|url\(\s*["']?\s*(https?:)?\/\/|@import\s+["']?(https?:)?\/\/|from\s+["'](https?:)?\/\/|import\(\s*["'](https?:)?\/\//i;
-  for (const f of archivos(web).filter((p) => ['.html', '.css', '.js'].includes(extname(p)))) {
+  for (const f of rutas.flatMap(archivos).filter((p) => ['.html', '.css', '.js'].includes(extname(p)))) {
     assert.ok(!externos.test(readFileSync(f, 'utf8')), `recurso externo en ${f}`);
   }
 });
@@ -91,4 +91,23 @@ test('las fuentes alojadas llevan su licencia', () => {
   const f = readdirSync(dir);
   assert.ok(f.some((x) => x.endsWith('.woff2')));
   assert.ok(f.includes('LICENSE-Inter.txt') && f.includes('LICENSE-JetBrainsMono.txt'));
+});
+
+test('el código de la web no envía datos fuera del navegador', () => {
+  // Solo se permiten fetch() de archivos propios con rutas relativas ('../…').
+  const rutas = [join(RAIZ, 'web/js'), join(RAIZ, 'operativa/lib'), join(RAIZ, 'operativa/operaciones')];
+  for (const f of rutas.flatMap(archivos).filter((p) => p.endsWith('.js'))) {
+    const js = readFileSync(f, 'utf8');
+    assert.ok(!/XMLHttpRequest|sendBeacon|WebSocket|EventSource/.test(js), `API de red en ${f}`);
+    for (const m of js.matchAll(/fetch\(\s*(['"`])(.*?)\1/g)) {
+      assert.ok(m[2].startsWith('../'), `fetch no relativo en ${f}: ${m[2]}`);
+    }
+    assert.ok(!/method\s*:\s*['"](POST|PUT|PATCH)/i.test(js), `envío de datos en ${f}`);
+  }
+});
+
+test('las funciones financieras no usan el DOM (puras)', () => {
+  for (const f of [join(RAIZ, 'operativa/lib'), join(RAIZ, 'operativa/operaciones')].flatMap(archivos)) {
+    assert.ok(!/\b(document|window|localStorage)\b/.test(readFileSync(f, 'utf8')), `DOM en ${f}`);
+  }
 });

@@ -1,0 +1,302 @@
+{
+  "_aviso": "Archivo generado con «node scripts/generar-indice.js». No editar a mano.",
+  "fichas": [
+    {
+      "ruta": "conocimiento/fx/seguro-de-cambio.md",
+      "titulo": "Seguro de cambio (forward de divisas)",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "fx",
+      "etiquetas": [
+        "forward",
+        "cobertura",
+        "paridad-de-tipos",
+        "puntos-swap",
+        "estr"
+      ],
+      "operaciones": [
+        "fx-forward"
+      ],
+      "patrones": [
+        "P-001",
+        "P-002",
+        "P-007"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/fx/tipos-de-referencia-bce.md",
+      "titulo": "Tipos de cambio de referencia del BCE",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "fx",
+      "etiquetas": [
+        "bce",
+        "tipo-de-cambio",
+        "referencia",
+        "conversion"
+      ],
+      "operaciones": [
+        "fx-conversion-bce"
+      ],
+      "patrones": [
+        "P-008"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/empresas/descuento-comercial-confirming.md",
+      "titulo": "Descuento comercial y confirming: coste efectivo",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "empresas",
+      "etiquetas": [
+        "descuento",
+        "confirming",
+        "circulante",
+        "anticipo",
+        "coste-efectivo"
+      ],
+      "operaciones": [
+        "descuento-comercial"
+      ],
+      "patrones": [
+        "P-001",
+        "P-002",
+        "P-009"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/empresas/prestamos-frances-aleman.md",
+      "titulo": "Préstamos: sistema francés y alemán con carencia",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "empresas",
+      "etiquetas": [
+        "prestamo",
+        "amortizacion",
+        "cuadro",
+        "carencia",
+        "financiacion"
+      ],
+      "operaciones": [
+        "prestamo-frances-aleman"
+      ],
+      "patrones": [
+        "P-003",
+        "P-005"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/empresas/tin-tae.md",
+      "titulo": "TIN y TAE",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "empresas",
+      "etiquetas": [
+        "tin",
+        "tae",
+        "tipo-efectivo",
+        "transparencia",
+        "banco-de-espana"
+      ],
+      "operaciones": [
+        "tin-tae"
+      ],
+      "patrones": [
+        "P-003",
+        "P-004",
+        "P-005"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/bolsa-inversion/rentabilidad-volatilidad.md",
+      "titulo": "Rentabilidad, varianza y volatilidad",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "bolsa-inversion",
+      "etiquetas": [
+        "rentabilidad",
+        "logaritmica",
+        "varianza",
+        "volatilidad",
+        "riesgo"
+      ],
+      "operaciones": [
+        "rentabilidad-volatilidad"
+      ],
+      "patrones": [
+        "P-006"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/bolsa-inversion/van-tir.md",
+      "titulo": "VAN y TIR",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "bolsa-inversion",
+      "etiquetas": [
+        "van",
+        "tir",
+        "npv",
+        "irr",
+        "valoracion",
+        "inversion"
+      ],
+      "operaciones": [
+        "van-tir"
+      ],
+      "patrones": [
+        "P-004"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/real-estate/hipoteca-variable.md",
+      "titulo": "Hipoteca a tipo variable (Euribor + diferencial)",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "real-estate",
+      "etiquetas": [
+        "hipoteca",
+        "euribor",
+        "diferencial",
+        "revision",
+        "vivienda"
+      ],
+      "operaciones": [
+        "hipoteca-variable"
+      ],
+      "patrones": [
+        "P-005"
+      ],
+      "ultima_revision": "2026-11-24"
+    }
+  ],
+  "operaciones": [
+    {
+      "id": "fx-forward",
+      "titulo": "Seguro de cambio (forward)",
+      "tituloIngles": "FX forward",
+      "resumen": "Tipo a plazo teórico por paridad cubierta de tipos de interés.",
+      "categoria": "fx",
+      "ficha": "conocimiento/fx/seguro-de-cambio.md",
+      "etiquetas": [
+        "forward",
+        "cobertura",
+        "paridad-de-tipos",
+        "puntos-swap",
+        "estr"
+      ]
+    },
+    {
+      "id": "fx-conversion-bce",
+      "titulo": "Conversión con el tipo de referencia del BCE",
+      "tituloIngles": "ECB reference rate",
+      "resumen": "Convierte importes con el tipo de referencia del euro publicado por el BCE.",
+      "categoria": "fx",
+      "ficha": "conocimiento/fx/tipos-de-referencia-bce.md",
+      "etiquetas": [
+        "bce",
+        "tipo-de-cambio",
+        "referencia",
+        "conversion"
+      ]
+    },
+    {
+      "id": "descuento-comercial",
+      "titulo": "Coste efectivo de descuento comercial / confirming",
+      "tituloIngles": "Trade bill discounting / reverse factoring",
+      "resumen": "Efectivo recibido y coste efectivo anual de anticipar un cobro.",
+      "categoria": "empresas",
+      "ficha": "conocimiento/empresas/descuento-comercial-confirming.md",
+      "etiquetas": [
+        "descuento",
+        "confirming",
+        "circulante",
+        "anticipo",
+        "coste-efectivo"
+      ]
+    },
+    {
+      "id": "prestamo-frances-aleman",
+      "titulo": "Préstamo francés y alemán con carencia",
+      "tituloIngles": "Loan amortization schedule",
+      "resumen": "Cuadro de amortización con carencia parcial o total, exportable a CSV.",
+      "categoria": "empresas",
+      "ficha": "conocimiento/empresas/prestamos-frances-aleman.md",
+      "etiquetas": [
+        "prestamo",
+        "amortizacion",
+        "cuadro",
+        "carencia",
+        "financiacion"
+      ]
+    },
+    {
+      "id": "tin-tae",
+      "titulo": "Conversor TIN ↔ TAE",
+      "tituloIngles": "Nominal rate ↔ APR",
+      "resumen": "Convierte TIN y TAE; opcionalmente, TAE de un préstamo con comisión de apertura.",
+      "categoria": "empresas",
+      "ficha": "conocimiento/empresas/tin-tae.md",
+      "etiquetas": [
+        "tin",
+        "tae",
+        "tipo-efectivo",
+        "transparencia",
+        "banco-de-espana"
+      ]
+    },
+    {
+      "id": "rentabilidad-volatilidad",
+      "titulo": "Rentabilidad, varianza y volatilidad anualizada",
+      "tituloIngles": "Returns & volatility",
+      "resumen": "Rentabilidades simples y logarítmicas de una serie de precios pegada.",
+      "categoria": "bolsa-inversion",
+      "ficha": "conocimiento/bolsa-inversion/rentabilidad-volatilidad.md",
+      "etiquetas": [
+        "rentabilidad",
+        "logaritmica",
+        "varianza",
+        "volatilidad",
+        "riesgo"
+      ]
+    },
+    {
+      "id": "van-tir",
+      "titulo": "VAN y TIR",
+      "tituloIngles": "NPV & IRR",
+      "resumen": "Valor actual neto y tasa interna de rentabilidad de una serie de flujos.",
+      "categoria": "bolsa-inversion",
+      "ficha": "conocimiento/bolsa-inversion/van-tir.md",
+      "etiquetas": [
+        "van",
+        "tir",
+        "npv",
+        "irr",
+        "valoracion",
+        "inversion"
+      ]
+    },
+    {
+      "id": "hipoteca-variable",
+      "titulo": "Hipoteca variable: cuota y revisión",
+      "tituloIngles": "Variable-rate mortgage",
+      "resumen": "Cuota con Euribor + diferencial y nueva cuota tras la revisión.",
+      "categoria": "real-estate",
+      "ficha": "conocimiento/real-estate/hipoteca-variable.md",
+      "etiquetas": [
+        "hipoteca",
+        "euribor",
+        "diferencial",
+        "revision",
+        "vivienda"
+      ]
+    }
+  ]
+}
