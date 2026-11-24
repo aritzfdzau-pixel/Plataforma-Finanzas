@@ -9,8 +9,8 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 | Fase | Nombre | Estado | Rama | PR |
 | --- | --- | --- | --- | --- |
 | 0 | Cimientos | Cerrada | `claude/intelligent-bardeen-t224t5` | #1 (fusionada) |
-| 1 | Operativa (modo simple) | En revisión | `claude/intelligent-bardeen-t224t5` | — |
-| 2 | Divisas | Pendiente | — | — |
+| 1 | Operativa (modo simple) | Cerrada | `claude/intelligent-bardeen-t224t5` | #2 (fusionada) |
+| 2 | Divisas | En curso | `claude/intelligent-bardeen-t224t5` | — |
 | 3 | Noticias | Pendiente | — | — |
 | 4 | Históricos | Pendiente | — | — |
 | 5 | Proyecciones y escenarios | Pendiente | — | — |
@@ -34,8 +34,12 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 - [x] Préstamo exportable a CSV; pantalla grande; visor de fichas.
 
 ## Fase 2 — Divisas
-Cabecera EUR/USD, EUR/GBP, EUR/JPY (TradingView aislado), panel con dos pestañas, tipos de
-referencia del BCE (tarea diaria), calendario económico, enlace a operaciones 1 y 2.
+- [x] Cabecera EUR/USD, EUR/GBP, EUR/JPY (widget de TradingView aislado) + referencia BCE del día con ▲▼.
+- [x] Panel con pestañas "Contra el euro" (9 pares) y "Majors (contra el dólar)" (8 pares).
+- [x] Tipos de referencia del BCE: tarea programada diaria → `datos/tipos-bce.json` (D-018).
+- [x] Calendario económico filtrado por EUR, USD, GBP y JPY.
+- [x] Etiquetas "tiempo real (indicativo)" / "referencia BCE"; aviso CNY ≠ CNH.
+- [x] "Calcular seguro de cambio" abre la operación 1 con el par; la operación 2 usa el tipo BCE automáticamente.
 
 ## Fase 3 — Noticias
 Tarea programada de RSS → `datos/noticias.json`, etiquetado, cabecera de titulares y panel

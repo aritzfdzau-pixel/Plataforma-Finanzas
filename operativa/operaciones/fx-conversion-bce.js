@@ -19,7 +19,7 @@ export default {
       opciones: [{ valor: 'EUR->DIV', etiqueta: 'De EUR a la divisa' }, { valor: 'DIV->EUR', etiqueta: 'De la divisa a EUR' }] },
     { id: 'importe', etiqueta: 'Importe', tipo: 'numero', defecto: '10.000' },
     { id: 'tipo', etiqueta: 'Tipo de referencia BCE (divisa por 1 EUR)', tipo: 'numero', defecto: '1,0850',
-      ayuda: 'En esta fase se introduce a mano (referencia BCE).' },
+      rellenarCon: { fuente: 'bce', divisa: 'divisa' } },
   ],
   calcular(v) {
     const importe = positivo(v.importe, 'Importe');

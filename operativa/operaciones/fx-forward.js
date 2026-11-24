@@ -3,7 +3,10 @@ import { positivo, entero, exigir } from './_comun.js';
 
 // Convención habitual de base del mercado monetario de cada divisa.
 // ⚠️ Pendiente de verificar con la documentación de cada índice antes de usarla en real.
-export const BASE_POR_DIVISA = { USD: 'ACT/360', GBP: 'ACT/365', JPY: 'ACT/365', CHF: 'ACT/360' };
+export const BASE_POR_DIVISA = {
+  USD: 'ACT/360', GBP: 'ACT/365', JPY: 'ACT/365', CHF: 'ACT/360', CNY: 'ACT/360',
+  AUD: 'ACT/365', CAD: 'ACT/365', HKD: 'ACT/365', NZD: 'ACT/365',
+};
 
 export default {
   id: 'fx-forward',
@@ -15,11 +18,12 @@ export default {
   campos: [
     { id: 'par', etiqueta: 'Par (unidades de divisa por 1 EUR)', tipo: 'seleccion', defecto: 'USD',
       opciones: [
-        { valor: 'USD', etiqueta: 'EUR/USD' }, { valor: 'GBP', etiqueta: 'EUR/GBP' },
-        { valor: 'JPY', etiqueta: 'EUR/JPY' }, { valor: 'CHF', etiqueta: 'EUR/CHF' },
+        ...Object.keys(BASE_POR_DIVISA).map((c) => ({ valor: c, etiqueta: `EUR/${c}` })),
         { valor: 'OTRA', etiqueta: 'Otra divisa' },
       ] },
-    { id: 'spot', etiqueta: 'Tipo de contado (spot)', tipo: 'numero', defecto: '1,0850', ayuda: 'Introducido a mano.' },
+    { id: 'spot', etiqueta: 'Tipo de contado (spot)', tipo: 'numero', defecto: '1,0850',
+      ayuda: 'Se precarga con la referencia BCE; para cotizar, usa el spot de mercado.',
+      rellenarCon: { fuente: 'bce', divisa: 'par' } },
     { id: 'dias', etiqueta: 'Plazo', unidad: 'días', tipo: 'entero', defecto: '90' },
     { id: 'tipoEur', etiqueta: 'Tipo del euro al plazo', unidad: '%', tipo: 'porcentaje', defecto: '3,00',
       ayuda: 'Referencia: €STR (o su equivalente al plazo). Act/360.' },
@@ -36,7 +40,10 @@ export default {
     const dias = entero(v.dias, 'Plazo');
     const importe = positivo(v.importe, 'Importe');
     exigir(v.tipoEur > -1 && v.tipoDivisa > -1, 'Tipos de interés no válidos');
-    const avisos = ['El €STR es un tipo a un día: para un plazo usa un tipo a ese plazo (p. ej. €STR compuesto u OIS).'];
+    const avisos = [
+      'El €STR es un tipo a un día: para un plazo usa un tipo a ese plazo (p. ej. €STR compuesto u OIS).',
+      'Si el spot es la referencia BCE (precargada), el resultado es orientativo: esa referencia no es un precio negociable.',
+    ];
     let baseDivisa = v.baseDivisa;
     if (baseDivisa === 'AUTO') {
       baseDivisa = BASE_POR_DIVISA[v.par] ?? 'ACT/360';

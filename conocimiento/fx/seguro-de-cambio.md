@@ -81,7 +81,8 @@ Valores verificados con LibreOffice Calc (tests `fx-forward`).
 - **Coste de oportunidad** si el tipo de cambio se mueve a favor.
 
 ## Operaciones relacionadas
-- [Seguro de cambio (forward)](#op=fx-forward)
+- [Seguro de cambio (forward)](#op=fx-forward). También se abre desde el panel de divisas
+  («Calcular seguro de cambio»), con el par elegido y la referencia BCE como spot orientativo.
 - [Conversión con el tipo de referencia del BCE](#op=fx-conversion-bce)
 
 ## Fuentes

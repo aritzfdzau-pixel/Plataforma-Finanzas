@@ -53,7 +53,8 @@ test('cada operación la genera exactamente una ficha y apunta a ella', async ()
 });
 
 test('los patrones del catálogo apuntan a funciones existentes de la librería', async () => {
-  const lib = await import('../operativa/lib/finanzas.js');
+  // P-001…P-009 en la librería financiera; P-010 en scripts/bce.js (tarea programada).
+  const lib = { ...(await import('../operativa/lib/finanzas.js')), ...(await import('../scripts/bce.js')) };
   const filas = catalogo.split('\n').filter((l) => /^\| P-\d{3} \|/.test(l));
   assert.ok(filas.length >= 9);
   for (const f of filas) {

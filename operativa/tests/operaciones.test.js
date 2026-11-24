@@ -194,3 +194,24 @@ test('fx-forward reproduce los ejemplos de manual (12 meses y 3 meses, Act/360)'
   assert.equal(valor(b, 'forward').toFixed(4), '1.1186');
   assert.ok(valor(b, 'puntos') < 0); // el euro (tipo mayor) cotiza con descuento
 });
+
+// --- Fase 2: relleno con el tipo BCE y nuevas divisas del forward ----------
+test('campos con rellenarCon apuntan a un campo de divisa existente', async () => {
+  for (const id of ['fx-conversion-bce', 'fx-forward']) {
+    const op = await cargarOperacion(id);
+    const c = op.campos.filter((x) => x.rellenarCon);
+    assert.equal(c.length, 1, id);
+    assert.equal(c[0].rellenarCon.fuente, 'bce');
+    assert.ok(op.campos.some((x) => x.id === c[0].rellenarCon.divisa && x.tipo === 'seleccion'), id);
+  }
+});
+
+test('fx-forward: las 9 divisas del panel tienen base y la de AUD es Act/365', async () => {
+  const op = await cargarOperacion('fx-forward');
+  const pares = op.campos.find((c) => c.id === 'par').opciones.map((o) => o.valor);
+  assert.deepEqual(pares, ['USD', 'GBP', 'JPY', 'CHF', 'CNY', 'AUD', 'CAD', 'HKD', 'NZD', 'OTRA']);
+  const auto = await ejecutar('fx-forward', { par: 'AUD', spot: '1,65', tipoEur: '3', tipoDivisa: '4', dias: '180' });
+  const forzado = await ejecutar('fx-forward', { par: 'AUD', spot: '1,65', tipoEur: '3', tipoDivisa: '4', dias: '180', baseDivisa: 'ACT/365' });
+  assert.equal(valor(auto, 'forward'), valor(forzado, 'forward'));
+  assert.ok(!auto.avisos.some((a) => a.includes('Act/360 supuesta')));
+});

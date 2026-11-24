@@ -3,6 +3,9 @@ name: Despliegue en GitHub Pages
 on:
   push:
     branches: [main]
+  # Tarea diaria: tipos de referencia del BCE (se publican hacia las 16:00 CET los días hábiles).
+  schedule:
+    - cron: '17 16 * * 1-5'
   workflow_dispatch:
 
 permissions:
@@ -26,6 +29,8 @@ jobs:
         run: node --test
       - name: Comprobar que el índice de fichas está al día
         run: node scripts/generar-indice.js && git diff --exit-code conocimiento/indice.json
+      - uses: actions/configure-pages@v5
+        id: pages
       - name: Componer el sitio (misma estructura que el repo)
         run: |
           mkdir -p _site/operativa _site/conocimiento _site/datos
@@ -35,7 +40,12 @@ jobs:
           rsync -a --exclude 'README.md' datos/ _site/datos/
           cp web/redireccion.html _site/index.html
           touch _site/.nojekyll
-      - uses: actions/configure-pages@v5
+      - name: Tipos de referencia del BCE → datos/tipos-bce.json (sin claves)
+        # Si el BCE no responde se reutiliza el último archivo publicado; si tampoco hay,
+        # se publica sin él y la web lo indica ("no disponible").
+        run: |
+          node scripts/descargar-bce.js _site/datos/tipos-bce.json "${{ steps.pages.outputs.base_url }}/datos/tipos-bce.json" \
+            || echo "::warning::Sin tipos de referencia del BCE en esta publicación"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
