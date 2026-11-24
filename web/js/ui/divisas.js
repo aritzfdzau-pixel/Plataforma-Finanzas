@@ -146,7 +146,7 @@ function pintarTablaBce(seccion, datos, cerrar) {
     h('div', { class: 'forward-rapido' },
       h('label', { for: 'par-forward' }, 'Par'), selector,
       h('button', { type: 'button', class: 'button button--acento', onclick: () => ir(enlaceForward(selector.value, datos)) }, 'Calcular seguro de cambio'),
-      h('small', { class: 'campo__ayuda' }, 'Abre la operación con el par elegido y el tipo BCE como spot (sustitúyelo por el de mercado).')));
+      h('small', { class: 'campo__ayuda' }, 'Abre la operación con el par elegido y el tipo BCE como spot (sustitúyelo por el de mercado). Tendrás que introducir el tipo de interés de la divisa.')));
 }
 
 /** Llama a `fn` cada vez que cambia el tema (los widgets se recrean con sus colores). */

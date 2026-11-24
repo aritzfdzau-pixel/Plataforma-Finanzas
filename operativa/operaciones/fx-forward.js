@@ -1,12 +1,16 @@
 import { forwardParidad, fraccionAnio } from '../lib/finanzas.js';
 import { positivo, entero, exigir } from './_comun.js';
 
-// Convención habitual de base del mercado monetario de cada divisa.
-// ⚠️ Pendiente de verificar con la documentación de cada índice antes de usarla en real.
+// Base del mercado monetario de cada divisa (tipo de referencia a un día entre paréntesis).
+// Verificadas (D-021): USD (SOFR) Act/360, GBP (SONIA) Act/365, JPY (TONA) Act/365,
+// CHF (SARON) Act/360, AUD (AONIA/BBSW, ASX y AFMA) Act/365, CAD (CORRA, Banco de Canadá)
+// Act/365, HKD (HONIA) Act/365.
+// ⚠️ Pendiente de verificar: CNY (SHIBOR) Act/360 y NZD (BKBM) Act/365 — ver BASES_SIN_VERIFICAR.
 export const BASE_POR_DIVISA = {
   USD: 'ACT/360', GBP: 'ACT/365', JPY: 'ACT/365', CHF: 'ACT/360', CNY: 'ACT/360',
   AUD: 'ACT/365', CAD: 'ACT/365', HKD: 'ACT/365', NZD: 'ACT/365',
 };
+export const BASES_SIN_VERIFICAR = Object.freeze(['CNY', 'NZD']);
 
 export default {
   id: 'fx-forward',
@@ -27,7 +31,8 @@ export default {
     { id: 'dias', etiqueta: 'Plazo', unidad: 'días', tipo: 'entero', defecto: '90' },
     { id: 'tipoEur', etiqueta: 'Tipo del euro al plazo', unidad: '%', tipo: 'porcentaje', defecto: '3,00',
       ayuda: 'Referencia: €STR (o su equivalente al plazo). Act/360.' },
-    { id: 'tipoDivisa', etiqueta: 'Tipo de la divisa al plazo', unidad: '%', tipo: 'porcentaje', defecto: '4,50' },
+    { id: 'tipoDivisa', etiqueta: 'Tipo de la divisa al plazo', unidad: '%', tipo: 'porcentaje', defecto: '4,50',
+      ayuda: 'El de la divisa elegida (p. ej. SOFR para USD, SONIA para GBP, TONA para JPY), al mismo plazo.' },
     { id: 'baseDivisa', etiqueta: 'Base de la divisa', tipo: 'seleccion', defecto: 'AUTO',
       opciones: [
         { valor: 'AUTO', etiqueta: 'Según la divisa' },
@@ -48,6 +53,7 @@ export default {
     if (baseDivisa === 'AUTO') {
       baseDivisa = BASE_POR_DIVISA[v.par] ?? 'ACT/360';
       if (!BASE_POR_DIVISA[v.par]) avisos.push('⚠️ Pendiente de verificar: base Act/360 supuesta para esta divisa.');
+      else if (BASES_SIN_VERIFICAR.includes(v.par)) avisos.push(`⚠️ Pendiente de verificar: base ${baseDivisa === 'ACT/365' ? 'Act/365' : 'Act/360'} del ${v.par} (fuentes contradictorias o indirectas). Puedes forzarla en «Base de la divisa».`);
     }
     const codigo = v.par === 'OTRA' ? 'DIV' : v.par;
     const dec = codigo === 'JPY' ? 2 : 4;

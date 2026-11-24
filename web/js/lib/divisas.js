@@ -57,7 +57,8 @@ export function fechaEs(iso) {
 
 /** Enlace a la operación de seguro de cambio con el par y, si hay, el spot de referencia. */
 export function enlaceForward(codigo, datos) {
-  const p = new URLSearchParams({ op: 'fx-forward', par: codigo });
+  // El tipo de la divisa se deja vacío: el valor de ejemplo (de USD) no sirve para otra divisa.
+  const p = new URLSearchParams({ op: 'fx-forward', par: codigo, tipoDivisa: '' });
   const t = tipoBce(datos, codigo);
   if (t) p.set('spot', aTextoCampo(t.tipo));
   return `#${p}`;

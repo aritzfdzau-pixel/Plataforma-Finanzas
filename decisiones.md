@@ -177,5 +177,21 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - Mecanismo genérico: un campo con `rellenarCon: { fuente: 'bce', divisa: <campo> }`; la
   función `calcular` sigue siendo pura (el relleno lo hace la interfaz).
 
+## D-021 · 2026-11-24 · Fase 2 (revisión) · Bases del forward verificadas y tipo de la divisa
+- **Verificadas con fuentes públicas** (se quita el ⚠️):
+  - AUD Act/365: metodología del AONIA realizado (ASX) y convenciones del mercado monetario (AFMA).
+  - CAD Act/365: Banco de Canadá / CARR (metodología del CORRA y convenciones recomendadas).
+  - HKD Act/365: convención del HONIA (fuente secundaria; coherente con el mercado de Hong Kong).
+  - USD (SOFR) Act/360, GBP (SONIA) Act/365, JPY (TONA) Act/365 y CHF (SARON) Act/360:
+    convenciones estándar de los tipos libres de riesgo de cada divisa.
+- **Siguen "⚠️ Pendiente de verificar"** y la operación lo avisa en el resultado:
+  - NZD Act/365: las fuentes consultadas se contradicen (360 frente a 365 para el BKBM).
+  - CNY Act/360: solo se deduce indirectamente (regla de CFETS que convierte SHIBOR × 365/360);
+    falta el reglamento del SHIBOR.
+- **Tipo de la divisa:** al abrir el forward desde el panel, el campo llega vacío y se pide
+  ("Obligatorio: introduce un valor"); el 4,50 % de ejemplo solo tiene sentido para USD.
+- **Widgets de TradingView:** no se pueden comprobar desde el entorno de desarrollo (el dominio
+  no es accesible ni desde la búsqueda web). Se comprobarán en Pages tras fusionar (D-019).
+
 ## Palabras clave para etiquetar noticias
 (Se rellenará en la fase 3; editable por Aritz.)

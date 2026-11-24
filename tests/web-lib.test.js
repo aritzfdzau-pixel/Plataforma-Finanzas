@@ -127,3 +127,9 @@ test('quitarComentarios y caracteres nulos', () => {
   assert.doesNotMatch(markdownAHtml('<!<!-- x -->-- z --><SCRIPT>'), /<\s*script|<!--/i);
   assert.doesNotMatch(markdownAHtml('texto \u00000\u0000 fin'), /\u0000/);
 });
+
+test('leerCampo: un número vacío es obligatorio (mensaje claro)', () => {
+  const { errores } = leerCampos([{ id: 'x', tipo: 'porcentaje' }, { id: 'y', tipo: 'numero' }], { x: '', y: '  ' });
+  assert.equal(errores.x, 'Obligatorio: introduce un valor');
+  assert.equal(errores.y, 'Obligatorio: introduce un valor');
+});

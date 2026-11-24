@@ -42,8 +42,8 @@ test('tipoBce, decimales y fechas', () => {
 });
 
 test('enlaces a las operaciones 1 y 2 desde el panel', () => {
-  assert.equal(enlaceForward('USD', DATOS), '#op=fx-forward&par=USD&spot=1%2C085');
-  assert.equal(enlaceForward('CHF', DATOS), '#op=fx-forward&par=CHF'); // sin tipo BCE: spot a mano
+  assert.equal(enlaceForward('USD', DATOS), '#op=fx-forward&par=USD&tipoDivisa=&spot=1%2C085');
+  assert.equal(enlaceForward('CHF', DATOS), '#op=fx-forward&par=CHF&tipoDivisa='); // sin tipo BCE: spot a mano
   assert.equal(enlaceConversion('JPY'), '#op=fx-conversion-bce&divisa=JPY');
   const p = new URLSearchParams(enlaceForward('JPY', DATOS).slice(1));
   assert.equal(leerNumero(p.get('spot')), 161.2);

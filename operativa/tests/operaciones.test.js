@@ -215,3 +215,13 @@ test('fx-forward: las 9 divisas del panel tienen base y la de AUD es Act/365', a
   assert.equal(valor(auto, 'forward'), valor(forzado, 'forward'));
   assert.ok(!auto.avisos.some((a) => a.includes('Act/360 supuesta')));
 });
+
+test('fx-forward: aviso ⚠️ solo en las bases sin verificar (CNY, NZD)', async () => {
+  const datos = { spot: '7,8', tipoEur: '3', tipoDivisa: '2', dias: '90' };
+  for (const par of ['CNY', 'NZD']) {
+    assert.ok((await ejecutar('fx-forward', { ...datos, par })).avisos.some((a) => a.includes(`base`) && a.includes(par)), par);
+  }
+  for (const par of ['USD', 'AUD', 'CAD', 'HKD']) {
+    assert.ok(!(await ejecutar('fx-forward', { ...datos, par })).avisos.some((a) => a.includes('⚠️')), par);
+  }
+});

@@ -23,6 +23,9 @@ export function leerCampos(campos, textos = {}) {
 }
 
 export function leerCampo(c, texto) {
+  if (c.tipo !== 'seleccion' && c.tipo !== 'serie' && String(texto ?? '').trim() === '') {
+    throw new Error('Obligatorio: introduce un valor');
+  }
   switch (c.tipo) {
     case 'numero': {
       const n = leerNumero(texto);
