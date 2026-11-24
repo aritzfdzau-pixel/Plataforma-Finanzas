@@ -62,7 +62,7 @@ test('la plantilla de ficha tiene las secciones en orden', () => {
   assert.deepEqual(h2, SECCIONES);
 });
 
-// --- Sin recursos externos en la web (única excepción futura: componente TradingView) ---
+// --- Sin recursos externos en la web (única excepción: componente aislado de TradingView) ---
 function archivos(dir) {
   return readdirSync(dir).flatMap((n) => {
     const p = join(dir, n);
@@ -110,4 +110,25 @@ test('las funciones financieras no usan el DOM (puras)', () => {
   for (const f of [join(RAIZ, 'operativa/lib'), join(RAIZ, 'operativa/operaciones')].flatMap(archivos)) {
     assert.ok(!/\b(document|window|localStorage)\b/.test(readFileSync(f, 'utf8')), `DOM en ${f}`);
   }
+});
+
+test('TradingView solo aparece en su componente aislado y en la CSP (frame-src)', () => {
+  const permitido = join(RAIZ, 'web/js/componentes/tradingview.js');
+  for (const f of [join(RAIZ, 'web'), join(RAIZ, 'operativa')].flatMap(archivos).filter((p) => ['.html', '.css', '.js'].includes(extname(p)))) {
+    if (f === permitido) continue;
+    const t = readFileSync(f, 'utf8');
+    const menciones = t.match(/tradingview\.com|tradingview-widget\.com/gi) ?? [];
+    if (f.endsWith('index.html')) {
+      assert.equal(menciones.length, 1, 'index.html solo nombra TradingView en frame-src');
+    } else {
+      assert.equal(menciones.length, 0, `TradingView fuera de su componente: ${f}`);
+    }
+  }
+});
+
+test('la CSP no permite scripts, estilos ni conexiones de terceros', () => {
+  const csp = /http-equiv="Content-Security-Policy"\s+content="([^"]+)"/.exec(leer('web/index.html'))[1];
+  const dir = Object.fromEntries(csp.split(';').map((d) => d.trim().split(/\s+/)).map(([k, ...v]) => [k, v]));
+  for (const k of ['default-src', 'script-src', 'style-src', 'connect-src', 'font-src']) assert.deepEqual(dir[k], ["'self'"], k);
+  assert.deepEqual(dir['frame-src'], ['https://www.tradingview-widget.com']);
 });

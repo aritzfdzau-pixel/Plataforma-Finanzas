@@ -30,8 +30,10 @@ se vuelve a cambiar a plazo, ambos caminos deben dar lo mismo (paridad cubierta)
 
 - Cotización indirecta del euro: **unidades de divisa por 1 EUR** (EUR/USD = 1,0850 significa
   1,0850 USD por euro).
-- Interés **simple** al plazo, con la base de cada divisa: EUR y USD en Act/360; GBP y JPY
-  habitualmente en Act/365 (⚠️ Pendiente de verificar la convención de cada índice).
+- Interés **simple** al plazo, con la base del mercado monetario de cada divisa: EUR (€STR),
+  USD (SOFR) y CHF (SARON) en Act/360; GBP (SONIA), JPY (TONA), AUD (AONIA), CAD (CORRA) y
+  HKD (HONIA) en Act/365. ⚠️ Pendiente de verificar: CNY (Act/360) y NZD (Act/365), con
+  fuentes contradictorias o indirectas (ver D-021).
 - Como referencia del euro se usa el **€STR**. Es un tipo a un día: para un plazo hay que usar
   un tipo a ese plazo (€STR compuesto u OIS).
 - Si la divisa tiene un tipo **mayor** que el euro, el forward EUR/divisa queda **por encima**
@@ -81,7 +83,8 @@ Valores verificados con LibreOffice Calc (tests `fx-forward`).
 - **Coste de oportunidad** si el tipo de cambio se mueve a favor.
 
 ## Operaciones relacionadas
-- [Seguro de cambio (forward)](#op=fx-forward)
+- [Seguro de cambio (forward)](#op=fx-forward). También se abre desde el panel de divisas
+  («Calcular seguro de cambio»), con el par elegido y la referencia BCE como spot orientativo.
 - [Conversión con el tipo de referencia del BCE](#op=fx-conversion-bce)
 
 ## Fuentes

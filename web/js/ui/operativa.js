@@ -7,6 +7,8 @@ import { formatear, leerNumero, esMilesConPunto, numero } from '../lib/formato.j
 import { buscar } from '../lib/buscar.js';
 import { CATEGORIAS, nombreCategoria } from '../lib/categorias.js';
 import { tablaACsv } from '../lib/csv.js';
+import { cargarTiposBce } from './divisas.js';
+import { tipoBce, aTextoCampo, fechaEs } from '../lib/divisas.js';
 
 const ETIQUETAS_CONVENCIONES = {
   base: 'Base de cálculo', periodicidad: 'Periodicidad', nominalEfectivo: 'Nominal / efectivo', comisiones: 'Comisiones',
@@ -45,6 +47,22 @@ export async function pintarOperacion(contenedor, id, params = {}) {
   const textos = {};
   for (const c of op.campos) textos[c.id] = params[c.id] ?? c.defecto ?? '';
 
+  // Campos que se rellenan con el tipo de referencia del BCE del día (datos/tipos-bce.json).
+  const conBce = op.campos.filter((c) => c.rellenarCon?.fuente === 'bce');
+  const datosBce = conBce.length ? await cargarTiposBce() : null;
+  const notaBce = (c) => {
+    const t = tipoBce(datosBce, textos[c.rellenarCon.divisa]);
+    if (!datosBce) return 'Tipo BCE no disponible: introdúcelo a mano.';
+    return t ? `Referencia BCE del ${fechaEs(datosBce.fecha)}, cargada automáticamente (puedes cambiarla).`
+      : 'Sin tipo BCE para esta divisa: introdúcelo a mano.';
+  };
+  const rellenarBce = (c) => {
+    const t = tipoBce(datosBce, textos[c.rellenarCon.divisa]);
+    // Sin tipo para la divisa elegida se vacía el campo: nunca se deja el de otra divisa.
+    textos[c.id] = t ? aTextoCampo(t.tipo) : (datosBce ? '' : textos[c.id]);
+  };
+  for (const c of conBce) if (params[c.id] === undefined) rellenarBce(c);
+
   const salida = h('div', { class: 'op__salida', 'aria-live': 'polite' });
   const form = h('form', { class: 'op__form', onsubmit: (e) => e.preventDefault(), novalidate: true });
 
@@ -72,6 +90,17 @@ export async function pintarOperacion(contenedor, id, params = {}) {
   };
 
   for (const c of op.campos) form.append(campo(c, textos, recalcular));
+  for (const c of conBce) {
+    const nota = form.querySelector(`[data-nota-bce="${c.id}"]`);
+    if (params[c.id] === undefined) nota.textContent = notaBce(c);
+    else nota.textContent = 'Valor recibido del panel de divisas (puedes cambiarlo).';
+    form.querySelector(`#campo-${c.rellenarCon.divisa}`).addEventListener('change', () => {
+      rellenarBce(c);
+      form.querySelector(`#campo-${c.id}`).value = textos[c.id];
+      nota.textContent = notaBce(c);
+      recalcular();
+    });
+  }
 
   contenedor.append(
     h('header', { class: 'op__cabecera' },
@@ -103,6 +132,7 @@ function campo(c, textos, recalcular) {
     h('label', { for: idInput }, c.etiqueta, c.unidad ? h('span', { class: 'campo__unidad' }, ` (${c.unidad})`) : null),
     control,
     c.ayuda ? h('small', { class: 'campo__ayuda' }, c.ayuda) : null,
+    c.rellenarCon ? h('small', { class: 'campo__ayuda campo__ayuda--dato', 'data-nota-bce': c.id }) : null,
     h('small', { class: 'campo__lectura', 'data-lectura': c.id }));
 }
 

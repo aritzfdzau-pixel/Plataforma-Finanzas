@@ -18,8 +18,9 @@ pasen los tests de todas las operaciones que lo usan.
 | P-007 | Paridad cubierta de tipos (forward) | `forwardParidad` | `operativa/tests/finanzas.test.js` | fx-forward | Estable |
 | P-008 | Conversión con tipo de referencia y redondeo | `redondear`, `convertirConReferencia` | `operativa/tests/finanzas.test.js` | fx-conversion-bce | Estable |
 | P-009 | Coste efectivo anual de un único flujo | `costeEfectivoAnual` | `operativa/tests/finanzas.test.js` | descuento-comercial | Estable |
+| P-010 | Lectura de tipos BCE y variación relativa (hoy / anterior − 1) | `parsearXmlBce`, `variacionRelativa`, `construirDatosBce` (en `scripts/bce.js`) | `tests/bce.test.js` | panel de divisas, fx-conversion-bce, fx-forward (relleno del tipo) | Estable |
 
-Todas las funciones viven en `operativa/lib/finanzas.js`. Los tests comparan con valores
+Las funciones P-001 a P-009 viven en `operativa/lib/finanzas.js`; P-010, en `scripts/bce.js` (lo usa la tarea programada). Los tests comparan con valores
 calculados por **LibreOffice Calc** (`operativa/tests/referencias/referencias.fods`, con las
 fórmulas visibles; resultados en `referencias.json`). Cualquier hoja de cálculo (Google Sheets,
 Excel) puede abrir el `.fods` para comprobarlos.

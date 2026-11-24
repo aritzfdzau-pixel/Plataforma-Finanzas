@@ -139,5 +139,59 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - El cambio de id no rompe enlaces publicados: la fase 1 aún no estaba en `main`.
 - Referencias LibreOffice nuevas: `am_cuota`, `am_ultima`, `am_int`, `am_cart_int`.
 
+## D-018 · 2026-11-24 · Fase 2 · Tipos BCE: se generan al publicar, no se versionan
+- **Decisión:** la tarea diaria es el propio workflow de publicación (`pages.yml`, con
+  `schedule` en días hábiles a las 16:17 UTC, después de que el BCE publique hacia las 16:00
+  CET). Descarga `eurofxref-hist-90d.xml` (público, sin clave), lo convierte con
+  `scripts/descargar-bce.js` y escribe `datos/tipos-bce.json` **dentro del sitio publicado**.
+- **Motivo:** un bot que hiciera commits diarios a `main` chocaría con la protección de la
+  rama (PR + tests obligatorios) y llenaría el historial de commits de datos.
+- **Respaldo:** si el BCE no responde, se reutiliza el último archivo publicado en Pages; si
+  tampoco existe, se publica sin él y la web muestra "no disponible".
+- **Variación ▲▼:** frente al día hábil anterior publicado por el BCE (P-010).
+- **Riesgo:** GitHub desactiva los `schedule` de repositorios sin actividad durante 60 días;
+  en ese caso hay que volver a activarlo en Actions (o hacer cualquier commit).
+
+## D-019 · 2026-11-24 · Fase 2 · TradingView en iframes con sandbox, sin script
+- **Decisión:** en vez de cargar los scripts de inserción de TradingView en la web, cada
+  widget (cotizaciones, majors, calendario) es un `<iframe>` a `www.tradingview-widget.com`,
+  con `sandbox` y `referrerpolicy="no-referrer"`. La configuración viaja en el fragmento `#`.
+- **Motivo:** aislamiento real: ningún código de terceros se ejecuta en el origen de la web, ni
+  puede leer lo que el usuario escribe. La CSP sigue con `script-src 'self'`.
+- **⚠️ Pendiente de verificar (Aritz, en Pages):** la ruta `/embed-widget/<tipo>/` es la que
+  generan los scripts oficiales, pero no es una API documentada; los símbolos son `FX_IDC:<par>`.
+  Desde el entorno de desarrollo no hay red hacia TradingView, así que no se ha podido ver el
+  widget cargado. Si aparece en blanco, la alternativa es una página propia aislada que cargue
+  el script oficial (con su propia CSP) dentro del iframe.
+- **Calendario:** el widget filtra por país, no por divisa: EUR = zona euro (`eu`) + Alemania,
+  Francia, Italia y España; USD = EE. UU.; GBP = Reino Unido; JPY = Japón. Importancia media y alta.
+- **Etiquetas:** cotizaciones y calendario → "tiempo real (indicativo)"; tipos del BCE →
+  "referencia BCE". Aviso CNY ≠ CNH en el panel.
+
+## D-020 · 2026-11-24 · Fase 2 · Operaciones FX con el tipo BCE
+- La conversión (operación 2) rellena el tipo con la referencia BCE del día y lo actualiza al
+  cambiar de divisa; si no hay tipo para la divisa, el campo se vacía (nunca queda el de otra).
+- El forward (operación 1) acepta las 9 divisas del panel. Bases añadidas (⚠️ pendiente de
+  verificar, como las anteriores): CNY Act/360; AUD, CAD, HKD y NZD Act/365. Se abre desde el
+  panel con el par y la referencia BCE como spot, avisando de que no es un precio negociable.
+- Mecanismo genérico: un campo con `rellenarCon: { fuente: 'bce', divisa: <campo> }`; la
+  función `calcular` sigue siendo pura (el relleno lo hace la interfaz).
+
+## D-021 · 2026-11-24 · Fase 2 (revisión) · Bases del forward verificadas y tipo de la divisa
+- **Verificadas con fuentes públicas** (se quita el ⚠️):
+  - AUD Act/365: metodología del AONIA realizado (ASX) y convenciones del mercado monetario (AFMA).
+  - CAD Act/365: Banco de Canadá / CARR (metodología del CORRA y convenciones recomendadas).
+  - HKD Act/365: convención del HONIA (fuente secundaria; coherente con el mercado de Hong Kong).
+  - USD (SOFR) Act/360, GBP (SONIA) Act/365, JPY (TONA) Act/365 y CHF (SARON) Act/360:
+    convenciones estándar de los tipos libres de riesgo de cada divisa.
+- **Siguen "⚠️ Pendiente de verificar"** y la operación lo avisa en el resultado:
+  - NZD Act/365: las fuentes consultadas se contradicen (360 frente a 365 para el BKBM).
+  - CNY Act/360: solo se deduce indirectamente (regla de CFETS que convierte SHIBOR × 365/360);
+    falta el reglamento del SHIBOR.
+- **Tipo de la divisa:** al abrir el forward desde el panel, el campo llega vacío y se pide
+  ("Obligatorio: introduce un valor"); el 4,50 % de ejemplo solo tiene sentido para USD.
+- **Widgets de TradingView:** no se pueden comprobar desde el entorno de desarrollo (el dominio
+  no es accesible ni desde la búsqueda web). Se comprobarán en Pages tras fusionar (D-019).
+
 ## Palabras clave para etiquetar noticias
 (Se rellenará en la fase 3; editable por Aritz.)

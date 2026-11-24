@@ -3,6 +3,7 @@ import { leerRuta } from './ui/rutas.js';
 import { pintarListado, pintarOperacion } from './ui/operativa.js';
 import { pintarFichas, pintarFicha } from './ui/conocimiento.js';
 import { iniciarPaleta } from './ui/paleta.js';
+import { pintarCabeceraDivisas, pintarPanelDivisas } from './ui/divisas.js';
 import { h } from './ui/dom.js';
 
 // ---- Tema ----
@@ -38,8 +39,20 @@ function expandir(si) {
 }
 botonExpandir.addEventListener('click', () => expandir(!zonaOp.classList.contains('zona--expandida')));
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && zonaOp.classList.contains('zona--expandida') && !document.getElementById('paleta').open) expandir(false);
+  if (e.key === 'Escape' && zonaOp.classList.contains('zona--expandida') && !document.getElementById('paleta').open && !panelDivisas.open) expandir(false);
 });
+
+// ---- Divisas ----
+const panelDivisas = document.getElementById('panel-divisas');
+let panelPintado = false;
+const cerrarDivisas = () => { if (panelDivisas.open) panelDivisas.close(); };
+function abrirDivisas() {
+  if (!panelPintado) { panelPintado = true; pintarPanelDivisas(panelDivisas, cerrarDivisas); }
+  panelDivisas.showModal();
+}
+document.getElementById('abrir-divisas').addEventListener('click', abrirDivisas);
+document.getElementById('cerrar-divisas').addEventListener('click', cerrarDivisas);
+pintarCabeceraDivisas(document.getElementById('cuerpo-divisas'), abrirDivisas);
 
 async function iniciar() {
   let indice;

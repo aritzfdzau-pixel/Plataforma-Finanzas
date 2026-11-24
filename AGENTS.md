@@ -56,7 +56,10 @@ Lo aprendido solo existe si queda escrito aquí, en el catálogo de `patrones/` 
 - Sin `node_modules`: `package.json` no declara dependencias. Tests con `node --test`.
 - Fuentes alojadas en el repo. Gráficas en SVG propio.
 - **Única excepción documentada:** los widgets de TradingView del panel de divisas, aislados
-  en su propio componente. No se cargan scripts de terceros en ningún otro sitio.
+  en su propio componente (`web/js/componentes/tradingview.js`): cada widget es un `<iframe>`
+  con `sandbox` al dominio de widgets de TradingView; **no** se carga ningún script de
+  TradingView en la web. La CSP solo admite ese dominio en `frame-src` (lo comprueban los tests).
+  No se cargan scripts de terceros en ningún sitio.
 
 ## 6. Claves y secretos
 - Si una fuente de datos pide clave, va como secreto de GitHub Actions y se usa solo en
@@ -122,10 +125,10 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | `operativa/operaciones/` | Una operación por archivo (interfaz + uso de la lib) |
 | `operativa/tests/` | Tests de las funciones y operaciones financieras |
 | `operativa/tests/referencias/` | Hoja `.fods` con las fórmulas de referencia y sus resultados (LibreOffice) |
-| `scripts/` | Utilidades Node sin dependencias (p. ej. `generar-indice.js`) |
-| `datos/` | Archivos generados por tareas programadas (no editar a mano) |
+| `scripts/` | Utilidades Node sin dependencias (`generar-indice.js`, `descargar-bce.js` y sus funciones puras) |
+| `datos/` | Archivos generados por tareas programadas (no editar a mano; ver `datos/README.md`) |
 | `web/` | Interfaz publicada en GitHub Pages |
-| `tests/` | Tests de infraestructura (estructura, tokens, plantillas) |
+| `tests/` | Tests de infraestructura y de la web (estructura, tokens, fichas, divisas, BCE); muestras en `tests/fixtures/` |
 | `.github/` | Workflows y plantillas de issue/PR |
 
 ## 14. Cómo añadir una operación (fase 1 en adelante)

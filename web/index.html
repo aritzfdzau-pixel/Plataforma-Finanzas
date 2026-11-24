@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+        content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-src https://www.tradingview-widget.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta name="referrer" content="no-referrer">
   <meta name="color-scheme" content="dark light">
   <title>Terminal financiero</title>
@@ -42,12 +42,11 @@
 
     <section class="zona zona--divisas" aria-labelledby="t-divisas">
       <div class="zona__cabecera">
-        <h2 class="zona__titulo" id="t-divisas">Divisas (FX)</h2>
+        <h2 class="zona__titulo" id="t-divisas"><button type="button" class="zona__titulo-boton" id="abrir-divisas">Divisas (FX)</button></h2>
         <span class="chip">tiempo real (indicativo)</span>
       </div>
-      <div class="zona__cuerpo">
-        <span class="proximamente">Próximamente</span>
-        <p class="zona__descripcion">EUR/USD · EUR/GBP · EUR/JPY. Panel completo con pares contra el euro, majors y tipos de referencia del BCE.</p>
+      <div class="zona__cuerpo zona__cuerpo--divisas" id="cuerpo-divisas">
+        <p class="vacio">Cargando…</p>
       </div>
     </section>
 
@@ -94,6 +93,14 @@
       <p>Ningún dato que introduzcas sale de tu navegador.</p>
     </footer>
   </div>
+
+  <dialog id="panel-divisas" class="panel" aria-labelledby="t-panel-divisas">
+    <header class="panel__cabecera">
+      <h2 class="zona__titulo" id="t-panel-divisas">Divisas (FX)</h2>
+      <button type="button" class="button" id="cerrar-divisas">Cerrar</button>
+    </header>
+    <div class="panel__contenido"></div>
+  </dialog>
 
   <dialog id="paleta" class="paleta" aria-label="Barra de comandos">
     <label class="visually-hidden" for="paleta-input">Buscar operaciones y fichas</label>

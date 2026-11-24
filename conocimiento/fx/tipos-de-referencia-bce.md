@@ -29,8 +29,10 @@ frente a unas treinta divisas. Se expresa como **unidades de divisa por 1 euro**
   cambio con margen.
 - Conversión de EUR a divisa: se **multiplica**; de divisa a EUR: se **divide**.
 - Redondeo: 2 decimales en la mayoría de divisas y 0 en el yen (JPY).
-- En la interfaz se etiqueta como **"referencia BCE"**. En esta fase el tipo se introduce a mano;
-  en la fase 2 se cargará automáticamente.
+- En la interfaz se etiqueta como **"referencia BCE"**. Una tarea programada diaria lo descarga
+  del BCE (cada día hábil, después de su publicación) y la operación de conversión lo carga
+  automáticamente; se puede cambiar a mano. El panel de divisas muestra también la variación
+  ▲▼ frente al día hábil anterior.
 
 ## Fórmulas
 $$

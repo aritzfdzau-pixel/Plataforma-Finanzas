@@ -89,6 +89,14 @@
    "descripcion": "Americano 100.000; 5%; 60 con 6 de carencia total: intereses totales",
    "valor": 25594.5788244372
   },
+  "bce_var_usd": {
+   "descripcion": "Variación tipo BCE (muestra inventada): 1,0850 / 1,0800 - 1",
+   "valor": 0.00462962962962954
+  },
+  "bce_var_jpy": {
+   "descripcion": "Variación tipo BCE (muestra inventada): 161,20 / 162,35 - 1",
+   "valor": -0.00708346165691409
+  },
   "fr_trim_cuota": {
    "descripcion": "Francés 50.000; TIN 6% trimestral; 3 años (12 cuotas)",
    "valor": 4583.99964531145

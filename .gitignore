@@ -2,3 +2,5 @@ node_modules/
 _site/
 .DS_Store
 *.log
+# Generado en la publicación por la tarea diaria (no se versiona)
+datos/tipos-bce.json
