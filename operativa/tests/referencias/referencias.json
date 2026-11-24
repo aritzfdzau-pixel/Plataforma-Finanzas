@@ -121,6 +121,58 @@
    "descripcion": "Máximo drawdown de 100, 110, 105, 95, 120, 90, 100",
    "valor": -0.25
   },
+  "pct_05": {
+   "descripcion": "PERCENTIL.INC de 10 datos inventados al 5 %",
+   "valor": 1.0
+  },
+  "pct_95": {
+   "descripcion": "PERCENTIL.INC de 10 datos inventados al 95 %",
+   "valor": 7.65
+  },
+  "pct_50": {
+   "descripcion": "PERCENTIL.INC de 10 datos inventados al 50 %",
+   "valor": 3.5
+  },
+  "z_95": {
+   "descripcion": "Normal estándar inversa al 95 % (NORMINV(0,95;0;1))",
+   "valor": 1.64485362695147
+  },
+  "banda_log_inf": {
+   "descripcion": "Banda lognormal: 100 x EXP(0,0002 x 20 - z95 x 0,01 x RAIZ(20))",
+   "valor": 93.2804079076062
+  },
+  "banda_log_sup": {
+   "descripcion": "Banda lognormal: 100 x EXP(0,0002 x 20 + z95 x 0,01 x RAIZ(20))",
+   "valor": 108.064716709078
+  },
+  "banda_adi_sup": {
+   "descripcion": "Banda aditiva: 2,5 + 0,001 x 12 + z95 x 0,05 x RAIZ(12)",
+   "valor": 2.79689700528939
+  },
+  "mae_ej": {
+   "descripcion": "Error medio absoluto: reales 10, 12, 11, 13 frente a 11, 11, 12, 12",
+   "valor": 1.0
+  },
+  "rmse_ej": {
+   "descripcion": "Raíz del error cuadrático medio: reales 10, 12, 11, 14 frente a 11, 11, 12, 12",
+   "valor": 1.3228756555323
+  },
+  "esc_fx_actual": {
+   "descripcion": "Escenario: 100.000 USD a 1,0850 USD por EUR",
+   "valor": 92165.8986175115
+  },
+  "esc_fx_menos5": {
+   "descripcion": "Escenario: 100.000 USD con el EUR/USD un 5 % más bajo",
+   "valor": 97016.7353868542
+  },
+  "esc_eur_cuota": {
+   "descripcion": "Escenario Euribor: 150.000, 300 meses, Euribor 2,50 % + 0,80 %",
+   "valor": 734.942349878453
+  },
+  "esc_eur_mas100": {
+   "descripcion": "Escenario Euribor: igual con Euribor +100 pb (3,50 %)",
+   "valor": 816.812413648722
+  },
   "fr_trim_cuota": {
    "descripcion": "Francés 50.000; TIN 6% trimestral; 3 años (12 cuotas)",
    "valor": 4583.99964531145

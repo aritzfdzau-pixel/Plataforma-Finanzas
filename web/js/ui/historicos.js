@@ -20,6 +20,12 @@ export function cargarHistoricos() {
 
 const estado = { series: [], id: null, comparar: '', periodo: '3A', mm: true };
 
+/** Series disponibles (oficiales con datos + CSV subidos) para otras zonas (Proyecciones). */
+export function seriesDisponibles() {
+  return estado.series;
+}
+const avisarCambio = () => document.dispatchEvent(new CustomEvent('historicos:series'));
+
 function fechaDesde(hasta, dias) {
   if (!dias) return null;
   const d = new Date(`${hasta}T00:00:00Z`);
@@ -55,6 +61,7 @@ export async function pintarHistoricos(raiz) {
     resumen(datos),
     h('div', { class: 'historicos__analisis', id: 'analisis-historicos' }),
     subidaCsv(raiz));
+  avisarCambio();
   const analisis = raiz.querySelector('#analisis-historicos');
   anchoPrevio = analisis.clientWidth;
   pintarAnalisis();
@@ -190,6 +197,7 @@ function subidaCsv(raiz) {
       const id = `csv-${estado.series.filter((s) => s.id.startsWith('csv-')).length + 1}`;
       estado.series.push({ id, nombre, tipo: tipo.value, unidad: tipo.value === 'tipo' ? '%' : 'valor', etiqueta: ETIQUETA_SUBIDA, puntos });
       estado.id = id; estado.comparar = '';
+      avisarCambio();
       mensaje.append(h('p', {}, `Leídas ${puntos.length} observaciones de «${nombre}» (${fechaEs(puntos[0][0])} – ${fechaEs(puntos.at(-1)[0])}).`),
         ...(avisos.length ? [h('ul', { class: 'avisos' }, avisos.map((a) => h('li', {}, a)))] : []));
       pintarAnalisis();

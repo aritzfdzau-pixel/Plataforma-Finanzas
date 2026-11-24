@@ -225,3 +225,25 @@ test('fx-forward: aviso ⚠️ solo en las bases sin verificar (CNY, NZD)', asyn
     assert.ok(!(await ejecutar('fx-forward', { ...datos, par })).avisos.some((a) => a.includes('⚠️')), par);
   }
 });
+
+// --- Fase 5: escenarios ----------------------------------------------------
+test('escenario-tipo-cambio: EUR/USD −5 % = contravalores de LibreOffice; signo según cobro o pago', async () => {
+  const c = await ejecutar('escenario-tipo-cambio');
+  cerca(valor(c, 'actual'), ref('esc_fx_actual'));
+  cerca(valor(c, 'escenario'), ref('esc_fx_menos5'));
+  cerca(valor(c, 'impacto'), ref('esc_fx_menos5') - ref('esc_fx_actual'));
+  const p = await ejecutar('escenario-tipo-cambio', { posicion: 'pago' });
+  cerca(valor(p, 'impacto'), ref('esc_fx_actual') - ref('esc_fx_menos5'));
+  assert.ok(c.tabla.filas.some((f) => Math.abs(f.movimiento + 0.05) < 1e-12));
+  assert.ok(c.avisos.some((a) => a.includes('no una proyección')));
+});
+
+test('escenario-euribor: +100 pb = PAGO() de LibreOffice; tabla de choques y suelo del TIN', async () => {
+  const r = await ejecutar('escenario-euribor');
+  cerca(valor(r, 'cuota0'), ref('esc_eur_cuota'));
+  cerca(valor(r, 'cuota1'), ref('esc_eur_mas100'));
+  cerca(valor(r, 'diferencia'), ref('esc_eur_mas100') - ref('esc_eur_cuota'));
+  assert.deepEqual(r.tabla.filas.map((f) => f.choque), [-200, -100, -50, 0, 50, 100, 200]);
+  const suelo = await ejecutar('escenario-euribor', { euribor: '0,5', diferencial: '0,5', choque: '-200' });
+  assert.equal(valor(suelo, 'tin1'), 0);
+});

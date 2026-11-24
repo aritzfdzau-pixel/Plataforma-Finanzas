@@ -34,8 +34,11 @@ export function pintarListado(contenedor, operaciones, filtro = '') {
   }
 }
 
-/** Pinta la operación `id` en `contenedor`; `params` rellena campos desde la URL. */
-export async function pintarOperacion(contenedor, id, params = {}) {
+/**
+ * Pinta la operación `id` en `contenedor`; `params` rellena campos desde la URL.
+ * `prefijo` distingue los id de los campos si la misma página muestra dos formularios.
+ */
+export async function pintarOperacion(contenedor, id, params = {}, { prefijo = 'campo' } = {}) {
   vaciar(contenedor);
   let op;
   try {
@@ -89,14 +92,14 @@ export async function pintarOperacion(contenedor, id, params = {}) {
     }
   };
 
-  for (const c of op.campos) form.append(campo(c, textos, recalcular));
+  for (const c of op.campos) form.append(campo(c, textos, recalcular, prefijo));
   for (const c of conBce) {
     const nota = form.querySelector(`[data-nota-bce="${c.id}"]`);
     if (params[c.id] === undefined) nota.textContent = notaBce(c);
     else nota.textContent = 'Valor recibido del panel de divisas (puedes cambiarlo).';
-    form.querySelector(`#campo-${c.rellenarCon.divisa}`).addEventListener('change', () => {
+    form.querySelector(`#${prefijo}-${c.rellenarCon.divisa}`).addEventListener('change', () => {
       rellenarBce(c);
-      form.querySelector(`#campo-${c.id}`).value = textos[c.id];
+      form.querySelector(`#${prefijo}-${c.id}`).value = textos[c.id];
       nota.textContent = notaBce(c);
       recalcular();
     });
@@ -114,8 +117,8 @@ export async function pintarOperacion(contenedor, id, params = {}) {
   recalcular();
 }
 
-function campo(c, textos, recalcular) {
-  const idInput = `campo-${c.id}`;
+function campo(c, textos, recalcular, prefijo = 'campo') {
+  const idInput = `${prefijo}-${c.id}`;
   let control;
   const alCambiar = (e) => { textos[c.id] = e.target.value; recalcular(); };
   if (c.tipo === 'seleccion') {

@@ -6,6 +6,7 @@ import { iniciarPaleta } from './ui/paleta.js';
 import { pintarCabeceraDivisas, pintarPanelDivisas } from './ui/divisas.js';
 import { pintarCabeceraNoticias, pintarPanelNoticias } from './ui/noticias.js';
 import { pintarHistoricos } from './ui/historicos.js';
+import { pintarProyecciones } from './ui/proyecciones.js';
 import { h } from './ui/dom.js';
 
 // ---- Tema ----
@@ -46,10 +47,14 @@ const zonaHist = document.getElementById('zona-historicos');
 const botonHist = document.getElementById('expandir-historicos');
 botonExpandir.addEventListener('click', () => expandir(zonaOp, botonExpandir, !zonaOp.classList.contains('zona--expandida')));
 botonHist.addEventListener('click', () => expandir(zonaHist, botonHist, !zonaHist.classList.contains('zona--expandida')));
+const zonaProy = document.getElementById('zona-proyecciones');
+const botonProy = document.getElementById('expandir-proyecciones');
+botonProy.addEventListener('click', () => expandir(zonaProy, botonProy, !zonaProy.classList.contains('zona--expandida')));
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape' || document.getElementById('paleta').open || panelDivisas.open || panelNoticias.open) return;
   if (zonaOp.classList.contains('zona--expandida')) expandir(zonaOp, botonExpandir, false);
   if (zonaHist.classList.contains('zona--expandida')) expandir(zonaHist, botonHist, false);
+  if (zonaProy.classList.contains('zona--expandida')) expandir(zonaProy, botonProy, false);
 });
 
 // ---- Divisas ----
@@ -74,6 +79,7 @@ document.getElementById('abrir-noticias').addEventListener('click', () => {
 document.getElementById('cerrar-noticias').addEventListener('click', () => panelNoticias.close());
 pintarCabeceraNoticias(document.getElementById('cuerpo-noticias'));
 pintarHistoricos(document.getElementById('cuerpo-historicos'));
+pintarProyecciones(document.getElementById('cuerpo-proyecciones'));
 
 async function iniciar() {
   let indice;

@@ -235,3 +235,79 @@ test('P-014 maximoDrawdown = MIN(P_t / MAX(P_1..P_t) − 1) en LibreOffice; pico
   assert.equal(d.valle, 5);
   assert.deepEqual(F.maximoDrawdown([1, 2, 3]), { drawdown: 0, pico: 0, valle: 0 });
 });
+
+// --- P-015 a P-017 (fase 5: proyecciones y escenarios) --------------------
+test('P-015 cuantil = PERCENTIL.INC()/PERCENTILE() de LibreOffice', () => {
+  const x = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3];
+  cerca(F.cuantil(x, 0.05), ref('pct_05'));
+  cerca(F.cuantil(x, 0.95), ref('pct_95'));
+  cerca(F.cuantil(x, 0.5), ref('pct_50'));
+  assert.equal(F.cuantil([7], 0.3), 7);
+  assert.throws(() => F.cuantil(x, 1.2));
+});
+
+test('P-015 Z_95 = DISTR.NORM.INV(0,95; 0; 1) de LibreOffice', () => {
+  cerca(F.Z_95, ref('z_95'), 1e-12);
+});
+
+test('P-015 bandaAnalitica = fórmula lognormal y aditiva en LibreOffice', () => {
+  const b = F.bandaAnalitica({ inicial: 100, media: 0.0002, desviacion: 0.01, horizonte: 20 });
+  cerca(b.inferior, ref('banda_log_inf'), 1e-10);
+  cerca(b.superior, ref('banda_log_sup'), 1e-10);
+  cerca(b.mediana, 100 * Math.exp(0.004));
+  cerca(F.bandaAnalitica({ inicial: 2.5, media: 0.001, desviacion: 0.05, horizonte: 12, modelo: 'aditivo' }).superior, ref('banda_adi_sup'), 1e-10);
+});
+
+test('P-015 generador reproducible y normal estándar con media ≈ 0 y desviación ≈ 1', () => {
+  const a = F.generadorAleatorio(42), b = F.generadorAleatorio(42);
+  for (let k = 0; k < 5; k++) assert.equal(a(), b());
+  const z = F.generadorNormal(F.generadorAleatorio(7));
+  const m = Array.from({ length: 50000 }, () => z());
+  assert.ok(Math.abs(F.media(m)) < 0.02);
+  assert.ok(Math.abs(F.desviacionMuestral(m) - 1) < 0.02);
+});
+
+test('P-015 simularMontecarlo: percentiles 5/50/95 cerca de la banda analítica de LibreOffice', () => {
+  const r = F.simularMontecarlo({ inicial: 100, media: 0.0002, desviacion: 0.01, horizonte: 20, trayectorias: 20000, semilla: 3 });
+  assert.equal(r.percentiles[50].length, 21);
+  assert.equal(r.percentiles[5][0], 100);
+  // Error de muestreo con 20.000 trayectorias: tolerancia del 0,5 %.
+  cerca(r.percentiles[5].at(-1), ref('banda_log_inf'), 5e-3);
+  cerca(r.percentiles[95].at(-1), ref('banda_log_sup'), 5e-3);
+  cerca(r.percentiles[50].at(-1), 100 * Math.exp(0.004), 5e-3);
+  for (let t = 1; t <= 20; t++) assert.ok(r.percentiles[5][t] < r.percentiles[50][t] && r.percentiles[50][t] < r.percentiles[95][t]);
+  // Misma semilla → mismo resultado.
+  const r2 = F.simularMontecarlo({ inicial: 100, media: 0.0002, desviacion: 0.01, horizonte: 20, trayectorias: 20000, semilla: 3 });
+  assert.equal(r2.percentiles[95].at(-1), r.percentiles[95].at(-1));
+  const a = F.simularMontecarlo({ inicial: 2.5, media: 0.001, desviacion: 0.05, horizonte: 12, trayectorias: 20000, modelo: 'aditivo', semilla: 5 });
+  cerca(a.percentiles[95].at(-1), ref('banda_adi_sup'), 5e-3);
+  assert.throws(() => F.simularMontecarlo({ inicial: -1, media: 0, desviacion: 0.01, horizonte: 5 }));
+});
+
+test('P-016 errores: MAE y RMSE = fórmulas de LibreOffice (ABS, SUMXMY2)', () => {
+  cerca(F.errorMedioAbsoluto([10, 12, 11, 13], [11, 11, 12, 12]), ref('mae_ej'));
+  cerca(F.raizErrorCuadraticoMedio([10, 12, 11, 14], [11, 11, 12, 12]), ref('rmse_ej'));
+  assert.throws(() => F.errorMedioAbsoluto([1, 2], [1]));
+});
+
+test('P-016 validarFrenteAPaseoAleatorio: serie con tendencia exacta (el modelo acierta) y sin tendencia', () => {
+  const crecer = Array.from({ length: 60 }, (_, k) => 100 * 1.01 ** k); // rentabilidad log constante
+  const v = F.validarFrenteAPaseoAleatorio(crecer, { horizonte: 5, ventana: 20 });
+  assert.ok(v.origenes >= 3);
+  assert.ok(v.rmseModelo < 1e-9, 'con tendencia constante la mediana acierta');
+  assert.ok(v.rmsePaseo > 0);
+  assert.equal(v.theilU < 1e-9, true);
+  const sin = F.validarFrenteAPaseoAleatorio(crecer, { horizonte: 5, ventana: 20, conTendencia: false });
+  cerca(sin.rmseModelo, sin.rmsePaseo); // sin tendencia, la mediana es el paseo aleatorio
+  cerca(sin.theilU, 1);
+  assert.throws(() => F.validarFrenteAPaseoAleatorio(crecer.slice(0, 10), { horizonte: 5, ventana: 20 }));
+});
+
+test('P-017 escenarioTipoCambio = contravalores de LibreOffice', () => {
+  const e = F.escenarioTipoCambio({ importeDivisa: 100000, tipo: 1.085, movimiento: -0.05 });
+  cerca(e.actual, ref('esc_fx_actual'));
+  cerca(e.escenario, ref('esc_fx_menos5'));
+  cerca(e.diferencia, ref('esc_fx_menos5') - ref('esc_fx_actual'));
+  cerca(e.tipoEscenario, 1.085 * 0.95);
+  assert.throws(() => F.escenarioTipoCambio({ importeDivisa: 1, tipo: 1, movimiento: -1 }));
+});

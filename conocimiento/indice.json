@@ -2,6 +2,28 @@
   "_aviso": "Archivo generado con «node scripts/generar-indice.js». No editar a mano.",
   "fichas": [
     {
+      "ruta": "conocimiento/fx/escenarios-tipo-de-cambio.md",
+      "titulo": "Escenarios de tipo de cambio: cuánto cuesta un movimiento del euro",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "fx",
+      "etiquetas": [
+        "riesgo-de-cambio",
+        "escenarios",
+        "sensibilidad",
+        "exportacion",
+        "importacion",
+        "cobertura"
+      ],
+      "operaciones": [
+        "escenario-tipo-cambio"
+      ],
+      "patrones": [
+        "P-017"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
       "ruta": "conocimiento/fx/mercado-de-divisas.md",
       "titulo": "Mercado de divisas: cotizaciones, horquilla, tipos cruzados y fechas valor",
       "idioma": "es",
@@ -160,6 +182,29 @@
       "ultima_revision": "2026-11-24"
     },
     {
+      "ruta": "conocimiento/bolsa-inversion/proyecciones-montecarlo.md",
+      "titulo": "Proyecciones con Montecarlo y validación frente al paseo aleatorio",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "bolsa-inversion",
+      "etiquetas": [
+        "montecarlo",
+        "proyecciones",
+        "paseo-aleatorio",
+        "bandas",
+        "incertidumbre",
+        "backtesting",
+        "rmse",
+        "theil"
+      ],
+      "operaciones": [],
+      "patrones": [
+        "P-015",
+        "P-016"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
       "ruta": "conocimiento/bolsa-inversion/rentabilidad-volatilidad.md",
       "titulo": "Rentabilidad, varianza y volatilidad",
       "idioma": "es",
@@ -239,10 +284,13 @@
         "euribor",
         "diferencial",
         "revision",
-        "vivienda"
+        "vivienda",
+        "escenarios",
+        "sensibilidad"
       ],
       "operaciones": [
-        "hipoteca-variable"
+        "hipoteca-variable",
+        "escenario-euribor"
       ],
       "patrones": [
         "P-005"
@@ -295,6 +343,22 @@
     }
   ],
   "operaciones": [
+    {
+      "id": "escenario-tipo-cambio",
+      "titulo": "Escenario de tipo de cambio",
+      "tituloIngles": "FX scenario analysis",
+      "resumen": "Impacto en EUR de un cobro o pago en divisa si el tipo se mueve un %.",
+      "categoria": "fx",
+      "ficha": "conocimiento/fx/escenarios-tipo-de-cambio.md",
+      "etiquetas": [
+        "riesgo-de-cambio",
+        "escenarios",
+        "sensibilidad",
+        "exportacion",
+        "importacion",
+        "cobertura"
+      ]
+    },
     {
       "id": "fx-forward",
       "titulo": "Seguro de cambio (forward)",
@@ -414,7 +478,26 @@
         "euribor",
         "diferencial",
         "revision",
-        "vivienda"
+        "vivienda",
+        "escenarios",
+        "sensibilidad"
+      ]
+    },
+    {
+      "id": "escenario-euribor",
+      "titulo": "Escenario de Euribor en una hipoteca",
+      "tituloIngles": "Interest rate scenario",
+      "resumen": "Nueva cuota si el Euribor sube o baja X puntos básicos.",
+      "categoria": "real-estate",
+      "ficha": "conocimiento/real-estate/hipoteca-variable.md",
+      "etiquetas": [
+        "hipoteca",
+        "euribor",
+        "diferencial",
+        "revision",
+        "vivienda",
+        "escenarios",
+        "sensibilidad"
       ]
     }
   ]

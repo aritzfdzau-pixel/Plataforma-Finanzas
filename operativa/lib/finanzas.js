@@ -384,8 +384,172 @@ export function maximoDrawdown(precios) {
 }
 
 // ---------------------------------------------------------------------------
+// P-015 · Simulación Montecarlo (paseo aleatorio) y cuantiles
+// ---------------------------------------------------------------------------
+/** Cuantil con interpolación lineal, como PERCENTIL.INC()/PERCENTILE.INC() (p entre 0 y 1). */
+export function cuantil(x, p) {
+  comprobarSerie(x, 1);
+  if (!(p >= 0 && p <= 1)) throw new Error('El percentil debe estar entre 0 y 1');
+  const o = Float64Array.from(x).sort();
+  const pos = p * (o.length - 1);
+  const i = Math.floor(pos);
+  return i + 1 < o.length ? o[i] + (pos - i) * (o[i + 1] - o[i]) : o[i];
+}
+
+/** z de la normal estándar para el 95 % (bandas 5 %–95 %): DISTR.NORM.ESTAND.INV(0,95). */
+export const Z_95 = 1.6448536269514722;
+
+/** Generador pseudoaleatorio reproducible (mulberry32): misma semilla, mismos números. */
+export function generadorAleatorio(semilla = 1) {
+  let a = semilla >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Normal estándar por Box-Muller a partir de un generador uniforme. */
+export function generadorNormal(uniforme) {
+  let reserva = null;
+  return () => {
+    if (reserva !== null) { const r = reserva; reserva = null; return r; }
+    let u = 0;
+    while (u <= Number.EPSILON) u = uniforme();
+    const v = uniforme();
+    const radio = Math.sqrt(-2 * Math.log(u));
+    reserva = radio * Math.sin(2 * Math.PI * v);
+    return radio * Math.cos(2 * Math.PI * v);
+  };
+}
+
+/**
+ * Montecarlo de un paseo aleatorio con deriva.
+ *   modelo 'log' (precios):     ln S_{t+1} = ln S_t + μ + σ·Z   (μ, σ de las rentabilidades log)
+ *   modelo 'aditivo' (tipos):   X_{t+1}   = X_t   + μ + σ·Z    (μ, σ de las diferencias)
+ * Devuelve los percentiles 5, 25, 50, 75 y 95 en cada paso (índice 0 = valor inicial).
+ */
+export function simularMontecarlo({ inicial, media: mu, desviacion: sigma, horizonte, trayectorias = 2000, modelo = 'log', semilla = 1 }) {
+  comprobarFinito(inicial, 'valor inicial');
+  comprobarFinito(mu, 'media');
+  comprobarFinito(sigma, 'desviación');
+  if (sigma < 0) throw new Error('La desviación no puede ser negativa');
+  comprobarPeriodos(horizonte);
+  comprobarPeriodos(trayectorias);
+  if (modelo === 'log' && inicial <= 0) throw new Error('El modelo logarítmico necesita un valor inicial positivo');
+  if (!['log', 'aditivo'].includes(modelo)) throw new Error('Modelo no válido');
+  const z = generadorNormal(generadorAleatorio(semilla));
+  const pasos = Array.from({ length: horizonte }, () => new Float64Array(trayectorias));
+  for (let j = 0; j < trayectorias; j++) {
+    let x = modelo === 'log' ? Math.log(inicial) : inicial;
+    for (let t = 0; t < horizonte; t++) {
+      x += mu + sigma * z();
+      pasos[t][j] = modelo === 'log' ? Math.exp(x) : x;
+    }
+  }
+  const P = [0.05, 0.25, 0.5, 0.75, 0.95];
+  const percentiles = Object.fromEntries(P.map((p) => [Math.round(p * 100), [inicial]]));
+  for (const paso of pasos) {
+    paso.sort();
+    for (const p of P) {
+      const pos = p * (trayectorias - 1), i = Math.floor(pos);
+      percentiles[Math.round(p * 100)].push(i + 1 < trayectorias ? paso[i] + (pos - i) * (paso[i + 1] - paso[i]) : paso[i]);
+    }
+  }
+  return { percentiles, finales: Array.from(pasos.at(-1)) };
+}
+
+/** Banda analítica equivalente al Montecarlo (para validar y para los tests). */
+export function bandaAnalitica({ inicial, media: mu, desviacion: sigma, horizonte, modelo = 'log', z = Z_95 }) {
+  const centro = mu * horizonte, ancho = z * sigma * Math.sqrt(horizonte);
+  if (modelo === 'log') return { mediana: inicial * Math.exp(centro), inferior: inicial * Math.exp(centro - ancho), superior: inicial * Math.exp(centro + ancho) };
+  return { mediana: inicial + centro, inferior: inicial + centro - ancho, superior: inicial + centro + ancho };
+}
+
+// ---------------------------------------------------------------------------
+// P-016 · Errores de proyección y validación frente al paseo aleatorio
+// ---------------------------------------------------------------------------
+/** Error medio absoluto: media de |real − proyectado|. */
+export function errorMedioAbsoluto(reales, proyectados) {
+  comprobarPares(reales, proyectados);
+  return reales.reduce((a, r, k) => a + Math.abs(r - proyectados[k]), 0) / reales.length;
+}
+
+/** Raíz del error cuadrático medio: √(media de (real − proyectado)²). */
+export function raizErrorCuadraticoMedio(reales, proyectados) {
+  comprobarPares(reales, proyectados);
+  return Math.sqrt(reales.reduce((a, r, k) => a + (r - proyectados[k]) ** 2, 0) / reales.length);
+}
+
+/**
+ * Validación con datos pasados (origen móvil): en cada origen t se estiman μ y σ con las
+ * `ventana` observaciones anteriores y se proyecta a `horizonte` periodos:
+ *   - modelo: mediana (con deriva μ si `conTendencia`) y banda 5 %–95 %;
+ *   - paseo aleatorio: el último valor conocido (sin cambio).
+ * Se comparan con el valor real en t + horizonte. U de Theil = RMSE modelo / RMSE paseo aleatorio
+ * (< 1: el modelo mejora al paseo aleatorio). Cobertura: % de reales dentro de la banda (ideal ≈ 90 %).
+ */
+export function validarFrenteAPaseoAleatorio(valores, { horizonte, ventana = 250, modelo = 'log', conTendencia = true, paso = null }) {
+  comprobarSerie(valores, 3);
+  comprobarPeriodos(horizonte);
+  comprobarPeriodos(ventana);
+  const salto = paso ?? horizonte;
+  const reales = [], proyModelo = [], proyPaseo = [], fechas = [];
+  let dentro = 0;
+  for (let t = ventana; t + horizonte < valores.length; t += salto) {
+    const tramo = valores.slice(t - ventana, t + 1);
+    const variaciones = modelo === 'log' ? rentabilidadesLog(tramo) : diferencias(tramo);
+    const mu = conTendencia ? media(variaciones) : 0;
+    const sigma = desviacionMuestral(variaciones);
+    const b = bandaAnalitica({ inicial: valores[t], media: mu, desviacion: sigma, horizonte, modelo });
+    const real = valores[t + horizonte];
+    reales.push(real); proyModelo.push(b.mediana); proyPaseo.push(valores[t]); fechas.push(t);
+    if (real >= b.inferior && real <= b.superior) dentro++;
+  }
+  if (reales.length < 3) throw new Error('Pocos datos para validar: amplía la serie o reduce la ventana o el horizonte');
+  const rmseModelo = raizErrorCuadraticoMedio(reales, proyModelo);
+  const rmsePaseo = raizErrorCuadraticoMedio(reales, proyPaseo);
+  return {
+    origenes: reales.length,
+    maeModelo: errorMedioAbsoluto(reales, proyModelo),
+    maePaseo: errorMedioAbsoluto(reales, proyPaseo),
+    rmseModelo,
+    rmsePaseo,
+    theilU: rmsePaseo > 0 ? rmseModelo / rmsePaseo : null,
+    cobertura: dentro / reales.length,
+    indices: fechas, reales, proyModelo, proyPaseo,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// P-017 · Escenarios de tipo de cambio
+// ---------------------------------------------------------------------------
+/**
+ * Contravalor en EUR de un importe en divisa con el tipo EUR/divisa (divisa por 1 EUR) y con
+ * el tipo tras un movimiento relativo `movimiento` (−0,05 = el euro se deprecia un 5 %).
+ */
+export function escenarioTipoCambio({ importeDivisa, tipo, movimiento }) {
+  comprobarFinito(importeDivisa, 'importe');
+  comprobarFinito(tipo, 'tipo de cambio');
+  comprobarFinito(movimiento, 'movimiento');
+  if (tipo <= 0) throw new Error('El tipo de cambio debe ser positivo');
+  if (movimiento <= -1) throw new Error('El movimiento debe ser mayor que −100 %');
+  const tipoEscenario = tipo * (1 + movimiento);
+  const actual = importeDivisa / tipo;
+  const escenario = importeDivisa / tipoEscenario;
+  return { tipoEscenario, actual, escenario, diferencia: escenario - actual };
+}
+
+// ---------------------------------------------------------------------------
 // Validaciones comunes
 // ---------------------------------------------------------------------------
+function comprobarPares(a, b) {
+  comprobarSerie(a, 1);
+  comprobarSerie(b, 1);
+  if (a.length !== b.length) throw new Error('Las series deben tener la misma longitud');
+}
 function comprobarSerie(x, minimo) {
   if (!Array.isArray(x) || x.length < minimo) throw new Error(`Se necesitan al menos ${minimo} observaciones`);
   x.forEach((v) => comprobarFinito(v, 'serie'));

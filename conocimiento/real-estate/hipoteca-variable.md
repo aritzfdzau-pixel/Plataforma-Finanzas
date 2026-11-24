@@ -3,8 +3,8 @@ titulo: "Hipoteca a tipo variable (Euribor + diferencial)"
 idioma: es
 traduccion: ""
 categoria: real-estate
-etiquetas: [hipoteca, euribor, diferencial, revision, vivienda]
-operaciones: [hipoteca-variable]
+etiquetas: [hipoteca, euribor, diferencial, revision, vivienda, escenarios, sensibilidad]
+operaciones: [hipoteca-variable, escenario-euribor]
 patrones: [P-005]
 fecha_creacion: 2026-11-24
 ultima_revision: 2026-11-24
@@ -67,12 +67,16 @@ Verificado con LibreOffice Calc (`PAGO`, `VF`).
 | Se beneficia de bajadas de tipos | Dificulta planificar a largo plazo |
 
 ## Riesgos
-- **Riesgo de tipo de interés:** subidas del Euribor elevan la cuota.
+- **Riesgo de tipo de interés:** subidas del Euribor elevan la cuota. Con la operación
+  [Escenario de Euribor en una hipoteca](#op=escenario-euribor) se ve el efecto de ±50, ±100
+  y ±200 pb (ejemplo con 150.000 € a 25 años, Euribor 2,50 % + 0,80 %: +100 pb sube la cuota
+  de 734,94 € a 816,81 €, verificado con PAGO() de LibreOffice).
 - Sobreendeudamiento si se calcula la capacidad de pago con un Euribor bajo.
 - Comisiones y productos vinculados que encarecen la operación.
 
 ## Operaciones relacionadas
 - [Hipoteca variable: cuota y revisión](#op=hipoteca-variable)
+- [Escenario de Euribor en una hipoteca](#op=escenario-euribor)
 - [Préstamo: cuadro de amortización (francés, alemán, americano)](#op=prestamo-amortizacion)
 - [Conversor TIN ↔ TAE](#op=tin-tae)
 

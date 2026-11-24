@@ -9,6 +9,8 @@ export const OPERACIONES = [
   'rentabilidad-volatilidad',
   'van-tir',
   'hipoteca-variable',
+  'escenario-tipo-cambio',
+  'escenario-euribor',
 ];
 
 export async function cargarOperacion(id) {

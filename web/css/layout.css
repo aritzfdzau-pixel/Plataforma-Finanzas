@@ -11,6 +11,7 @@
     "noticias    divisas"
     "operativa   operativa"
     "historicos  historicos"
+    "proyecciones proyecciones"
     "conocimiento conocimiento"
     "pie         pie";
 }
@@ -20,6 +21,7 @@
 .zona--divisas      { grid-area: divisas; }
 .zona--operativa    { grid-area: operativa; }
 .zona--historicos   { grid-area: historicos; }
+.zona--proyecciones { grid-area: proyecciones; }
 .zona--conocimiento { grid-area: conocimiento; }
 .pie      { grid-area: pie; }
 
@@ -111,6 +113,7 @@
       "divisas"
       "operativa"
       "historicos"
+      "proyecciones"
       "conocimiento"
       "pie";
   }
