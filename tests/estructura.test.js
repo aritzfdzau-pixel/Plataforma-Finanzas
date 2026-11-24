@@ -132,3 +132,9 @@ test('la CSP no permite scripts, estilos ni conexiones de terceros', () => {
   for (const k of ['default-src', 'script-src', 'style-src', 'connect-src', 'font-src']) assert.deepEqual(dir[k], ["'self'"], k);
   assert.deepEqual(dir['frame-src'], ['https://www.tradingview-widget.com']);
 });
+
+test('D-027: las páginas HTML publicadas piden no aparecer en buscadores', () => {
+  for (const p of ['web/index.html', 'web/redireccion.html']) {
+    assert.match(leer(p), /<meta name="robots" content="noindex, nofollow">/, p);
+  }
+});
