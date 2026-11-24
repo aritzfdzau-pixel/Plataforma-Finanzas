@@ -38,9 +38,9 @@ export default {
         { id: 'cuota0', etiqueta: 'Cuota mensual actual', valor: c0, formato: 'eur' },
         { id: 'tin1', etiqueta: `TIN en el escenario (${v.choque >= 0 ? '+' : ''}${v.choque} pb)`, valor: tin(v.choque), formato: 'pct:3' },
         { id: 'cuota1', etiqueta: 'Cuota mensual en el escenario', valor: c1, formato: 'eur', destacado: true },
-        { id: 'diferencia', etiqueta: 'Variación de la cuota mensual', valor: c1 - c0, formato: 'eur', variacion: true },
-        { id: 'diferenciaAnual', etiqueta: 'Variación anual (×12)', valor: (c1 - c0) * 12, formato: 'eur', variacion: true },
-        { id: 'interesesExtra', etiqueta: 'Variación de los intereses que quedan por pagar', valor: (c1 - c0) * n, formato: 'eur', variacion: true },
+        { id: 'diferencia', etiqueta: 'Variación de la cuota mensual', valor: c1 - c0, formato: 'eur', variacion: 'coste' },
+        { id: 'diferenciaAnual', etiqueta: 'Variación anual (×12)', valor: (c1 - c0) * 12, formato: 'eur', variacion: 'coste' },
+        { id: 'interesesExtra', etiqueta: 'Variación de los intereses que quedan por pagar', valor: (c1 - c0) * n, formato: 'eur', variacion: 'coste' },
       ],
       convenciones: {
         base: 'Tipo mensual = TIN / 12 (sistema francés)',

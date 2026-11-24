@@ -44,8 +44,8 @@ export default {
         { id: 'pendiente', etiqueta: `Capital pendiente en la revisión (mes ${k})`, valor: pendiente, formato: 'eur' },
         { id: 'tin2', etiqueta: 'TIN revisado', valor: tin2, formato: 'pct:3' },
         { id: 'cuota2', etiqueta: 'Nueva cuota mensual', valor: cuota2, formato: 'eur', destacado: true },
-        { id: 'variacion', etiqueta: 'Variación de la cuota', valor: cuota2 - cuota1, formato: 'eur', variacion: true },
-        { id: 'variacionAnual', etiqueta: 'Variación anual (×12)', valor: (cuota2 - cuota1) * 12, formato: 'eur', variacion: true },
+        { id: 'variacion', etiqueta: 'Variación de la cuota', valor: cuota2 - cuota1, formato: 'eur', variacion: 'coste' },
+        { id: 'variacionAnual', etiqueta: 'Variación anual (×12)', valor: (cuota2 - cuota1) * 12, formato: 'eur', variacion: 'coste' },
       ],
       convenciones: {
         base: 'Tipo mensual = TIN / 12',

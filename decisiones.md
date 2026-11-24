@@ -90,9 +90,12 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - CSV: separador ";", coma decimal, sin miles, BOM UTF-8, porcentajes como número (columna "(%)").
 
 ## D-013 · 2026-11-24 · Fase 1 · Flechas ▲ ▼ indican dirección, no "bueno/malo"
-- **Decisión:** verde ▲ = el valor sube, rojo ▼ = baja, también en costes (una cuota que
-  baja sale en rojo ▼). Así se cumple la norma de forma uniforme.
-- **Duda para Aritz:** ¿prefieres que en costes se invierta el color (bajar = verde)?
+- **Decisión inicial:** verde ▲ = el valor sube, rojo ▼ = baja, también en costes.
+- **Revisada (2026-11-24, Aritz):** en los **costes** se invierte el color: subir = ▲ rojo,
+  bajar = ▼ verde. La flecha sigue indicando siempre la dirección y el color pasa a indicar si
+  es favorable. Los resultados de coste llevan `variacion: 'coste'` (hoy: variación de la cuota
+  y de los intereses en «Hipoteca variable» y «Escenario de Euribor»). Los datos de mercado
+  (divisas, tipos, series históricas) siguen con el color por dirección: no son un coste en sí.
 
 ## D-014 · 2026-11-24 · Fase 1 · Fórmulas en la web
 - **Decisión:** el visor de fichas muestra las fórmulas en texto LaTeX (sin librería de

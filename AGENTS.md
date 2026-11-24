@@ -114,7 +114,10 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
   Ningún otro CSS usa valores de color literales.
 - Fondo casi negro, paneles con borde fino, acento ámbar (contraste WCAG AA verificado por test).
 - Números en monoespaciada con cifras tabulares (`.num`), alineados a la derecha.
-- Subidas/bajadas en verde/rojo **siempre** con ▲ ▼ (nunca solo color).
+- Subidas/bajadas en verde/rojo **siempre** con ▲ ▼ (nunca solo color). La flecha indica la
+  dirección; el color, si es favorable: en los **costes** (cuota, intereses, TIN, TAE…) se
+  invierte (subir = ▲ rojo, bajar = ▼ verde). Los resultados de coste se marcan con
+  `variacion: 'coste'` (D-013).
 - Futuro: se habla de **"Proyecciones y escenarios"**, nunca de "predicciones" (lo comprueba
   un test); las simulaciones se muestran con bandas (5 %–95 %), nunca con una sola línea.
 - Divulgación progresiva: resumen compacto → detalle al hacer clic.
