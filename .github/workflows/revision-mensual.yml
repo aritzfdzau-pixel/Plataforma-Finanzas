@@ -1,0 +1,38 @@
+name: Revisión mensual
+
+# El día 1 de cada mes abre un issue con el resumen del mes anterior (PR fusionadas,
+# decisiones, puntos «⚠️ Pendiente de verificar» y huecos del mapa de conocimiento).
+# Procedimiento completo: revisiones/README.md. Sin claves: usa el GITHUB_TOKEN del workflow.
+on:
+  schedule:
+    - cron: '23 7 1 * *'
+  workflow_dispatch:
+    inputs:
+      mes:
+        description: 'Mes a revisar (AAAA-MM). Vacío = mes anterior.'
+        required: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  resumen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Preparar el resumen del mes
+        env:
+          MES: ${{ inputs.mes }}
+        run: node scripts/resumen-mensual.js ${MES:+"$MES"} > resumen.md && cat resumen.md
+      - name: Abrir el issue de la revisión
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          titulo="$(head -n 1 resumen.md | sed 's/^# //')"
+          gh issue create --repo "$GITHUB_REPOSITORY" --title "$titulo" --body-file resumen.md

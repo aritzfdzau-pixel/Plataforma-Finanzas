@@ -133,6 +133,7 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | `scripts/` | Utilidades Node sin dependencias (`generar-indice.js`, `descargar-bce.js`, `descargar-noticias.js`, `fuentes-noticias.js`, `descargar-historicos.js`, `series-oficiales.js` y sus funciones puras) |
 | `datos/` | Archivos generados por tareas programadas (no editar a mano; ver `datos/README.md`) |
 | `web/` | Interfaz publicada en GitHub Pages |
+| `revisiones/` | Procedimiento de la revisión mensual (`README.md`) y un registro por mes (`AAAA-MM.md`) |
 | `tests/` | Tests de infraestructura y de la web (estructura, tokens, fichas, divisas, BCE, noticias, históricos, proyecciones); muestras inventadas en `tests/fixtures/` |
 | `.github/` | Workflows y plantillas de issue/PR |
 
@@ -154,3 +155,14 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 
 Enlaces internos de la web: `#op=<id>` abre una operación (admite valores de campos, p. ej.
 `#op=fx-forward&par=GBP`); `#ficha=<ruta>` abre una ficha.
+
+## 15. Aprendizaje continuo (revisión mensual)
+- Cada mes se repasan las PR fusionadas y las correcciones de Aritz, y lo aprendido se escribe
+  en este archivo, en `patrones/README.md` o en `decisiones.md` (procedimiento completo en
+  `revisiones/README.md`).
+- El día 1, `.github/workflows/revision-mensual.yml` abre un issue con el resumen del mes
+  (`scripts/resumen-mensual.js`). La revisión se hace cuando Aritz la pide en el chat y se
+  entrega en **una** PR con el registro `revisiones/AAAA-MM.md`.
+- El **mapa de conocimiento** (zona Conocimiento → Mapa) muestra fichas ↔ patrones ↔
+  operaciones y sus huecos (patrones sin ficha, fichas sin cálculo, operaciones sin patrón);
+  el índice incluye el catálogo de patrones (`node scripts/generar-indice.js`).

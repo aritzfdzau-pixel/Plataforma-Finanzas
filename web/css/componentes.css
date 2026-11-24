@@ -366,3 +366,28 @@ a.noticia__titulo:hover { color: var(--color-accent); text-decoration: underline
 .tabla-proy { max-width: 40rem; }
 .tabla-proy caption { text-align: left; font-size: var(--fs-xs); color: var(--color-text-muted); padding-bottom: var(--space-1); }
 .tabla-proy th[scope="row"], .tabla-proy thead th:first-child { text-align: left; }
+
+/* ---------- Mapa de conocimiento ---------- */
+.zona__herramientas .button[aria-pressed="true"] { border-color: var(--color-accent); color: var(--color-accent); }
+.mapa-zona { display: grid; gap: var(--space-3); }
+.mapa__marco { overflow-x: auto; border: var(--border-width) solid var(--color-border); background: var(--color-bg); }
+.mapa { display: block; width: 100%; min-width: 760px; height: auto; }
+.mapa__columna { fill: var(--color-text-muted); font-size: var(--fs-2xs); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.mapa__arista { fill: none; stroke: var(--color-border-strong); stroke-width: 1; opacity: 0.7; }
+.mapa__arista--genera { stroke-dasharray: 4 3; }
+.mapa--resaltado .mapa__arista { opacity: 0.12; }
+.mapa--resaltado .mapa__arista.is-activa { opacity: 1; stroke: var(--color-accent); stroke-width: 1.5; }
+.mapa__nodo { cursor: pointer; outline: none; }
+.mapa__forma { fill: var(--cat-color, var(--color-text-muted)); stroke: var(--color-bg); stroke-width: 2; }
+.mapa__nodo--patron .mapa__forma { fill: var(--color-accent); }
+.mapa__texto { fill: var(--color-text); font-size: var(--fs-2xs); paint-order: stroke; stroke: var(--color-bg); stroke-width: 4px; stroke-linejoin: round; }
+.mapa__nodo--patron .mapa__texto { font-family: var(--font-mono); fill: var(--color-text-muted); }
+.mapa--resaltado .mapa__nodo:not(.is-activo) { opacity: 0.25; }
+.mapa__nodo:focus-visible .mapa__forma { stroke: var(--color-focus); stroke-width: 3; }
+.mapa__leyenda { display: flex; flex-wrap: wrap; gap: var(--space-4); margin: 0; padding: 0; list-style: none; font-size: var(--fs-xs); color: var(--color-text-muted); }
+.mapa__leyenda li { display: flex; align-items: center; gap: var(--space-1); }
+.mapa__icono { display: inline-block; width: var(--space-3); height: var(--space-3); background: var(--color-text-muted); }
+.mapa__icono--ficha { border-radius: 50%; }
+.mapa__icono--patron { background: var(--color-accent); transform: rotate(45deg) scale(0.8); }
+.mapa__detalle { font-size: var(--fs-sm); min-height: 3rem; }
+.mapa__detalle p { margin: 0 0 var(--space-1); }

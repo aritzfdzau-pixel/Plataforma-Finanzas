@@ -20,6 +20,30 @@ export function rutasFichas() {
   return out;
 }
 
+/**
+ * Lee la tabla del catálogo de patrones (patrones/README.md):
+ *   | ID | Nombre | Función(es) | Tests | Usado por | Estado |
+ * `operaciones` = los "Usado por" que son operaciones; `otros` = zonas de la web (p. ej. históricos).
+ */
+export function leerCatalogoPatrones(md) {
+  const patrones = [];
+  for (const linea of md.split('\n')) {
+    const m = /^\|\s*(P-\d{3})\s*\|/.exec(linea);
+    if (!m) continue;
+    const celdas = linea.split('|').slice(1, -1).map((c) => c.trim());
+    const usados = celdas[4].split(',').map((u) => u.trim()).filter(Boolean);
+    patrones.push({
+      id: m[1],
+      nombre: celdas[1],
+      funciones: [...celdas[2].matchAll(/`(\w+)`/g)].map((x) => x[1]),
+      operaciones: usados.filter((u) => OPERACIONES.includes(u)),
+      otros: usados.filter((u) => !OPERACIONES.includes(u)),
+      estado: celdas[5],
+    });
+  }
+  return patrones;
+}
+
 export async function construirIndice() {
   const fichas = rutasFichas().map((ruta) => {
     const { cabecera } = leerFicha(readFileSync(join(RAIZ, ruta), 'utf8'));
@@ -57,5 +81,6 @@ export async function construirIndice() {
     _aviso: 'Archivo generado con «node scripts/generar-indice.js». No editar a mano.',
     fichas: fichas.sort(orden),
     operaciones: operaciones.sort(orden),
+    patrones: leerCatalogoPatrones(readFileSync(join(RAIZ, 'patrones/README.md'), 'utf8')),
   };
 }

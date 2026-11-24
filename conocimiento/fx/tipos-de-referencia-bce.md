@@ -5,7 +5,7 @@ traduccion: ""
 categoria: fx
 etiquetas: [bce, tipo-de-cambio, referencia, conversion]
 operaciones: [fx-conversion-bce]
-patrones: [P-008]
+patrones: [P-008, P-010]
 fecha_creacion: 2026-11-24
 ultima_revision: 2026-11-24
 fuentes: ["BCE — página de tipos de cambio de referencia del euro"]

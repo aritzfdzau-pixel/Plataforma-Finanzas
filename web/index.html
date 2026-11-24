@@ -107,10 +107,14 @@
     <section class="zona zona--conocimiento" aria-labelledby="t-conocimiento">
       <div class="zona__cabecera">
         <h2 class="zona__titulo" id="t-conocimiento">Conocimiento</h2>
-        <span class="chip">Fichas</span>
+        <div class="zona__herramientas" role="group" aria-label="Vista del conocimiento">
+          <button type="button" class="button" id="ver-lista" aria-pressed="true">Lista</button>
+          <button type="button" class="button" id="ver-mapa" aria-pressed="false">Mapa</button>
+        </div>
       </div>
       <div class="conocimiento">
         <div id="lista-fichas"><p class="vacio">Cargando…</p></div>
+        <div id="mapa-conocimiento" class="mapa-zona" hidden></div>
         <div id="visor-ficha" hidden></div>
         <p class="conocimiento__nota">Las fichas se añaden mediante pull request a partir de la plantilla del repositorio.</p>
       </div>

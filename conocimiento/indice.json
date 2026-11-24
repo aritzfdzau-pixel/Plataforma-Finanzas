@@ -85,7 +85,8 @@
         "fx-conversion-bce"
       ],
       "patrones": [
-        "P-008"
+        "P-008",
+        "P-010"
       ],
       "ultima_revision": "2026-11-24"
     },
@@ -499,6 +500,246 @@
         "escenarios",
         "sensibilidad"
       ]
+    }
+  ],
+  "patrones": [
+    {
+      "id": "P-001",
+      "nombre": "Fracción de año según base (Act/360, Act/365)",
+      "funciones": [
+        "fraccionAnio"
+      ],
+      "operaciones": [
+        "fx-forward",
+        "descuento-comercial"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-002",
+      "nombre": "Interés simple a corto plazo",
+      "funciones": [
+        "factorSimple",
+        "interesSimple"
+      ],
+      "operaciones": [
+        "fx-forward",
+        "descuento-comercial"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-003",
+      "nombre": "Conversión de tipos entre periodicidades (TIN ↔ TAE)",
+      "funciones": [
+        "tinATae",
+        "taeATin",
+        "periodicoAAnual"
+      ],
+      "operaciones": [
+        "tin-tae",
+        "prestamo-amortizacion"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-004",
+      "nombre": "Descuento de flujos (VAN, TIR Newton-Raphson + bisección)",
+      "funciones": [
+        "van",
+        "tir",
+        "cambiosDeSigno"
+      ],
+      "operaciones": [
+        "van-tir",
+        "tin-tae"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-005",
+      "nombre": "Cuadro de amortización (francés / alemán / americano, carencia)",
+      "funciones": [
+        "cuotaFrancesa",
+        "pendienteFrances",
+        "cuadroAmortizacion"
+      ],
+      "operaciones": [
+        "prestamo-amortizacion",
+        "hipoteca-variable",
+        "tin-tae",
+        "escenario-euribor"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-006",
+      "nombre": "Rentabilidades, varianza y volatilidad",
+      "funciones": [
+        "rentabilidadesSimples",
+        "rentabilidadesLog",
+        "media",
+        "varianzaMuestral",
+        "desviacionMuestral",
+        "volatilidadAnualizada"
+      ],
+      "operaciones": [
+        "rentabilidad-volatilidad"
+      ],
+      "otros": [
+        "históricos"
+      ],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-007",
+      "nombre": "Paridad cubierta de tipos (forward)",
+      "funciones": [
+        "forwardParidad"
+      ],
+      "operaciones": [
+        "fx-forward"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-008",
+      "nombre": "Conversión con tipo de referencia y redondeo",
+      "funciones": [
+        "redondear",
+        "convertirConReferencia"
+      ],
+      "operaciones": [
+        "fx-conversion-bce"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-009",
+      "nombre": "Coste efectivo anual de un único flujo",
+      "funciones": [
+        "costeEfectivoAnual"
+      ],
+      "operaciones": [
+        "descuento-comercial"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-010",
+      "nombre": "Lectura de tipos BCE y variación relativa (hoy / anterior − 1)",
+      "funciones": [
+        "parsearXmlBce",
+        "variacionRelativa",
+        "construirDatosBce"
+      ],
+      "operaciones": [
+        "fx-conversion-bce",
+        "fx-forward"
+      ],
+      "otros": [
+        "panel de divisas"
+      ],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-011",
+      "nombre": "Medias móviles y diferencias",
+      "funciones": [
+        "mediaMovil",
+        "diferencias"
+      ],
+      "operaciones": [],
+      "otros": [
+        "históricos"
+      ],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-012",
+      "nombre": "Volatilidad EWMA (RiskMetrics, λ = 0,94)",
+      "funciones": [
+        "volatilidadEWMA"
+      ],
+      "operaciones": [],
+      "otros": [
+        "históricos"
+      ],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-013",
+      "nombre": "Correlación de Pearson",
+      "funciones": [
+        "correlacion"
+      ],
+      "operaciones": [],
+      "otros": [
+        "históricos"
+      ],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-014",
+      "nombre": "Máximo drawdown",
+      "funciones": [
+        "maximoDrawdown"
+      ],
+      "operaciones": [],
+      "otros": [
+        "históricos"
+      ],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-015",
+      "nombre": "Montecarlo (paseo aleatorio log/aditivo), cuantiles y banda analítica",
+      "funciones": [
+        "cuantil",
+        "generadorAleatorio",
+        "generadorNormal",
+        "simularMontecarlo",
+        "bandaAnalitica"
+      ],
+      "operaciones": [],
+      "otros": [
+        "proyecciones"
+      ],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-016",
+      "nombre": "Errores de proyección y validación frente al paseo aleatorio",
+      "funciones": [
+        "errorMedioAbsoluto",
+        "raizErrorCuadraticoMedio",
+        "validarFrenteAPaseoAleatorio"
+      ],
+      "operaciones": [],
+      "otros": [
+        "proyecciones"
+      ],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-017",
+      "nombre": "Escenario de tipo de cambio (contravalor con un movimiento relativo)",
+      "funciones": [
+        "escenarioTipoCambio"
+      ],
+      "operaciones": [
+        "escenario-tipo-cambio"
+      ],
+      "otros": [],
+      "estado": "Estable"
     }
   ]
 }

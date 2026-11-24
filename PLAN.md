@@ -13,8 +13,8 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 | 2 | Divisas | Cerrada | `claude/intelligent-bardeen-t224t5` | #3 (fusionada) |
 | 3 | Noticias | Cerrada | `claude/intelligent-bardeen-t224t5` | #4 (fusionada) |
 | 4 | Históricos | Cerrada | `claude/intelligent-bardeen-t224t5` | #5 (fusionada) |
-| 5 | Proyecciones y escenarios | En revisión | `claude/intelligent-bardeen-t224t5` | #6 |
-| 6 | Aprendizaje continuo y mapa de conocimiento | Pendiente | — | — |
+| 5 | Proyecciones y escenarios | Cerrada | `claude/intelligent-bardeen-t224t5` | #6 (fusionada) |
+| 6 | Aprendizaje continuo y mapa de conocimiento | En revisión | `claude/intelligent-bardeen-t224t5` | #7 |
 
 ## Fase 0 — Cimientos
 - [x] Estructura de carpetas (`conocimiento/`, `patrones/`, `operativa/`, `datos/`, `web/`, `.github/`).
@@ -62,4 +62,6 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 - [x] Patrones P-015 a P-017 con referencias de LibreOffice; fichas nuevas (escenarios FX, Montecarlo).
 
 ## Fase 6 — Aprendizaje continuo y mapa de conocimiento
-Procedimiento de revisión mensual y mapa SVG 2D fichas ↔ patrones ↔ operaciones.
+- [x] Procedimiento documentado de revisión mensual (`revisiones/README.md`, AGENTS.md §15).
+- [x] Tarea mensual que abre el issue con el resumen (PR, decisiones, ⚠️ pendientes, huecos).
+- [x] Mapa de conocimiento en SVG 2D: fichas ↔ patrones ↔ operaciones, con huecos (D-025).

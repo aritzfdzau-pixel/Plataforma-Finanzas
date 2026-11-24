@@ -261,6 +261,21 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
 - Los formularios admiten un prefijo de id (`pintarOperacion(…, { prefijo })`) para poder mostrar
   la misma operación en Operativa y en Proyecciones sin id repetidos.
 
+## D-025 · 2026-11-24 · Fase 6 · Aprendizaje continuo y mapa de conocimiento
+- **Revisión mensual**: issue automático el día 1 (`revision-mensual.yml`, solo `GITHUB_TOKEN`
+  con `issues: write`, sin secretos) con PR fusionadas, decisiones del mes, «⚠️ Pendiente de
+  verificar» por archivo (sin contar las normas y plantillas que definen la marca) y huecos del
+  mapa. La revisión la pide Aritz en el chat y se entrega en una PR (`revisiones/AAAA-MM.md`).
+  No es una fase: no requiere «Autorizo la fase N».
+- **Mapa**: SVG propio en tres columnas (fichas · patrones · operaciones) en vez de un grafo de
+  fuerzas: es determinista, legible y no necesita librerías. El orden de patrones y operaciones
+  se calcula por baricentro (Sugiyama) y las fichas se ordenan dentro de su categoría: los
+  cruces bajan de 257 a 113 con el contenido actual (test). Formas distintas por tipo y color
+  por categoría; resaltado de conexiones con ratón o teclado; clic abre la ficha o la operación.
+- **Índice**: `conocimiento/indice.json` incluye ahora el catálogo de patrones (id, nombre,
+  funciones, operaciones que lo usan y otras zonas).
+- Hueco cerrado al crear el mapa: P-010 se enlaza desde la ficha de tipos de referencia del BCE.
+
 ## Palabras clave para etiquetar noticias
 Editable por Aritz. La tarea de noticias (`scripts/descargar-noticias.js`) lee esta tabla en
 cada ejecución: una fila por categoría (slug entre comillas invertidas) y las palabras o

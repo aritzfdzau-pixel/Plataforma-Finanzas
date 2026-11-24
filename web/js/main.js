@@ -2,6 +2,7 @@
 import { leerRuta } from './ui/rutas.js';
 import { pintarListado, pintarOperacion } from './ui/operativa.js';
 import { pintarFichas, pintarFicha } from './ui/conocimiento.js';
+import { pintarMapa } from './ui/mapa.js';
 import { iniciarPaleta } from './ui/paleta.js';
 import { pintarCabeceraDivisas, pintarPanelDivisas } from './ui/divisas.js';
 import { pintarCabeceraNoticias, pintarPanelNoticias } from './ui/noticias.js';
@@ -32,6 +33,24 @@ const detalleOp = document.getElementById('detalle-operacion');
 const filtroOps = document.getElementById('filtro-operaciones');
 const listaFichas = document.getElementById('lista-fichas');
 const visorFicha = document.getElementById('visor-ficha');
+const mapaConocimiento = document.getElementById('mapa-conocimiento');
+const botonLista = document.getElementById('ver-lista');
+const botonMapa = document.getElementById('ver-mapa');
+let vistaConocimiento = 'lista';
+let indiceCargado = null;
+let mapaPintado = false;
+/** Muestra la lista o el mapa de fichas (si no se está viendo una ficha). */
+function mostrarVista(vista) {
+  vistaConocimiento = vista;
+  botonLista.setAttribute('aria-pressed', String(vista === 'lista'));
+  botonMapa.setAttribute('aria-pressed', String(vista === 'mapa'));
+  listaFichas.hidden = vista !== 'lista';
+  mapaConocimiento.hidden = vista !== 'mapa';
+  visorFicha.hidden = true;
+  if (vista === 'mapa' && !mapaPintado && indiceCargado) { mapaPintado = true; pintarMapa(mapaConocimiento, indiceCargado); }
+}
+botonLista.addEventListener('click', () => { if (location.hash.startsWith('#ficha=')) history.pushState(null, '', location.pathname); mostrarVista('lista'); });
+botonMapa.addEventListener('click', () => { if (location.hash.startsWith('#ficha=')) history.pushState(null, '', location.pathname); mostrarVista('mapa'); });
 const botonExpandir = document.getElementById('expandir-operativa');
 
 /** Pantalla grande de una zona (Operativa o Históricos); solo una a la vez. */
@@ -93,6 +112,7 @@ async function iniciar() {
   }
   const operaciones = indice.operaciones.filter((o) => o.titulo);
   pintarListado(listaOps, operaciones);
+  indiceCargado = indice;
   pintarFichas(listaFichas, indice.fichas);
   filtroOps.addEventListener('input', () => pintarListado(listaOps, operaciones, filtroOps.value));
   iniciarPaleta({ ...indice, operaciones });
@@ -106,12 +126,12 @@ async function iniciar() {
       zonaOp.scrollIntoView({ block: 'start', behavior: 'smooth' });
       detalleOp.querySelector('.op__titulo')?.focus?.();
     } else if (ruta.tipo === 'ficha') {
-      listaFichas.hidden = true; visorFicha.hidden = false;
+      listaFichas.hidden = true; mapaConocimiento.hidden = true; visorFicha.hidden = false;
       await pintarFicha(visorFicha, ruta.ruta, indice.fichas);
       expandir(zonaOp, botonExpandir, false);
       visorFicha.closest('.zona').scrollIntoView({ block: 'start', behavior: 'smooth' });
     } else {
-      listaFichas.hidden = false; visorFicha.hidden = true;
+      mostrarVista(vistaConocimiento);
     }
   };
   window.addEventListener('hashchange', enrutar);
