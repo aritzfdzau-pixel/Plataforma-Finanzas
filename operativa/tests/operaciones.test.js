@@ -72,23 +72,35 @@ test('fx-conversion-bce: conversiones y decimales del JPY', async () => {
 });
 
 // --- 3. Préstamo -----------------------------------------------------------
-test('prestamo-frances-aleman: francés con carencia parcial y total', async () => {
-  const p = await ejecutar('prestamo-frances-aleman');
+test('prestamo-amortizacion: francés con carencia parcial y total', async () => {
+  const p = await ejecutar('prestamo-amortizacion');
   cerca(valor(p, 'cuota'), ref('fr_carp_cuota'));
   cerca(valor(p, 'intereses'), ref('fr_carp_int'));
   assert.equal(p.tabla.filas.length, 60);
-  const t = await ejecutar('prestamo-frances-aleman', { tipoCarencia: 'total' });
+  const t = await ejecutar('prestamo-amortizacion', { tipoCarencia: 'total' });
   cerca(valor(t, 'capitalTrasCarencia'), ref('fr_cart_cap'));
   cerca(valor(t, 'cuota'), ref('fr_cart_cuota'));
   cerca(valor(t, 'intereses'), ref('fr_cart_int'));
 });
 
-test('prestamo-frances-aleman: alemán y periodicidad trimestral', async () => {
-  const a = await ejecutar('prestamo-frances-aleman', { sistema: 'aleman', carencia: '0' });
+test('prestamo-amortizacion: alemán y periodicidad trimestral', async () => {
+  const a = await ejecutar('prestamo-amortizacion', { sistema: 'aleman', carencia: '0' });
   cerca(valor(a, 'cuota'), ref('al_cuota1'));
   cerca(valor(a, 'intereses'), ref('al_int'));
-  const q = await ejecutar('prestamo-frances-aleman', { capital: '50000', tin: '6', periodicidad: '4', periodos: '12', carencia: '0' });
+  const q = await ejecutar('prestamo-amortizacion', { capital: '50000', tin: '6', periodicidad: '4', periodos: '12', carencia: '0' });
   cerca(valor(q, 'cuota'), ref('fr_trim_cuota'));
+});
+
+test('prestamo-amortizacion: americano (bullet), sin y con carencia total', async () => {
+  const b = await ejecutar('prestamo-amortizacion', { sistema: 'americano', carencia: '0' });
+  cerca(valor(b, 'cuota'), ref('am_cuota'));
+  cerca(valor(b, 'ultima'), ref('am_ultima'));
+  cerca(valor(b, 'intereses'), ref('am_int'));
+  assert.ok(b.tabla.filas.slice(0, -1).every((f) => f.amortizacion === 0 && f.pendiente === 100000));
+  assert.equal(b.tabla.filas.at(-1).pendiente, 0);
+  assert.ok(b.avisos.some((a) => a.includes('Bullet')));
+  const t = await ejecutar('prestamo-amortizacion', { sistema: 'americano', tipoCarencia: 'total' });
+  cerca(valor(t, 'intereses'), ref('am_cart_int'), 1e-10);
 });
 
 // --- 4. Descuento / confirming --------------------------------------------

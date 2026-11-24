@@ -128,5 +128,16 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
   LibreOffice: referencias `macro_*`).
 - **Pendiente:** las noticias de la fase 3 también usarán esta categoría (palabras clave por definir).
 
+## D-017 · 2026-11-24 · Fase 1 (revisión) · Sistemas de amortización y sistema americano
+- **Decisión:** a petición de Aritz se añade el sistema **americano (bullet)** al cuadro de
+  amortización (P-005): solo intereses y todo el capital en la última cuota.
+- La operación pasa a llamarse «Préstamo: cuadro de amortización (francés, alemán,
+  americano)» (id `prestamo-amortizacion`, antes `prestamo-frances-aleman`) y la ficha a
+  `empresas/prestamos-sistemas-de-amortizacion.md`. Motivo: "francés/alemán/americano" son
+  nombres de método, no de país; la interfaz los muestra como «Cuota constante (francés)»,
+  «Amortización constante (alemán)» y «Todo al vencimiento (americano / bullet)».
+- El cambio de id no rompe enlaces publicados: la fase 1 aún no estaba en `main`.
+- Referencias LibreOffice nuevas: `am_cuota`, `am_ultima`, `am_int`, `am_cart_int`.
+
 ## Palabras clave para etiquetar noticias
 (Se rellenará en la fase 3; editable por Aritz.)

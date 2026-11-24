@@ -64,7 +64,7 @@ Verificado con LibreOffice Calc (`INT.EFECTIVO`, `TASA.NOMINAL`, `TASA`).
 
 ## Operaciones relacionadas
 - [Conversor TIN ↔ TAE](#op=tin-tae)
-- [Préstamo francés y alemán con carencia](#op=prestamo-frances-aleman)
+- [Préstamo: cuadro de amortización (francés, alemán, americano)](#op=prestamo-amortizacion)
 
 ## Fuentes
 - Banco de España — Portal del Cliente Bancario: conceptos de TIN y TAE.

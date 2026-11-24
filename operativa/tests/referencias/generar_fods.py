@@ -25,6 +25,10 @@ f('fr_cart_int', 'Idem: intereses totales (pagados)', '54*PMT(0.05/12;54;-100000
 f('al_cuota1', 'Alemán 100.000; 5% mensual; 60: primera cuota', '100000/60+100000*0.05/12')
 f('al_int', 'Alemán 100.000; 5%; 60: intereses totales', '0.05/12*100000*(60+1)/2')
 f('al_carp_int', 'Alemán 100.000; 5%; 60 con 6 de carencia parcial: intereses totales', '6*100000*0.05/12+0.05/12*100000*(54+1)/2')
+f('am_cuota', 'Americano (bullet) 100.000; 5% mensual; 60: cuota de intereses', '100000*0.05/12')
+f('am_ultima', 'Americano 100.000; 5%; 60: última cuota (intereses + capital)', '100000*0.05/12+100000')
+f('am_int', 'Americano 100.000; 5%; 60: intereses totales', '60*100000*0.05/12')
+f('am_cart_int', 'Americano 100.000; 5%; 60 con 6 de carencia total: intereses totales', '54*100000*(1+0.05/12)^6*0.05/12+100000*(1+0.05/12)^6-100000')
 f('fr_trim_cuota', 'Francés 50.000; TIN 6% trimestral; 3 años (12 cuotas)', 'PMT(0.06/4;12;-50000)')
 # --- 4. Descuento / confirming ---
 f('dto_int', 'Descuento 20.000; 60 días; 6% Act/360: intereses', '20000*0.06*60/360')

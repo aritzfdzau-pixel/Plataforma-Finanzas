@@ -158,7 +158,9 @@ export function pendienteFrances(capital, i, n, k) {
  * @param {number} [p.carencia=0]  Periodos de carencia al inicio.
  * @param {'parcial'|'total'} [p.tipoCarencia='parcial']
  *        parcial: se pagan solo intereses; total: no se paga nada y los intereses se capitalizan.
- * @param {'frances'|'aleman'} [p.sistema='frances']
+ * @param {'frances'|'aleman'|'americano'} [p.sistema='frances']
+ *        frances: cuota constante; aleman: amortización constante; americano (bullet): solo
+ *        intereses y todo el capital en la última cuota.
  * @returns {{filas: Array, totales: object}}
  */
 export function cuadroAmortizacion({ capital, tipoPeriodo, periodos, carencia = 0, tipoCarencia = 'parcial', sistema = 'frances' }) {
@@ -169,7 +171,7 @@ export function cuadroAmortizacion({ capital, tipoPeriodo, periodos, carencia = 
     throw new Error('La carencia debe ser un entero entre 0 y el número de periodos − 1');
   }
   if (!['parcial', 'total'].includes(tipoCarencia)) throw new Error('Tipo de carencia no válido');
-  if (!['frances', 'aleman'].includes(sistema)) throw new Error('Sistema no válido');
+  if (!['frances', 'aleman', 'americano'].includes(sistema)) throw new Error('Sistema no válido');
 
   const filas = [];
   let pendiente = capital;
@@ -191,7 +193,8 @@ export function cuadroAmortizacion({ capital, tipoPeriodo, periodos, carencia = 
 
   for (let k = 1; k <= restantes; k++) {
     const intereses = pendiente * i;
-    let amortizacion = sistema === 'frances' ? cuotaFija - intereses : amortizacionFija;
+    // Americano (bullet): solo intereses; el capital entero se devuelve en la última cuota.
+    let amortizacion = sistema === 'frances' ? cuotaFija - intereses : sistema === 'aleman' ? amortizacionFija : 0;
     if (k === restantes) amortizacion = pendiente; // cierre exacto sin residuos de coma flotante
     pendiente -= amortizacion;
     filas.push({

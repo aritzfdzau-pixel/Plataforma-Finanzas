@@ -3,7 +3,7 @@
 export const OPERACIONES = [
   'fx-forward',
   'fx-conversion-bce',
-  'prestamo-frances-aleman',
+  'prestamo-amortizacion',
   'descuento-comercial',
   'tin-tae',
   'rentabilidad-volatilidad',

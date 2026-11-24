@@ -91,8 +91,8 @@
       "ultima_revision": "2026-11-24"
     },
     {
-      "ruta": "conocimiento/empresas/prestamos-frances-aleman.md",
-      "titulo": "Préstamos: sistema francés y alemán con carencia",
+      "ruta": "conocimiento/empresas/prestamos-sistemas-de-amortizacion.md",
+      "titulo": "Préstamos: sistemas de amortización (francés, alemán y americano) con carencia",
       "idioma": "es",
       "traduccion": null,
       "categoria": "empresas",
@@ -101,10 +101,12 @@
         "amortizacion",
         "cuadro",
         "carencia",
-        "financiacion"
+        "financiacion",
+        "bullet",
+        "cuota-constante"
       ],
       "operaciones": [
-        "prestamo-frances-aleman"
+        "prestamo-amortizacion"
       ],
       "patrones": [
         "P-003",
@@ -312,18 +314,20 @@
       ]
     },
     {
-      "id": "prestamo-frances-aleman",
-      "titulo": "Préstamo francés y alemán con carencia",
+      "id": "prestamo-amortizacion",
+      "titulo": "Préstamo: cuadro de amortización (francés, alemán, americano)",
       "tituloIngles": "Loan amortization schedule",
-      "resumen": "Cuadro de amortización con carencia parcial o total, exportable a CSV.",
+      "resumen": "Cuota constante, amortización constante o bullet; con carencia y exportable a CSV.",
       "categoria": "empresas",
-      "ficha": "conocimiento/empresas/prestamos-frances-aleman.md",
+      "ficha": "conocimiento/empresas/prestamos-sistemas-de-amortizacion.md",
       "etiquetas": [
         "prestamo",
         "amortizacion",
         "cuadro",
         "carencia",
-        "financiacion"
+        "financiacion",
+        "bullet",
+        "cuota-constante"
       ]
     },
     {

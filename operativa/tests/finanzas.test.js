@@ -126,6 +126,14 @@ test('P-005 cuadro alemán: amortización constante', () => {
   cerca(c.totales.intereses, ref('al_carp_int'), 1e-10);
 });
 
+test('P-005 cuadro americano (bullet): solo intereses y capital al final', () => {
+  const { filas, totales } = F.cuadroAmortizacion({ capital: 100000, tipoPeriodo: 0.05 / 12, periodos: 60, sistema: 'americano' });
+  cerca(filas[0].cuota, ref('am_cuota'));
+  cerca(filas.at(-1).cuota, ref('am_ultima'));
+  cerca(totales.intereses, ref('am_int'), 1e-10);
+  assert.throws(() => F.cuadroAmortizacion({ capital: 1000, tipoPeriodo: 0.01, periodos: 12, sistema: 'ingles' }));
+});
+
 test('P-005 validaciones del cuadro', () => {
   assert.throws(() => F.cuadroAmortizacion({ capital: 1000, tipoPeriodo: 0.01, periodos: 12, carencia: 12 }));
   assert.throws(() => F.cuadroAmortizacion({ capital: -1, tipoPeriodo: 0.01, periodos: 12 }));

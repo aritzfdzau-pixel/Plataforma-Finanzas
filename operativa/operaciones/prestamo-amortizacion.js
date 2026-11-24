@@ -1,13 +1,19 @@
 import { cuadroAmortizacion, tinATae } from '../lib/finanzas.js';
 import { positivo, entero, exigir, PERIODICIDADES, NOMBRE_PERIODICIDAD } from './_comun.js';
 
+const ETIQUETA_CUOTA = {
+  frances: 'Cuota constante (tras la carencia)',
+  aleman: 'Primera cuota (tras la carencia)',
+  americano: 'Cuota periódica: solo intereses (tras la carencia)',
+};
+
 export default {
-  id: 'prestamo-frances-aleman',
-  titulo: 'Préstamo francés y alemán con carencia',
+  id: 'prestamo-amortizacion',
+  titulo: 'Préstamo: cuadro de amortización (francés, alemán, americano)',
   tituloIngles: 'Loan amortization schedule',
   categoria: 'empresas',
-  ficha: 'conocimiento/empresas/prestamos-frances-aleman.md',
-  resumen: 'Cuadro de amortización con carencia parcial o total, exportable a CSV.',
+  ficha: 'conocimiento/empresas/prestamos-sistemas-de-amortizacion.md',
+  resumen: 'Cuota constante, amortización constante o bullet; con carencia y exportable a CSV.',
   campos: [
     { id: 'capital', etiqueta: 'Capital', unidad: 'EUR', tipo: 'numero', defecto: '100.000' },
     { id: 'tin', etiqueta: 'TIN anual', unidad: '%', tipo: 'porcentaje', defecto: '5,00' },
@@ -16,8 +22,12 @@ export default {
     { id: 'carencia', etiqueta: 'Periodos de carencia', tipo: 'entero', defecto: '6' },
     { id: 'tipoCarencia', etiqueta: 'Tipo de carencia', tipo: 'seleccion', defecto: 'parcial',
       opciones: [{ valor: 'parcial', etiqueta: 'Parcial (se pagan intereses)' }, { valor: 'total', etiqueta: 'Total (se capitalizan intereses)' }] },
-    { id: 'sistema', etiqueta: 'Sistema', tipo: 'seleccion', defecto: 'frances',
-      opciones: [{ valor: 'frances', etiqueta: 'Francés (cuota constante)' }, { valor: 'aleman', etiqueta: 'Alemán (amortización constante)' }] },
+    { id: 'sistema', etiqueta: 'Sistema de amortización', tipo: 'seleccion', defecto: 'frances',
+      opciones: [
+        { valor: 'frances', etiqueta: 'Cuota constante (francés)' },
+        { valor: 'aleman', etiqueta: 'Amortización constante (alemán)' },
+        { valor: 'americano', etiqueta: 'Todo al vencimiento (americano / bullet)' },
+      ] },
   ],
   calcular(v) {
     const capital = positivo(v.capital, 'Capital');
@@ -30,9 +40,11 @@ export default {
     const { filas, totales } = cuadroAmortizacion({ capital, tipoPeriodo: i, periodos, carencia, tipoCarencia: v.tipoCarencia, sistema: v.sistema });
     const primera = filas[carencia];
     const resultados = [
-      { id: 'cuota', etiqueta: v.sistema === 'frances' ? 'Cuota constante (tras la carencia)' : 'Primera cuota (tras la carencia)', valor: primera.cuota, formato: 'eur', destacado: true },
+      { id: 'cuota', etiqueta: ETIQUETA_CUOTA[v.sistema], valor: primera.cuota, formato: 'eur', destacado: true },
     ];
-    if (v.sistema === 'aleman') resultados.push({ id: 'ultima', etiqueta: 'Última cuota', valor: filas.at(-1).cuota, formato: 'eur' });
+    if (v.sistema !== 'frances') {
+      resultados.push({ id: 'ultima', etiqueta: v.sistema === 'americano' ? 'Última cuota (intereses + todo el capital)' : 'Última cuota', valor: filas.at(-1).cuota, formato: 'eur' });
+    }
     if (carencia > 0) {
       resultados.push({ id: 'cuotaCarencia', etiqueta: 'Cuota durante la carencia', valor: filas[0].cuota, formato: 'eur' });
       resultados.push({ id: 'capitalTrasCarencia', etiqueta: 'Capital pendiente al acabar la carencia', valor: filas[carencia - 1].pendiente, formato: 'eur' });
@@ -51,7 +63,10 @@ export default {
         nominalEfectivo: 'TIN nominal anual; TAE equivalente sin comisiones',
         comisiones: 'No incluidas (ni apertura ni amortización anticipada)',
       },
-      avisos: ['Importes sin redondear a céntimos en cada cuota: el cuadro de un banco puede diferir en céntimos.'],
+      avisos: [
+        'Importes sin redondear a céntimos en cada cuota: el cuadro de un banco puede diferir en céntimos.',
+        ...(v.sistema === 'americano' ? ['Bullet: la última cuota devuelve todo el capital; hay que prever esa liquidez (o refinanciarla).'] : []),
+      ],
       tabla: {
         nombreCsv: `cuadro-${v.sistema}.csv`,
         columnas: [

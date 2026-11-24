@@ -73,7 +73,7 @@ Verificado con LibreOffice Calc (`PAGO`, `VF`).
 
 ## Operaciones relacionadas
 - [Hipoteca variable: cuota y revisión](#op=hipoteca-variable)
-- [Préstamo francés y alemán con carencia](#op=prestamo-frances-aleman)
+- [Préstamo: cuadro de amortización (francés, alemán, americano)](#op=prestamo-amortizacion)
 - [Conversor TIN ↔ TAE](#op=tin-tae)
 
 ## Fuentes

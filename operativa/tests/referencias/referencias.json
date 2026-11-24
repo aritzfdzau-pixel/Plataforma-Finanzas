@@ -73,6 +73,22 @@
    "descripcion": "Alemán 100.000; 5%; 60 con 6 de carencia parcial: intereses totales",
    "valor": 13958.3333333333
   },
+  "am_cuota": {
+   "descripcion": "Americano (bullet) 100.000; 5% mensual; 60: cuota de intereses",
+   "valor": 416.666666666667
+  },
+  "am_ultima": {
+   "descripcion": "Americano 100.000; 5%; 60: última cuota (intereses + capital)",
+   "valor": 100416.666666667
+  },
+  "am_int": {
+   "descripcion": "Americano 100.000; 5%; 60: intereses totales",
+   "valor": 25000.0
+  },
+  "am_cart_int": {
+   "descripcion": "Americano 100.000; 5%; 60 con 6 de carencia total: intereses totales",
+   "valor": 25594.5788244372
+  },
   "fr_trim_cuota": {
    "descripcion": "Francés 50.000; TIN 6% trimestral; 3 años (12 cuotas)",
    "valor": 4583.99964531145
