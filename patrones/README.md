@@ -14,11 +14,11 @@ pasen los tests de todas las operaciones que lo usan.
 | P-003 | Conversión de tipos entre periodicidades (TIN ↔ TAE) | `tinATae`, `taeATin`, `periodicoAAnual` | `operativa/tests/finanzas.test.js` | tin-tae, prestamo-amortizacion | Estable |
 | P-004 | Descuento de flujos (VAN, TIR Newton-Raphson + bisección) | `van`, `tir`, `cambiosDeSigno` | `operativa/tests/finanzas.test.js` | van-tir, tin-tae | Estable |
 | P-005 | Cuadro de amortización (francés / alemán / americano, carencia) | `cuotaFrancesa`, `pendienteFrances`, `cuadroAmortizacion` | `operativa/tests/finanzas.test.js` | prestamo-amortizacion, hipoteca-variable, tin-tae, escenario-euribor | Estable |
-| P-006 | Rentabilidades, varianza y volatilidad | `rentabilidadesSimples`, `rentabilidadesLog`, `media`, `varianzaMuestral`, `desviacionMuestral`, `volatilidadAnualizada` | `operativa/tests/finanzas.test.js` | rentabilidad-volatilidad | Estable |
+| P-006 | Rentabilidades, varianza y volatilidad | `rentabilidadesSimples`, `rentabilidadesLog`, `media`, `varianzaMuestral`, `desviacionMuestral`, `volatilidadAnualizada` | `operativa/tests/finanzas.test.js` | rentabilidad-volatilidad, históricos | Estable |
 | P-007 | Paridad cubierta de tipos (forward) | `forwardParidad` | `operativa/tests/finanzas.test.js` | fx-forward | Estable |
 | P-008 | Conversión con tipo de referencia y redondeo | `redondear`, `convertirConReferencia` | `operativa/tests/finanzas.test.js` | fx-conversion-bce | Estable |
 | P-009 | Coste efectivo anual de un único flujo | `costeEfectivoAnual` | `operativa/tests/finanzas.test.js` | descuento-comercial | Estable |
-| P-010 | Lectura de tipos BCE y variación relativa (hoy / anterior − 1) | `parsearXmlBce`, `variacionRelativa`, `construirDatosBce` (en `scripts/bce.js`) | `tests/bce.test.js` | panel de divisas, fx-conversion-bce, fx-forward (relleno del tipo) | Estable |
+| P-010 | Lectura de tipos BCE y variación relativa (hoy / anterior − 1) | `parsearXmlBce`, `variacionRelativa`, `construirDatosBce` (en `scripts/bce.js`) | `tests/bce.test.js` | panel de divisas, fx-conversion-bce, fx-forward | Estable |
 | P-011 | Medias móviles y diferencias | `mediaMovil`, `diferencias` | `operativa/tests/finanzas.test.js` | históricos | Estable |
 | P-012 | Volatilidad EWMA (RiskMetrics, λ = 0,94) | `volatilidadEWMA` | `operativa/tests/finanzas.test.js` | históricos | Estable |
 | P-013 | Correlación de Pearson | `correlacion` | `operativa/tests/finanzas.test.js` | históricos | Estable |
