@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="dark light">
+  <title>Terminal financiero</title>
+  <meta name="description" content="Terminal financiero personal de estudio: operativa, divisas, noticias y conocimiento.">
+  <link rel="preload" href="fuentes/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fuentes/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- Aplica el tema guardado antes de pintar (evita parpadeo). -->
+  <script src="js/tema.js"></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <h1 class="marca">Terminal <span class="marca__acento">financiero</span></h1>
+      <div class="topbar__acciones">
+        <span class="topbar__buscar" title="Barra de comandos (fase 1)"><kbd>/</kbd> Buscar operaciones y fichas · próximamente</span>
+        <button type="button" class="button" id="cambiar-tema" aria-pressed="false">Modo claro</button>
+      </div>
+    </header>
+
+    <section class="zona zona--noticias" aria-labelledby="t-noticias">
+      <div class="zona__cabecera">
+        <h2 class="zona__titulo" id="t-noticias">Noticias</h2>
+        <span class="chip">Ver todas</span>
+      </div>
+      <div class="zona__cuerpo">
+        <span class="proximamente">Próximamente</span>
+        <p class="zona__descripcion">3–5 titulares de elEconomista, Financial Times, BCE y Banco de España (solo titular, fuente, hora y enlace).</p>
+      </div>
+    </section>
+
+    <section class="zona zona--divisas" aria-labelledby="t-divisas">
+      <div class="zona__cabecera">
+        <h2 class="zona__titulo" id="t-divisas">Divisas (FX)</h2>
+        <span class="chip">tiempo real (indicativo)</span>
+      </div>
+      <div class="zona__cuerpo">
+        <span class="proximamente">Próximamente</span>
+        <p class="zona__descripcion">EUR/USD · EUR/GBP · EUR/JPY. Panel completo con pares contra el euro, majors y tipos de referencia del BCE.</p>
+      </div>
+    </section>
+
+    <section class="zona zona--operativa" aria-labelledby="t-operativa">
+      <div class="zona__cabecera">
+        <h2 class="zona__titulo" id="t-operativa">Operativa</h2>
+        <ul class="leyenda" aria-label="Categorías">
+          <li class="chip cat cat--fx">FX</li>
+          <li class="chip cat cat--empresas">Empresas</li>
+          <li class="chip cat cat--bolsa-inversion">Bolsa e Inversión</li>
+          <li class="chip cat cat--real-estate">Real Estate</li>
+        </ul>
+      </div>
+      <div class="zona__cuerpo">
+        <span class="proximamente">Próximamente</span>
+        <p class="zona__descripcion">Listado de operaciones por categoría (cálculos, históricos y escenarios), desplegable a pantalla grande. Cada operación enlaza a su ficha.</p>
+      </div>
+    </section>
+
+    <section class="zona zona--conocimiento" aria-labelledby="t-conocimiento">
+      <div class="zona__cabecera">
+        <h2 class="zona__titulo" id="t-conocimiento">Conocimiento</h2>
+        <span class="chip">Fichas</span>
+      </div>
+      <div class="zona__cuerpo">
+        <span class="proximamente">Próximamente</span>
+        <p class="zona__descripcion">Añadir y consultar fichas de finanzas: qué es, para qué se usa, fórmulas, ejemplo resuelto, riesgos y operaciones relacionadas.</p>
+      </div>
+    </section>
+
+    <footer class="pie">
+      <p>Herramienta de estudio; resultados orientativos.</p>
+      <p>Ningún dato que introduzcas sale de tu navegador.</p>
+    </footer>
+  </div>
+</body>
+</html>

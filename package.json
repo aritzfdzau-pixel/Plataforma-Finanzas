@@ -1,0 +1,12 @@
+{
+  "name": "plataforma-finanzas",
+  "private": true,
+  "type": "module",
+  "description": "Terminal financiero personal: HTML + CSS + JS vanilla, sin dependencias.",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

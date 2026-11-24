@@ -1,0 +1,104 @@
+/* =====================================================================
+   Design tokens — ÚNICO archivo con valores de diseño.
+   Ningún otro CSS usa colores literales: solo var(--…).
+   Los pares texto/fondo se verifican (WCAG AA) en tests/contraste.test.js.
+   ===================================================================== */
+
+/* ---------- Tipografías alojadas (SIL OFL 1.1, ver web/fuentes/) ---------- */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fuentes/inter-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap; src: url("../fuentes/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fuentes/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fuentes/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("../fuentes/jetbrains-mono-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fuentes/jetbrains-mono-latin-600-normal.woff2") format("woff2"); }
+
+/* ---------- Tokens comunes a ambos temas ---------- */
+:root {
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --fs-2xs: 0.6875rem;  /* 11px */
+  --fs-xs:  0.75rem;    /* 12px */
+  --fs-sm:  0.8125rem;  /* 13px */
+  --fs-md:  0.875rem;   /* 14px */
+  --fs-lg:  1rem;       /* 16px */
+  --fs-xl:  1.25rem;    /* 20px */
+  --lh-tight: 1.25;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.7;    /* zona de conocimiento: mucho aire */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --tracking-label: 0.06em;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --border-width: 1px;
+  --max-width: 1600px;
+  --gutter: var(--space-3);   /* escritorio: densidad alta */
+  --gutter-mobile: var(--space-4);
+
+  --transition-fast: 120ms ease-out;
+  --focus-ring-width: 2px;
+}
+
+/* ---------- Tema oscuro (por defecto) ---------- */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #0B0D10;
+  --color-surface: #12151A;
+  --color-surface-raised: #181C22;
+  --color-border: #242A32;
+  --color-border-strong: #3A424D;
+
+  --color-text: #E4E7EB;
+  --color-text-muted: #9BA4AF;
+
+  --color-accent: #F0A63A;          /* ámbar: datos y elementos activos */
+  --color-accent-contrast: #0B0D10; /* texto sobre fondo ámbar */
+  --color-focus: #F0A63A;
+
+  --color-up: #3FD08A;              /* siempre con ▲ */
+  --color-down: #FF7070;            /* siempre con ▼ */
+
+  --cat-fx: #5AA9FF;
+  --cat-empresas: #B794F6;
+  --cat-bolsa-inversion: #2EC5C5;
+  --cat-real-estate: #F08CAE;
+  --cat-institucional: #A8B3C2;
+}
+
+/* ---------- Tema claro (opcional) ---------- */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #FAFBFC;
+  --color-border: #D6DBE1;
+  --color-border-strong: #AEB6C0;
+
+  --color-text: #14181F;
+  --color-text-muted: #525C68;
+
+  --color-accent: #935600;
+  --color-accent-contrast: #FFFFFF;
+  --color-focus: #935600;
+
+  --color-up: #0E7A43;
+  --color-down: #C2262E;
+
+  --cat-fx: #1F62C4;
+  --cat-empresas: #7043C4;
+  --cat-bolsa-inversion: #0A7C82;
+  --cat-real-estate: #B3315F;
+  --cat-institucional: #56606E;
+}

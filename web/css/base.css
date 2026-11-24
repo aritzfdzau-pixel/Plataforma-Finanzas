@@ -1,0 +1,86 @@
+/* Estilos base. Solo var(--…) de tokens.css; sin colores literales. */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--color-accent); text-underline-offset: 2px; }
+
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Números: monoespaciada, cifras tabulares, alineados a la derecha */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Subidas / bajadas: color + flecha SIEMPRE (la flecha la pone el CSS) */
+.var-up   { color: var(--color-up); }
+.var-down { color: var(--color-down); }
+.var-up::before   { content: "▲\00a0"; }
+.var-down::before { content: "▼\00a0"; }
+
+/* Etiquetas de categoría: un color fijo por categoría */
+.cat { --cat-color: var(--color-text-muted); }
+.cat--fx              { --cat-color: var(--cat-fx); }
+.cat--empresas        { --cat-color: var(--cat-empresas); }
+.cat--bolsa-inversion { --cat-color: var(--cat-bolsa-inversion); }
+.cat--real-estate     { --cat-color: var(--cat-real-estate); }
+.cat--institucional   { --cat-color: var(--cat-institucional); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  padding: 0 var(--space-2);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+.chip.cat { color: var(--cat-color); border-color: var(--cat-color); }
+.chip.cat::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--cat-color);
+}
+
+.button {
+  font: inherit; font-size: var(--fs-xs);
+  color: var(--color-text);
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+.button:hover { border-color: var(--color-accent); }
+
+kbd {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  padding: 0 var(--space-1);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+}
