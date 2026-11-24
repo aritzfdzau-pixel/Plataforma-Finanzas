@@ -6,15 +6,15 @@
 // Este archivo es el único de la web que conoce las direcciones de TradingView (lo comprueba
 // tests/estructura.test.js) y la CSP de index.html solo permite ese dominio en frame-src.
 //
-// ⚠️ Pendiente de verificar: la dirección /embed-widget/<tipo>/ es la que generan los scripts
-// oficiales de inserción de TradingView, pero no es una API documentada. Si cambia, los
-// widgets se quedan en blanco y basta con actualizar ORIGEN o RUTA aquí.
+// La dirección /embed-widget/<tipo>/ es la que generan los scripts oficiales de inserción de
+// TradingView (comprobada en la web publicada el 2026-11-24, D-026), pero no es una API
+// documentada. Si cambia, los widgets se quedan en blanco y basta con actualizar ORIGEN o RUTA.
 
 export const ORIGEN = 'https://www.tradingview-widget.com';
 const RUTA = '/embed-widget/';
 const TIPOS = new Set(['tickers', 'market-quotes', 'events']);
 
-/** Símbolo de TradingView para un par (proveedor ICE / FX_IDC). ⚠️ Pendiente de verificar. */
+/** Símbolo de TradingView para un par (proveedor ICE / FX_IDC; comprobado, D-026). */
 export const simbolo = (par) => `FX_IDC:${par}`;
 
 /** Dirección del widget: la configuración va en el fragmento (#), que no se envía al servidor. */

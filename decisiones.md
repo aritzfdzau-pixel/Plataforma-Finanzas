@@ -304,5 +304,8 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
   (`D_1NBAF472`) da 3,239 % en octubre de 2026, igual que el dato oficial publicado; se
   quita la marca ⚠️ de la serie. El registro de Actions muestra ahora el último dato de
   cada serie para repetir este contraste.
-- **TradingView:** pendiente de que Aritz lo compruebe en la web (no se puede ver desde el
-  entorno de desarrollo).
+- **TradingView:** Aritz comprueba en la web que los widgets cargan (dirección
+  `/embed-widget/` y símbolos `FX_IDC` correctos). Salían con fondo blanco: el iframe heredaba
+  `color-scheme: dark` de la página y el documento del widget no declara ninguno; cuando no
+  coinciden, el navegador pinta un fondo opaco. Se fija `color-scheme: normal` en `.tv-widget`.
+  Las flechas y colores dentro del widget son de TradingView y no siguen D-013.
