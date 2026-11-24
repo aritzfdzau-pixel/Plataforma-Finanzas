@@ -2,7 +2,7 @@
 titulo: "Título de la ficha"
 idioma: es                # es | en
 traduccion: ""            # ruta a la versión traducida (p. ej. tema.en.md) o vacío
-categoria: fx             # fx | empresas | bolsa-inversion | real-estate
+categoria: fx             # fx | empresas | bolsa-inversion | real-estate | macroeconomia
 etiquetas: []             # p. ej. [tipos-de-interes, cobertura]
 operaciones: []           # operaciones que genera, p. ej. [fx-forward]
 patrones: []              # patrones que usa (IDs del catálogo), p. ej. [P-001]

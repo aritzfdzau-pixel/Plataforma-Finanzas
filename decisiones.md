@@ -116,6 +116,17 @@ Las decisiones marcadas "⚠️ Pendiente de verificar" requieren confirmación 
   conocimiento; sus ejemplos se calculan en LibreOffice (referencias en `referencias.fods`).
 - **Propuesta pendiente para Aritz:** añadir una categoría "Fundamentos" (macroeconomía,
   sistema financiero, supervisión) para conocimiento que no encaja en las cuatro categorías.
+  → Resuelta en D-016.
+
+## D-016 · 2026-11-24 · Fase 1 (revisión) · Categoría Macroeconomía
+- **Decisión:** Aritz pide la categoría `macroeconomia` ("Macroeconomía") en lugar de
+  "Fundamentos". Cubre política monetaria, indicadores (PIB, inflación, M3) y sistema
+  financiero. Color fijo `--cat-macroeconomia`: #B5CF5A (oscuro) y #5C7A00 (claro), ambos
+  ≥ 4,5:1 sobre los tres fondos (test de contraste).
+- **Cambios:** `tipos-de-referencia-del-euro.md` pasa de `empresas/` a `macroeconomia/`;
+  nueva ficha `macroeconomia/indicadores-macroeconomicos.md` (ejemplos calculados en
+  LibreOffice: referencias `macro_*`).
+- **Pendiente:** las noticias de la fase 3 también usarán esta categoría (palabras clave por definir).
 
 ## Palabras clave para etiquetar noticias
 (Se rellenará en la fase 3; editable por Aritz.)

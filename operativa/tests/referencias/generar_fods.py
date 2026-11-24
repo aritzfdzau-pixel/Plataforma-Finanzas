@@ -65,6 +65,10 @@ f('bidask_usd_a_eur', 'Cliente vende 100.000 USD y compra EUR al ask 1,0852 (EUR
 f('bidask_eur_a_usd', 'Cliente vende 100.000 EUR y recibe USD al bid 1,0850', 'ROUND(100000*1.085;2)')
 f('bidask_mid', 'Precio medio de 1,0850/1,0852', '(1.085+1.0852)/2')
 f('letra_precio', 'Letra del Tesoro: nominal 1.000; 364 días; tipo 2,50% (Act/360, simple)', '1000/(1+0.025*364/360)')
+f('macro_deflactor', 'Deflactor del PIB: PIB nominal 1.500 / PIB real 1.400 x 100', '1500/1400*100')
+f('macro_inflacion_ipc', 'Inflación interanual: IPC 112,4 / IPC 108,0 - 1', '112.4/108-1')
+f('macro_tipo_real', 'Tipo real (Fisher exacta): (1+3,5%)/(1+2,5%) - 1', '(1+0.035)/(1+0.025)-1')
+f('macro_poder_compra', 'Poder adquisitivo de 1.000 € tras 3 años al 3% de inflación', '1000/(1+0.03)^3')
 f('letra_precio_6m', 'Letra del Tesoro: nominal 1.000; 182 días; tipo 2,25% (Act/360, simple)', '1000/(1+0.0225*182/360)')
 
 # --- 6. Rentabilidades: bloque de datos en celdas ---

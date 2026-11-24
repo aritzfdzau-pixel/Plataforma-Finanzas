@@ -4,6 +4,7 @@ export const CATEGORIAS = Object.freeze([
   { slug: 'empresas', nombre: 'Empresas' },
   { slug: 'bolsa-inversion', nombre: 'Bolsa e Inversión' },
   { slug: 'real-estate', nombre: 'Real Estate' },
+  { slug: 'macroeconomia', nombre: 'Macroeconomía' },
 ]);
 export const CATEGORIA_INSTITUCIONAL = Object.freeze({ slug: 'institucional', nombre: 'Institucional' });
 

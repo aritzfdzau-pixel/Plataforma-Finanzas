@@ -27,7 +27,7 @@ referencia (normalmente el **Euribor a un año**) + un **diferencial** fijo.
   el **capital pendiente** y los **meses que faltan**.
 - Índice oficial: la **media mensual del Euribor** que publica el Banco de España (el Euribor
   diario tiene licencia y no se usa aquí). En esta fase se introduce a mano. Más detalle en la
-  ficha [Tipos de referencia del euro](#ficha=conocimiento%2Fempresas%2Ftipos-de-referencia-del-euro.md).
+  ficha [Tipos de referencia del euro](#ficha=conocimiento%2Fmacroeconomia%2Ftipos-de-referencia-del-euro.md).
 - ⚠️ Pendiente de verificar: la Ley 5/2019 establece que el interés remuneratorio no puede ser
   negativo; por eso, por defecto, el TIN no baja de 0 %.
 - No se incluyen comisiones ni seguros vinculados.

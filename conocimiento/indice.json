@@ -136,29 +136,6 @@
       "ultima_revision": "2026-11-24"
     },
     {
-      "ruta": "conocimiento/empresas/tipos-de-referencia-del-euro.md",
-      "titulo": "Tipos de referencia del euro: tipos del BCE, €STR y Euribor",
-      "idioma": "es",
-      "traduccion": null,
-      "categoria": "empresas",
-      "etiquetas": [
-        "bce",
-        "politica-monetaria",
-        "estr",
-        "euribor",
-        "eonia",
-        "interbancario",
-        "facilidad-de-deposito",
-        "t2"
-      ],
-      "operaciones": [],
-      "patrones": [
-        "P-001",
-        "P-002"
-      ],
-      "ultima_revision": "2026-11-24"
-    },
-    {
       "ruta": "conocimiento/bolsa-inversion/deuda-publica-espanola.md",
       "titulo": "Deuda pública española: Letras, Bonos y Obligaciones, y la curva de tipos",
       "idioma": "es",
@@ -241,6 +218,50 @@
       ],
       "patrones": [
         "P-005"
+      ],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/macroeconomia/indicadores-macroeconomicos.md",
+      "titulo": "Indicadores macroeconómicos: PIB, inflación, tipo real y M3",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "macroeconomia",
+      "etiquetas": [
+        "pib",
+        "inflacion",
+        "ipc",
+        "ipca",
+        "deflactor",
+        "tipo-de-interes-real",
+        "fisher",
+        "m3",
+        "oferta-monetaria"
+      ],
+      "operaciones": [],
+      "patrones": [],
+      "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/macroeconomia/tipos-de-referencia-del-euro.md",
+      "titulo": "Tipos de referencia del euro: tipos del BCE, €STR y Euribor",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "macroeconomia",
+      "etiquetas": [
+        "bce",
+        "politica-monetaria",
+        "estr",
+        "euribor",
+        "eonia",
+        "interbancario",
+        "facilidad-de-deposito",
+        "t2"
+      ],
+      "operaciones": [],
+      "patrones": [
+        "P-001",
+        "P-002"
       ],
       "ultima_revision": "2026-11-24"
     }

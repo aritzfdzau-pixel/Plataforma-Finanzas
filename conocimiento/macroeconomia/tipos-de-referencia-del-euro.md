@@ -2,7 +2,7 @@
 titulo: "Tipos de referencia del euro: tipos del BCE, €STR y Euribor"
 idioma: es
 traduccion: ""
-categoria: empresas
+categoria: macroeconomia
 etiquetas: [bce, politica-monetaria, estr, euribor, eonia, interbancario, facilidad-de-deposito, t2]
 operaciones: []
 patrones: [P-001, P-002]

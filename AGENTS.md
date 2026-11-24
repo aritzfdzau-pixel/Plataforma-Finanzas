@@ -98,6 +98,7 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | Empresas | `empresas` | `--cat-empresas` |
 | Bolsa e Inversión | `bolsa-inversion` | `--cat-bolsa-inversion` |
 | Real Estate | `real-estate` | `--cat-real-estate` |
+| Macroeconomía (política monetaria, indicadores, sistema financiero) | `macroeconomia` | `--cat-macroeconomia` |
 | Institucional (solo noticias BCE / Banco de España) | `institucional` | `--cat-institucional` |
 
 ## 12. Estética

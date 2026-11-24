@@ -209,6 +209,22 @@
    "descripcion": "Letra del Tesoro: nominal 1.000; 364 días; tipo 2,50% (Act/360, simple)",
    "valor": 975.345434841506
   },
+  "macro_deflactor": {
+   "descripcion": "Deflactor del PIB: PIB nominal 1.500 / PIB real 1.400 x 100",
+   "valor": 107.142857142857
+  },
+  "macro_inflacion_ipc": {
+   "descripcion": "Inflación interanual: IPC 112,4 / IPC 108,0 - 1",
+   "valor": 0.0407407407407407
+  },
+  "macro_tipo_real": {
+   "descripcion": "Tipo real (Fisher exacta): (1+3,5%)/(1+2,5%) - 1",
+   "valor": 0.00975609756097562
+  },
+  "macro_poder_compra": {
+   "descripcion": "Poder adquisitivo de 1.000 € tras 3 años al 3% de inflación",
+   "valor": 915.14165935316
+  },
   "letra_precio_6m": {
    "descripcion": "Letra del Tesoro: nominal 1.000; 182 días; tipo 2,25% (Act/360, simple)",
    "valor": 988.752935360277
