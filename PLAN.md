@@ -10,7 +10,7 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 | --- | --- | --- | --- | --- |
 | 0 | Cimientos | Cerrada | `claude/intelligent-bardeen-t224t5` | #1 (fusionada) |
 | 1 | Operativa (modo simple) | Cerrada | `claude/intelligent-bardeen-t224t5` | #2 (fusionada) |
-| 2 | Divisas | En curso | `claude/intelligent-bardeen-t224t5` | — |
+| 2 | Divisas | En revisión | `claude/intelligent-bardeen-t224t5` | #3 |
 | 3 | Noticias | Pendiente | — | — |
 | 4 | Históricos | Pendiente | — | — |
 | 5 | Proyecciones y escenarios | Pendiente | — | — |
