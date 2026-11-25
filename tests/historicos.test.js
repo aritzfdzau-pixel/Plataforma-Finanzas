@@ -55,8 +55,9 @@ test('series oficiales configuradas: las del plan (tipos BCE, €STR, Euribor me
   const ids = SERIES_OFICIALES.map((s) => s.id);
   for (const id of ['dfr', 'mro', 'mlf', 'estr', 'euribor-12m']) assert.ok(ids.includes(id), id);
   for (const s of SERIES_OFICIALES) {
-    assert.match(s.url, /^https:\/\/(data-api\.ecb\.europa\.eu|app\.bde\.es)\//);
-    assert.ok(['referencia BCE', 'referencia Banco de España'].includes(s.etiqueta));
+    // Solo organismos oficiales (fase 8 añade Bundesbank, Banco de Inglaterra y FRED, D-036).
+    assert.match(s.url, /^https:\/\/(data-api\.ecb\.europa\.eu|app\.bde\.es|api\.statistiken\.bundesbank\.de|www\.bankofengland\.co\.uk|fred\.stlouisfed\.org)\//);
+    assert.ok(['referencia BCE', 'referencia Banco de España'].includes(s.etiqueta) || /^referencia oficial \(.+\)$/.test(s.etiqueta), s.etiqueta);
     assert.ok(['tipo', 'precio'].includes(s.tipo));
   }
   assert.equal(SERIES_OFICIALES.find((s) => s.id === 'euribor-12m').etiqueta, 'referencia Banco de España');

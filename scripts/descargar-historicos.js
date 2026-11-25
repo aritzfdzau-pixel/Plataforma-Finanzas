@@ -4,8 +4,9 @@
 // archivo publicado es de hoy y todas las series estaban bien, lo reutiliza.
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
-import { SERIES_OFICIALES } from './series-oficiales.js';
-import { parsearCsvBce, parsearJsonBde, construirHistoricos, necesitaDescarga } from './historicos.js';
+import { SERIES_OFICIALES, PRIMAS_RIESGO } from './series-oficiales.js';
+import { parsearSerie, construirHistoricos, necesitaDescarga, resultadosPrimas } from './historicos.js';
+import { serieDiferencial } from '../operativa/lib/finanzas.js';
 
 const [salida, respaldo] = process.argv.slice(2);
 if (!salida) { console.error('Uso: node scripts/descargar-historicos.js <salida.json> [url]'); process.exit(2); }
@@ -24,7 +25,7 @@ if (respaldo) {
 }
 
 let datos;
-if (!necesitaDescarga(anterior, ahora)) {
+if (!necesitaDescarga(anterior, ahora, [...SERIES_OFICIALES, ...PRIMAS_RIESGO].map((s) => s.id))) {
   datos = anterior;
   console.log(`Históricos: se reutiliza la descarga de hoy (${anterior.generado}).`);
 } else {
@@ -32,7 +33,8 @@ if (!necesitaDescarga(anterior, ahora)) {
   for (const serie of SERIES_OFICIALES) {
     try {
       const texto = await descargar(serie.url);
-      const puntos = serie.formato === 'bde-json' ? parsearJsonBde(texto) : parsearCsvBce(texto);
+      let puntos;
+      try { puntos = parsearSerie(serie.formato, texto); } catch (e) { throw new Error(`${e.message} · inicio de la respuesta: ${JSON.stringify(texto.slice(0, 160))}`); }
       console.log(`OK     ${serie.id}: ${puntos.length} observaciones (${puntos[0][0]} → ${puntos.at(-1)[0]})`);
       resultados.push({ serie, puntos });
     } catch (e) {
@@ -41,6 +43,7 @@ if (!necesitaDescarga(anterior, ahora)) {
       resultados.push({ serie, error });
     }
   }
+  resultados.push(...resultadosPrimas(PRIMAS_RIESGO, resultados, serieDiferencial));
   datos = construirHistoricos(resultados, anterior?.series, ahora);
 }
 

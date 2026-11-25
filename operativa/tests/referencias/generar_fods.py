@@ -149,6 +149,18 @@ f('ava_anual', 'Idem: % anual equivalente = coste / 100.000 x 365/365', '(4*MAX(
 f('ava2_total', 'Aval 10.000 a 200 días: CEILING(200 x 4/365) periodos x MAX(25; 30) + 0,5 % + 50', 'CEILING(200*4/365;1)*MAX(10000*0.01/4;30)+10000*0.005+50')
 f('ava2_anual', 'Idem: % anual equivalente (base 365)', '(CEILING(200*4/365;1)*MAX(10000*0.01/4;30)+10000*0.005+50)/10000*365/200')
 
+# --- Fase 8: renta fija y renta variable ---
+f('rf_prima_es', 'Prima de riesgo: 4,066 % - 3,416 % en pb', '(4.066-3.416)*100')
+f('rf_pendiente', 'Pendiente 10a-2a: 3,3121 % - 3,0168 % en pb', '(3.3121-3.0168)*100')
+f('bono_precio_anual', 'Bono cupón 3 % anual, 10 años, TIR 3,5 %: precio (VA de cupones y principal)', '-PV(0.035;10;3;100)')
+f('bono_precio_100pb', 'Idem con TIR 4,5 %', '-PV(0.045;10;3;100)')
+f('bono_precio_sem', 'Bono cupón 4 % semestral, 5 años, TIR 4,6 % (semestral): precio', '-PV(0.046/2;10;2;100)')
+f('bono_tir_9584', 'TIR de un bono cupón 3 % anual, 10 años, precio 95,84', 'RATE(10;3;-95.84;100)')
+f('bono_tir_sem', 'TIR semestral anualizada (x2) de cupón 4 %, 5 años, precio 102', '2*RATE(10;2;-102;100)')
+f('ind_acum', 'Índice de 10.000 a 11.500 puntos: rentabilidad acumulada', '11500/10000-1')
+f('ind_anual', 'Idem en 730 días: anualizada base 365', '(11500/10000)^(365/730)-1')
+f('ind_total', 'Idem con dividendo 3 % anual: total acumulada aproximada', '(11500/10000)*(1.03)^(730/365)-1')
+
 # --- 6. Rentabilidades: bloque de datos en celdas ---
 precios = [100, 102, 101, 105, 104, 108]
 

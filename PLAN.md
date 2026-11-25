@@ -15,7 +15,8 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 | 4 | Históricos | Cerrada | `claude/intelligent-bardeen-t224t5` | #5 (fusionada) |
 | 5 | Proyecciones y escenarios | Cerrada | `claude/intelligent-bardeen-t224t5` | #6 (fusionada) |
 | 6 | Aprendizaje continuo y mapa de conocimiento | Cerrada | `claude/intelligent-bardeen-t224t5` | #7 (fusionada) |
-| 7 | Análisis de empresas, circulante y operativa bancaria | En revisión | `claude/intelligent-bardeen-t224t5` | #12 |
+| 7 | Análisis de empresas, circulante y operativa bancaria | Cerrada | `claude/intelligent-bardeen-t224t5` | #12 (fusionada) |
+| 8 | Renta variable y renta fija | En revisión | `claude/intelligent-bardeen-t224t5` | #14 |
 
 ## Fase 0 — Cimientos
 - [x] Estructura de carpetas (`conocimiento/`, `patrones/`, `operativa/`, `datos/`, `web/`, `.github/`).
@@ -75,4 +76,13 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 - [x] Factoring con y sin recurso (`factoring`); confirming del cliente pagador (`confirming`); avales y garantías (`avales`).
 - [x] Patrones P-018 a P-022 con referencias de LibreOffice; 5 fichas nuevas y 2 actualizadas; sin huecos nuevos en el mapa.
 - [x] Interfaz genérica: campos agrupados, opcionales y condicionales, casilla, bloques de resultados desplegables y semáforo con icono y texto.
+
+## Fase 8 — Renta variable y renta fija
+- [x] Zona «Renta variable y renta fija (Equities & Fixed income)» bajo Divisas: cinta de 9 índices (TradingView) con la etiqueta de cada dato y línea de renta fija (10 años de España, Alemania, Reino Unido y EE. UU. y prima España–Alemania en pb, con ▲▼).
+- [x] Panel a pantalla grande con pestañas: Índices (por mercado y mapa de calor), Componentes (composición con fecha y fuente; gráfica de cada valor), Renta fija (curvas, pendiente 10a–2a y primas de riesgo frente al Bund) e Histórico y proyección (Históricos y Proyecciones reutilizados; modelo aditivo para rentabilidades).
+- [x] Series oficiales sin clave: Bundesbank, Banco de Inglaterra, Reserva Federal (FRED) y BCE (curva AAA y bono a 10 años por país), una descarga al día; primas de riesgo con P-023.
+- [x] Fuente de datos de acciones evaluada: ninguna válida para publicar gratis (D-035); widgets + CSV del usuario.
+- [x] Composición de 8 índices en `conocimiento/mercados/composicion-indices.json` y aviso mensual si tiene más de 3 meses.
+- [x] Patrones P-023 a P-025, operaciones `bono-precio-rentabilidad` y `rentabilidad-indice`, fichas de índices y de curva de tipos y prima de riesgo.
+- [x] Barra «/» con índices, valores y bonos; enlaces `#rv=…` y `#rf=…`.
 

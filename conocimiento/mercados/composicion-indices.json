@@ -1,0 +1,1808 @@
+{
+ "_descripcion": "Composición de índices bursátiles (nombre, ticker, sector). Datos públicos; se revisa cada mes (revisiones/README.md). tv = símbolo de TradingView para la gráfica.",
+ "_aviso": "⚠️ Pendiente de verificar: lista preparada a partir de conocimiento general hasta mediados de 2026; compruébala con la fuente antes de usarla.",
+ "indices": [
+  {
+   "id": "IBEX35",
+   "nombre": "IBEX 35",
+   "fecha_composicion": "2026-06-30",
+   "fuente": "BME (Bolsas y Mercados Españoles)",
+   "fuente_url": "https://www.bolsasymercados.es/bme-exchange/es/Indices/Ibex",
+   "completa": true,
+   "verificada": false,
+   "valores": [
+    {
+     "nombre": "Acciona",
+     "ticker": "ANA",
+     "tv": "BME:ANA",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Acciona Energía",
+     "ticker": "ANE",
+     "tv": "BME:ANE",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Acerinox",
+     "ticker": "ACX",
+     "tv": "BME:ACX",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "ACS",
+     "ticker": "ACS",
+     "tv": "BME:ACS",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Aena",
+     "ticker": "AENA",
+     "tv": "BME:AENA",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Amadeus IT Group",
+     "ticker": "AMS",
+     "tv": "BME:AMS",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "ArcelorMittal",
+     "ticker": "MTS",
+     "tv": "BME:MTS",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "Banco Sabadell",
+     "ticker": "SAB",
+     "tv": "BME:SAB",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Banco Santander",
+     "ticker": "SAN",
+     "tv": "BME:SAN",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Bankinter",
+     "ticker": "BKT",
+     "tv": "BME:BKT",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "BBVA",
+     "ticker": "BBVA",
+     "tv": "BME:BBVA",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "CaixaBank",
+     "ticker": "CABK",
+     "tv": "BME:CABK",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Cellnex Telecom",
+     "ticker": "CLNX",
+     "tv": "BME:CLNX",
+     "sector": "Telecomunicaciones"
+    },
+    {
+     "nombre": "Colonial",
+     "ticker": "COL",
+     "tv": "BME:COL",
+     "sector": "Inmobiliario"
+    },
+    {
+     "nombre": "Enagás",
+     "ticker": "ENG",
+     "tv": "BME:ENG",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Endesa",
+     "ticker": "ELE",
+     "tv": "BME:ELE",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Ferrovial",
+     "ticker": "FER",
+     "tv": "BME:FER",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Fluidra",
+     "ticker": "FDR",
+     "tv": "BME:FDR",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Grifols",
+     "ticker": "GRF",
+     "tv": "BME:GRF",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "IAG",
+     "ticker": "IAG",
+     "tv": "BME:IAG",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Iberdrola",
+     "ticker": "IBE",
+     "tv": "BME:IBE",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Inditex",
+     "ticker": "ITX",
+     "tv": "BME:ITX",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Indra",
+     "ticker": "IDR",
+     "tv": "BME:IDR",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Logista",
+     "ticker": "LOG",
+     "tv": "BME:LOG",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Mapfre",
+     "ticker": "MAP",
+     "tv": "BME:MAP",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Merlin Properties",
+     "ticker": "MRL",
+     "tv": "BME:MRL",
+     "sector": "Inmobiliario"
+    },
+    {
+     "nombre": "Naturgy",
+     "ticker": "NTGY",
+     "tv": "BME:NTGY",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Puig",
+     "ticker": "PUIG",
+     "tv": "BME:PUIG",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Redeia",
+     "ticker": "RED",
+     "tv": "BME:RED",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Repsol",
+     "ticker": "REP",
+     "tv": "BME:REP",
+     "sector": "Energía"
+    },
+    {
+     "nombre": "Laboratorios Rovi",
+     "ticker": "ROVI",
+     "tv": "BME:ROVI",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Sacyr",
+     "ticker": "SCYR",
+     "tv": "BME:SCYR",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Solaria",
+     "ticker": "SLR",
+     "tv": "BME:SLR",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Telefónica",
+     "ticker": "TEF",
+     "tv": "BME:TEF",
+     "sector": "Telecomunicaciones"
+    },
+    {
+     "nombre": "Unicaja Banco",
+     "ticker": "UNI",
+     "tv": "BME:UNI",
+     "sector": "Financiero"
+    }
+   ]
+  },
+  {
+   "id": "DAX40",
+   "nombre": "DAX 40",
+   "fecha_composicion": "2026-06-30",
+   "fuente": "Deutsche Börse (STOXX)",
+   "fuente_url": "https://www.stoxx.com/index-details?symbol=DAX",
+   "completa": true,
+   "verificada": false,
+   "valores": [
+    {
+     "nombre": "Adidas",
+     "ticker": "ADS",
+     "tv": "XETR:ADS",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Airbus",
+     "ticker": "AIR",
+     "tv": "XETR:AIR",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Allianz",
+     "ticker": "ALV",
+     "tv": "XETR:ALV",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "BASF",
+     "ticker": "BAS",
+     "tv": "XETR:BAS",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "Bayer",
+     "ticker": "BAYN",
+     "tv": "XETR:BAYN",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Beiersdorf",
+     "ticker": "BEI",
+     "tv": "XETR:BEI",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "BMW",
+     "ticker": "BMW",
+     "tv": "XETR:BMW",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Brenntag",
+     "ticker": "BNR",
+     "tv": "XETR:BNR",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Commerzbank",
+     "ticker": "CBK",
+     "tv": "XETR:CBK",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Continental",
+     "ticker": "CON",
+     "tv": "XETR:CON",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Daimler Truck",
+     "ticker": "DTG",
+     "tv": "XETR:DTG",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Deutsche Bank",
+     "ticker": "DBK",
+     "tv": "XETR:DBK",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Deutsche Börse",
+     "ticker": "DB1",
+     "tv": "XETR:DB1",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "DHL Group",
+     "ticker": "DHL",
+     "tv": "XETR:DHL",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Deutsche Telekom",
+     "ticker": "DTE",
+     "tv": "XETR:DTE",
+     "sector": "Telecomunicaciones"
+    },
+    {
+     "nombre": "E.ON",
+     "ticker": "EOAN",
+     "tv": "XETR:EOAN",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Fresenius",
+     "ticker": "FRE",
+     "tv": "XETR:FRE",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Fresenius Medical Care",
+     "ticker": "FME",
+     "tv": "XETR:FME",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Hannover Rück",
+     "ticker": "HNR1",
+     "tv": "XETR:HNR1",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Heidelberg Materials",
+     "ticker": "HEI",
+     "tv": "XETR:HEI",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "Henkel",
+     "ticker": "HEN3",
+     "tv": "XETR:HEN3",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Infineon Technologies",
+     "ticker": "IFX",
+     "tv": "XETR:IFX",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Mercedes-Benz Group",
+     "ticker": "MBG",
+     "tv": "XETR:MBG",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Merck KGaA",
+     "ticker": "MRK",
+     "tv": "XETR:MRK",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "MTU Aero Engines",
+     "ticker": "MTX",
+     "tv": "XETR:MTX",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Münchener Rück",
+     "ticker": "MUV2",
+     "tv": "XETR:MUV2",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Porsche AG",
+     "ticker": "P911",
+     "tv": "XETR:P911",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Porsche SE",
+     "ticker": "PAH3",
+     "tv": "XETR:PAH3",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Qiagen",
+     "ticker": "QIA",
+     "tv": "XETR:QIA",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Rheinmetall",
+     "ticker": "RHM",
+     "tv": "XETR:RHM",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "RWE",
+     "ticker": "RWE",
+     "tv": "XETR:RWE",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "SAP",
+     "ticker": "SAP",
+     "tv": "XETR:SAP",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Sartorius",
+     "ticker": "SRT3",
+     "tv": "XETR:SRT3",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Scout24",
+     "ticker": "G24",
+     "tv": "XETR:G24",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Siemens",
+     "ticker": "SIE",
+     "tv": "XETR:SIE",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Siemens Energy",
+     "ticker": "ENR",
+     "tv": "XETR:ENR",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Siemens Healthineers",
+     "ticker": "SHL",
+     "tv": "XETR:SHL",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Symrise",
+     "ticker": "SY1",
+     "tv": "XETR:SY1",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "Volkswagen",
+     "ticker": "VOW3",
+     "tv": "XETR:VOW3",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Vonovia",
+     "ticker": "VNA",
+     "tv": "XETR:VNA",
+     "sector": "Inmobiliario"
+    }
+   ]
+  },
+  {
+   "id": "SX5E",
+   "nombre": "Euro Stoxx 50",
+   "fecha_composicion": "2026-06-30",
+   "fuente": "STOXX",
+   "fuente_url": "https://www.stoxx.com/index-details?symbol=SX5E",
+   "completa": true,
+   "verificada": false,
+   "valores": [
+    {
+     "nombre": "Adidas",
+     "ticker": "ADS",
+     "tv": "XETR:ADS",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Adyen",
+     "ticker": "ADYEN",
+     "tv": "EURONEXT:ADYEN",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Ahold Delhaize",
+     "ticker": "AD",
+     "tv": "EURONEXT:AD",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Air Liquide",
+     "ticker": "AI",
+     "tv": "EURONEXT:AI",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "Airbus",
+     "ticker": "AIR",
+     "tv": "EURONEXT:AIR",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Allianz",
+     "ticker": "ALV",
+     "tv": "XETR:ALV",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Anheuser-Busch InBev",
+     "ticker": "ABI",
+     "tv": "EURONEXT:ABI",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "ASML Holding",
+     "ticker": "ASML",
+     "tv": "EURONEXT:ASML",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "AXA",
+     "ticker": "CS",
+     "tv": "EURONEXT:CS",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Banco Santander",
+     "ticker": "SAN",
+     "tv": "BME:SAN",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "BASF",
+     "ticker": "BAS",
+     "tv": "XETR:BAS",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "Bayer",
+     "ticker": "BAYN",
+     "tv": "XETR:BAYN",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "BBVA",
+     "ticker": "BBVA",
+     "tv": "BME:BBVA",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "BMW",
+     "ticker": "BMW",
+     "tv": "XETR:BMW",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "BNP Paribas",
+     "ticker": "BNP",
+     "tv": "EURONEXT:BNP",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Danone",
+     "ticker": "BN",
+     "tv": "EURONEXT:BN",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Deutsche Börse",
+     "ticker": "DB1",
+     "tv": "XETR:DB1",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Deutsche Telekom",
+     "ticker": "DTE",
+     "tv": "XETR:DTE",
+     "sector": "Telecomunicaciones"
+    },
+    {
+     "nombre": "DHL Group",
+     "ticker": "DHL",
+     "tv": "XETR:DHL",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Enel",
+     "ticker": "ENEL",
+     "tv": "MIL:ENEL",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Eni",
+     "ticker": "ENI",
+     "tv": "MIL:ENI",
+     "sector": "Energía"
+    },
+    {
+     "nombre": "EssilorLuxottica",
+     "ticker": "EL",
+     "tv": "EURONEXT:EL",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Ferrari",
+     "ticker": "RACE",
+     "tv": "MIL:RACE",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Hermès",
+     "ticker": "RMS",
+     "tv": "EURONEXT:RMS",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Iberdrola",
+     "ticker": "IBE",
+     "tv": "BME:IBE",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Inditex",
+     "ticker": "ITX",
+     "tv": "BME:ITX",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Infineon Technologies",
+     "ticker": "IFX",
+     "tv": "XETR:IFX",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "ING Groep",
+     "ticker": "INGA",
+     "tv": "EURONEXT:INGA",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Intesa Sanpaolo",
+     "ticker": "ISP",
+     "tv": "MIL:ISP",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Kering",
+     "ticker": "KER",
+     "tv": "EURONEXT:KER",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "L'Oréal",
+     "ticker": "OR",
+     "tv": "EURONEXT:OR",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "LVMH",
+     "ticker": "MC",
+     "tv": "EURONEXT:MC",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Mercedes-Benz Group",
+     "ticker": "MBG",
+     "tv": "XETR:MBG",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Münchener Rück",
+     "ticker": "MUV2",
+     "tv": "XETR:MUV2",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Nokia",
+     "ticker": "NOKIA",
+     "tv": "OMXHEX:NOKIA",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Nordea Bank",
+     "ticker": "NDA_FI",
+     "tv": "OMXHEX:NDA_FI",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Pernod Ricard",
+     "ticker": "RI",
+     "tv": "EURONEXT:RI",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Prosus",
+     "ticker": "PRX",
+     "tv": "EURONEXT:PRX",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Rheinmetall",
+     "ticker": "RHM",
+     "tv": "XETR:RHM",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Safran",
+     "ticker": "SAF",
+     "tv": "EURONEXT:SAF",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Saint-Gobain",
+     "ticker": "SGO",
+     "tv": "EURONEXT:SGO",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Sanofi",
+     "ticker": "SAN",
+     "tv": "EURONEXT:SAN",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "SAP",
+     "ticker": "SAP",
+     "tv": "XETR:SAP",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Schneider Electric",
+     "ticker": "SU",
+     "tv": "EURONEXT:SU",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Siemens",
+     "ticker": "SIE",
+     "tv": "XETR:SIE",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Siemens Energy",
+     "ticker": "ENR",
+     "tv": "XETR:ENR",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "TotalEnergies",
+     "ticker": "TTE",
+     "tv": "EURONEXT:TTE",
+     "sector": "Energía"
+    },
+    {
+     "nombre": "UniCredit",
+     "ticker": "UCG",
+     "tv": "MIL:UCG",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Vinci",
+     "ticker": "DG",
+     "tv": "EURONEXT:DG",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Wolters Kluwer",
+     "ticker": "WKL",
+     "tv": "EURONEXT:WKL",
+     "sector": "Industria"
+    }
+   ]
+  },
+  {
+   "id": "CAC40",
+   "nombre": "CAC 40",
+   "fecha_composicion": "2026-06-30",
+   "fuente": "Euronext",
+   "fuente_url": "https://live.euronext.com/en/product/indices/FR0003500008-XPAR",
+   "completa": true,
+   "verificada": false,
+   "valores": [
+    {
+     "nombre": "Accor",
+     "ticker": "AC",
+     "tv": "EURONEXT:AC",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Air Liquide",
+     "ticker": "AI",
+     "tv": "EURONEXT:AI",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "Airbus",
+     "ticker": "AIR",
+     "tv": "EURONEXT:AIR",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "ArcelorMittal",
+     "ticker": "MT",
+     "tv": "EURONEXT:MT",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "AXA",
+     "ticker": "CS",
+     "tv": "EURONEXT:CS",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "BNP Paribas",
+     "ticker": "BNP",
+     "tv": "EURONEXT:BNP",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Bouygues",
+     "ticker": "EN",
+     "tv": "EURONEXT:EN",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Bureau Veritas",
+     "ticker": "BVI",
+     "tv": "EURONEXT:BVI",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Capgemini",
+     "ticker": "CAP",
+     "tv": "EURONEXT:CAP",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Carrefour",
+     "ticker": "CA",
+     "tv": "EURONEXT:CA",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Crédit Agricole",
+     "ticker": "ACA",
+     "tv": "EURONEXT:ACA",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Danone",
+     "ticker": "BN",
+     "tv": "EURONEXT:BN",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Dassault Systèmes",
+     "ticker": "DSY",
+     "tv": "EURONEXT:DSY",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Edenred",
+     "ticker": "EDEN",
+     "tv": "EURONEXT:EDEN",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Engie",
+     "ticker": "ENGI",
+     "tv": "EURONEXT:ENGI",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "EssilorLuxottica",
+     "ticker": "EL",
+     "tv": "EURONEXT:EL",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Eurofins Scientific",
+     "ticker": "ERF",
+     "tv": "EURONEXT:ERF",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Hermès",
+     "ticker": "RMS",
+     "tv": "EURONEXT:RMS",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Kering",
+     "ticker": "KER",
+     "tv": "EURONEXT:KER",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Legrand",
+     "ticker": "LR",
+     "tv": "EURONEXT:LR",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "L'Oréal",
+     "ticker": "OR",
+     "tv": "EURONEXT:OR",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "LVMH",
+     "ticker": "MC",
+     "tv": "EURONEXT:MC",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Michelin",
+     "ticker": "ML",
+     "tv": "EURONEXT:ML",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Orange",
+     "ticker": "ORA",
+     "tv": "EURONEXT:ORA",
+     "sector": "Telecomunicaciones"
+    },
+    {
+     "nombre": "Pernod Ricard",
+     "ticker": "RI",
+     "tv": "EURONEXT:RI",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Publicis Groupe",
+     "ticker": "PUB",
+     "tv": "EURONEXT:PUB",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Renault",
+     "ticker": "RNO",
+     "tv": "EURONEXT:RNO",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Safran",
+     "ticker": "SAF",
+     "tv": "EURONEXT:SAF",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Saint-Gobain",
+     "ticker": "SGO",
+     "tv": "EURONEXT:SGO",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Sanofi",
+     "ticker": "SAN",
+     "tv": "EURONEXT:SAN",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Schneider Electric",
+     "ticker": "SU",
+     "tv": "EURONEXT:SU",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Société Générale",
+     "ticker": "GLE",
+     "tv": "EURONEXT:GLE",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Stellantis",
+     "ticker": "STLAP",
+     "tv": "EURONEXT:STLAP",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "STMicroelectronics",
+     "ticker": "STMPA",
+     "tv": "EURONEXT:STMPA",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Teleperformance",
+     "ticker": "TEP",
+     "tv": "EURONEXT:TEP",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Thales",
+     "ticker": "HO",
+     "tv": "EURONEXT:HO",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "TotalEnergies",
+     "ticker": "TTE",
+     "tv": "EURONEXT:TTE",
+     "sector": "Energía"
+    },
+    {
+     "nombre": "Unibail-Rodamco-Westfield",
+     "ticker": "URW",
+     "tv": "EURONEXT:URW",
+     "sector": "Inmobiliario"
+    },
+    {
+     "nombre": "Veolia",
+     "ticker": "VIE",
+     "tv": "EURONEXT:VIE",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Vinci",
+     "ticker": "DG",
+     "tv": "EURONEXT:DG",
+     "sector": "Industria"
+    }
+   ]
+  },
+  {
+   "id": "SPX",
+   "nombre": "S&P 500",
+   "fecha_composicion": "2026-06-30",
+   "fuente": "S&P Dow Jones Indices",
+   "fuente_url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
+   "completa": false,
+   "verificada": false,
+   "valores": [
+    {
+     "nombre": "Nvidia",
+     "ticker": "NVDA",
+     "tv": "NASDAQ:NVDA",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Microsoft",
+     "ticker": "MSFT",
+     "tv": "NASDAQ:MSFT",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Apple",
+     "ticker": "AAPL",
+     "tv": "NASDAQ:AAPL",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Amazon",
+     "ticker": "AMZN",
+     "tv": "NASDAQ:AMZN",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Alphabet (clase A)",
+     "ticker": "GOOGL",
+     "tv": "NASDAQ:GOOGL",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Meta Platforms",
+     "ticker": "META",
+     "tv": "NASDAQ:META",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Broadcom",
+     "ticker": "AVGO",
+     "tv": "NASDAQ:AVGO",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Alphabet (clase C)",
+     "ticker": "GOOG",
+     "tv": "NASDAQ:GOOG",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Tesla",
+     "ticker": "TSLA",
+     "tv": "NASDAQ:TSLA",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Berkshire Hathaway (B)",
+     "ticker": "BRK.B",
+     "tv": "NYSE:BRK.B",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "JPMorgan Chase",
+     "ticker": "JPM",
+     "tv": "NYSE:JPM",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Eli Lilly",
+     "ticker": "LLY",
+     "tv": "NYSE:LLY",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Visa",
+     "ticker": "V",
+     "tv": "NYSE:V",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Oracle",
+     "ticker": "ORCL",
+     "tv": "NYSE:ORCL",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Exxon Mobil",
+     "ticker": "XOM",
+     "tv": "NYSE:XOM",
+     "sector": "Energía"
+    },
+    {
+     "nombre": "Mastercard",
+     "ticker": "MA",
+     "tv": "NYSE:MA",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Netflix",
+     "ticker": "NFLX",
+     "tv": "NASDAQ:NFLX",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Walmart",
+     "ticker": "WMT",
+     "tv": "NASDAQ:WMT",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Costco",
+     "ticker": "COST",
+     "tv": "NASDAQ:COST",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Johnson & Johnson",
+     "ticker": "JNJ",
+     "tv": "NYSE:JNJ",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Home Depot",
+     "ticker": "HD",
+     "tv": "NYSE:HD",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Procter & Gamble",
+     "ticker": "PG",
+     "tv": "NYSE:PG",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "AbbVie",
+     "ticker": "ABBV",
+     "tv": "NYSE:ABBV",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Bank of America",
+     "ticker": "BAC",
+     "tv": "NYSE:BAC",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Palantir Technologies",
+     "ticker": "PLTR",
+     "tv": "NASDAQ:PLTR",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "UnitedHealth Group",
+     "ticker": "UNH",
+     "tv": "NYSE:UNH",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Advanced Micro Devices",
+     "ticker": "AMD",
+     "tv": "NASDAQ:AMD",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Coca-Cola",
+     "ticker": "KO",
+     "tv": "NYSE:KO",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Cisco Systems",
+     "ticker": "CSCO",
+     "tv": "NASDAQ:CSCO",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Salesforce",
+     "ticker": "CRM",
+     "tv": "NYSE:CRM",
+     "sector": "Tecnología"
+    }
+   ],
+   "alcance": "Solo los 30 mayores por peso (aproximado); el resto, en el mapa de calor."
+  },
+  {
+   "id": "NDX",
+   "nombre": "Nasdaq 100",
+   "fecha_composicion": "2026-06-30",
+   "fuente": "Nasdaq",
+   "fuente_url": "https://www.nasdaq.com/market-activity/quotes/nasdaq-ndx-index",
+   "completa": false,
+   "verificada": false,
+   "valores": [
+    {
+     "nombre": "Nvidia",
+     "ticker": "NVDA",
+     "tv": "NASDAQ:NVDA",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Microsoft",
+     "ticker": "MSFT",
+     "tv": "NASDAQ:MSFT",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Apple",
+     "ticker": "AAPL",
+     "tv": "NASDAQ:AAPL",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Amazon",
+     "ticker": "AMZN",
+     "tv": "NASDAQ:AMZN",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Broadcom",
+     "ticker": "AVGO",
+     "tv": "NASDAQ:AVGO",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Meta Platforms",
+     "ticker": "META",
+     "tv": "NASDAQ:META",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Alphabet (clase A)",
+     "ticker": "GOOGL",
+     "tv": "NASDAQ:GOOGL",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Alphabet (clase C)",
+     "ticker": "GOOG",
+     "tv": "NASDAQ:GOOG",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Tesla",
+     "ticker": "TSLA",
+     "tv": "NASDAQ:TSLA",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Netflix",
+     "ticker": "NFLX",
+     "tv": "NASDAQ:NFLX",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Costco",
+     "ticker": "COST",
+     "tv": "NASDAQ:COST",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Palantir Technologies",
+     "ticker": "PLTR",
+     "tv": "NASDAQ:PLTR",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Advanced Micro Devices",
+     "ticker": "AMD",
+     "tv": "NASDAQ:AMD",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Cisco Systems",
+     "ticker": "CSCO",
+     "tv": "NASDAQ:CSCO",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "T-Mobile US",
+     "ticker": "TMUS",
+     "tv": "NASDAQ:TMUS",
+     "sector": "Telecomunicaciones"
+    },
+    {
+     "nombre": "Walmart",
+     "ticker": "WMT",
+     "tv": "NASDAQ:WMT",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "PepsiCo",
+     "ticker": "PEP",
+     "tv": "NASDAQ:PEP",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Linde",
+     "ticker": "LIN",
+     "tv": "NASDAQ:LIN",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "Intuitive Surgical",
+     "ticker": "ISRG",
+     "tv": "NASDAQ:ISRG",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Intuit",
+     "ticker": "INTU",
+     "tv": "NASDAQ:INTU",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Qualcomm",
+     "ticker": "QCOM",
+     "tv": "NASDAQ:QCOM",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Adobe",
+     "ticker": "ADBE",
+     "tv": "NASDAQ:ADBE",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Booking Holdings",
+     "ticker": "BKNG",
+     "tv": "NASDAQ:BKNG",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Texas Instruments",
+     "ticker": "TXN",
+     "tv": "NASDAQ:TXN",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Amgen",
+     "ticker": "AMGN",
+     "tv": "NASDAQ:AMGN",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Applied Materials",
+     "ticker": "AMAT",
+     "tv": "NASDAQ:AMAT",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Honeywell",
+     "ticker": "HON",
+     "tv": "NASDAQ:HON",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Gilead Sciences",
+     "ticker": "GILD",
+     "tv": "NASDAQ:GILD",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Comcast",
+     "ticker": "CMCSA",
+     "tv": "NASDAQ:CMCSA",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Micron Technology",
+     "ticker": "MU",
+     "tv": "NASDAQ:MU",
+     "sector": "Tecnología"
+    }
+   ],
+   "alcance": "Solo los 30 mayores por peso (aproximado); el resto, en el mapa de calor."
+  },
+  {
+   "id": "DJI",
+   "nombre": "Dow Jones Industrial Average",
+   "fecha_composicion": "2026-06-30",
+   "fuente": "S&P Dow Jones Indices",
+   "fuente_url": "https://www.spglobal.com/spdji/en/indices/equity/dow-jones-industrial-average/",
+   "completa": true,
+   "verificada": false,
+   "valores": [
+    {
+     "nombre": "3M",
+     "ticker": "MMM",
+     "tv": "NYSE:MMM",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Amazon",
+     "ticker": "AMZN",
+     "tv": "NASDAQ:AMZN",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "American Express",
+     "ticker": "AXP",
+     "tv": "NYSE:AXP",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Amgen",
+     "ticker": "AMGN",
+     "tv": "NASDAQ:AMGN",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Apple",
+     "ticker": "AAPL",
+     "tv": "NASDAQ:AAPL",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Boeing",
+     "ticker": "BA",
+     "tv": "NYSE:BA",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Caterpillar",
+     "ticker": "CAT",
+     "tv": "NYSE:CAT",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Chevron",
+     "ticker": "CVX",
+     "tv": "NYSE:CVX",
+     "sector": "Energía"
+    },
+    {
+     "nombre": "Cisco Systems",
+     "ticker": "CSCO",
+     "tv": "NASDAQ:CSCO",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Coca-Cola",
+     "ticker": "KO",
+     "tv": "NYSE:KO",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Walt Disney",
+     "ticker": "DIS",
+     "tv": "NYSE:DIS",
+     "sector": "Comunicación"
+    },
+    {
+     "nombre": "Goldman Sachs",
+     "ticker": "GS",
+     "tv": "NYSE:GS",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Home Depot",
+     "ticker": "HD",
+     "tv": "NYSE:HD",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Honeywell",
+     "ticker": "HON",
+     "tv": "NASDAQ:HON",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "IBM",
+     "ticker": "IBM",
+     "tv": "NYSE:IBM",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Johnson & Johnson",
+     "ticker": "JNJ",
+     "tv": "NYSE:JNJ",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "JPMorgan Chase",
+     "ticker": "JPM",
+     "tv": "NYSE:JPM",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "McDonald's",
+     "ticker": "MCD",
+     "tv": "NYSE:MCD",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Merck & Co.",
+     "ticker": "MRK",
+     "tv": "NYSE:MRK",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Microsoft",
+     "ticker": "MSFT",
+     "tv": "NASDAQ:MSFT",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Nike",
+     "ticker": "NKE",
+     "tv": "NYSE:NKE",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "Nvidia",
+     "ticker": "NVDA",
+     "tv": "NASDAQ:NVDA",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Procter & Gamble",
+     "ticker": "PG",
+     "tv": "NYSE:PG",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Salesforce",
+     "ticker": "CRM",
+     "tv": "NYSE:CRM",
+     "sector": "Tecnología"
+    },
+    {
+     "nombre": "Sherwin-Williams",
+     "ticker": "SHW",
+     "tv": "NYSE:SHW",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "Travelers",
+     "ticker": "TRV",
+     "tv": "NYSE:TRV",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "UnitedHealth Group",
+     "ticker": "UNH",
+     "tv": "NYSE:UNH",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Verizon",
+     "ticker": "VZ",
+     "tv": "NYSE:VZ",
+     "sector": "Telecomunicaciones"
+    },
+    {
+     "nombre": "Visa",
+     "ticker": "V",
+     "tv": "NYSE:V",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Walmart",
+     "ticker": "WMT",
+     "tv": "NASDAQ:WMT",
+     "sector": "Consumo básico"
+    }
+   ],
+   "nota": "El Dow Jones tiene 30 valores: la lista es completa. Se pondera por precio, no por capitalización."
+  },
+  {
+   "id": "UKX",
+   "nombre": "FTSE 100",
+   "fecha_composicion": "2026-06-30",
+   "fuente": "FTSE Russell (LSEG)",
+   "fuente_url": "https://www.lseg.com/en/ftse-russell/indices/uk",
+   "completa": false,
+   "verificada": false,
+   "valores": [
+    {
+     "nombre": "AstraZeneca",
+     "ticker": "AZN",
+     "tv": "LSE:AZN",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "HSBC Holdings",
+     "ticker": "HSBA",
+     "tv": "LSE:HSBA",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Shell",
+     "ticker": "SHEL",
+     "tv": "LSE:SHEL",
+     "sector": "Energía"
+    },
+    {
+     "nombre": "Unilever",
+     "ticker": "ULVR",
+     "tv": "LSE:ULVR",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "RELX",
+     "ticker": "REL",
+     "tv": "LSE:REL",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "BP",
+     "ticker": "BP.",
+     "tv": "LSE:BP.",
+     "sector": "Energía"
+    },
+    {
+     "nombre": "British American Tobacco",
+     "ticker": "BATS",
+     "tv": "LSE:BATS",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "GSK",
+     "ticker": "GSK",
+     "tv": "LSE:GSK",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Rio Tinto",
+     "ticker": "RIO",
+     "tv": "LSE:RIO",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "London Stock Exchange Group",
+     "ticker": "LSEG",
+     "tv": "LSE:LSEG",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Rolls-Royce Holdings",
+     "ticker": "RR.",
+     "tv": "LSE:RR.",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Barclays",
+     "ticker": "BARC",
+     "tv": "LSE:BARC",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Lloyds Banking Group",
+     "ticker": "LLOY",
+     "tv": "LSE:LLOY",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "National Grid",
+     "ticker": "NG.",
+     "tv": "LSE:NG.",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Diageo",
+     "ticker": "DGE",
+     "tv": "LSE:DGE",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Compass Group",
+     "ticker": "CPG",
+     "tv": "LSE:CPG",
+     "sector": "Consumo discrecional"
+    },
+    {
+     "nombre": "BAE Systems",
+     "ticker": "BA.",
+     "tv": "LSE:BA.",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Glencore",
+     "ticker": "GLEN",
+     "tv": "LSE:GLEN",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "NatWest Group",
+     "ticker": "NWG",
+     "tv": "LSE:NWG",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Reckitt Benckiser",
+     "ticker": "RKT",
+     "tv": "LSE:RKT",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Experian",
+     "ticker": "EXPN",
+     "tv": "LSE:EXPN",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "Anglo American",
+     "ticker": "AAL",
+     "tv": "LSE:AAL",
+     "sector": "Materiales"
+    },
+    {
+     "nombre": "3i Group",
+     "ticker": "III",
+     "tv": "LSE:III",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Tesco",
+     "ticker": "TSCO",
+     "tv": "LSE:TSCO",
+     "sector": "Consumo básico"
+    },
+    {
+     "nombre": "Haleon",
+     "ticker": "HLN",
+     "tv": "LSE:HLN",
+     "sector": "Salud"
+    },
+    {
+     "nombre": "Prudential",
+     "ticker": "PRU",
+     "tv": "LSE:PRU",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Standard Chartered",
+     "ticker": "STAN",
+     "tv": "LSE:STAN",
+     "sector": "Financiero"
+    },
+    {
+     "nombre": "Ashtead Group",
+     "ticker": "AHT",
+     "tv": "LSE:AHT",
+     "sector": "Industria"
+    },
+    {
+     "nombre": "SSE",
+     "ticker": "SSE",
+     "tv": "LSE:SSE",
+     "sector": "Servicios públicos"
+    },
+    {
+     "nombre": "Vodafone Group",
+     "ticker": "VOD",
+     "tv": "LSE:VOD",
+     "sector": "Telecomunicaciones"
+    }
+   ],
+   "alcance": "Solo los 30 mayores por peso (aproximado); el resto, en el mapa de calor."
+  }
+ ]
+}

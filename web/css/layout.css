@@ -9,6 +9,7 @@
   grid-template-areas:
     "topbar      topbar"
     "noticias    divisas"
+    "noticias    mercados"
     "operativa   operativa"
     "historicos  historicos"
     "proyecciones proyecciones"
@@ -19,6 +20,7 @@
 .topbar   { grid-area: topbar; }
 .zona--noticias     { grid-area: noticias; }
 .zona--divisas      { grid-area: divisas; }
+.zona--mercados     { grid-area: mercados; }
 .zona--operativa    { grid-area: operativa; }
 .zona--historicos   { grid-area: historicos; }
 .zona--proyecciones { grid-area: proyecciones; }
@@ -111,6 +113,7 @@
       "topbar"
       "noticias"
       "divisas"
+      "mercados"
       "operativa"
       "historicos"
       "proyecciones"
@@ -125,3 +128,4 @@
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+.zona__cabecera .chip { white-space: normal; max-width: 100%; }

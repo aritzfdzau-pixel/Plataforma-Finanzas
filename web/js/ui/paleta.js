@@ -4,7 +4,8 @@ import { buscar } from '../lib/buscar.js';
 import { nombreCategoria } from '../lib/categorias.js';
 import { irA } from './rutas.js';
 
-export function iniciarPaleta(indice) {
+/** `extra`: promesa de elementos adicionales ({ titulo, categoria, tipo, hash, … }), p. ej. índices y valores. */
+export function iniciarPaleta(indice, extra = Promise.resolve([])) {
   const dialogo = document.getElementById('paleta');
   const input = document.getElementById('paleta-input');
   const lista = document.getElementById('paleta-resultados');
@@ -12,6 +13,7 @@ export function iniciarPaleta(indice) {
     ...indice.operaciones.map((o) => ({ ...o, tipo: 'Operación', hash: `#op=${encodeURIComponent(o.id)}`, descripcion: o.resumen })),
     ...indice.fichas.map((f) => ({ ...f, tipo: 'Ficha', hash: `#ficha=${encodeURIComponent(f.ruta)}` })),
   ].map((e) => ({ ...e, categoriaNombre: nombreCategoria(e.categoria) }));
+  extra.then((lista) => elementos.push(...lista.map((e) => ({ ...e, categoriaNombre: nombreCategoria(e.categoria) })))).catch(() => {});
   let resultados = []; let activo = 0;
 
   const pintar = () => {

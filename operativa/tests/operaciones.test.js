@@ -377,3 +377,22 @@ test('fase 7: las operaciones nuevas son de la categoría empresas y avisan de l
     assert.ok(op.tituloIngles, `${id}: falta el término inglés`);
   }
 });
+
+// --- Fase 8 -----------------------------------------------------------------
+test('bono-precio-rentabilidad: precio, TIR y escenario +100 pb = LibreOffice', async () => {
+  const r = await ejecutar('bono-precio-rentabilidad');
+  cerca(valor(r, 'precio'), ref('bono_precio_anual'));
+  cerca(valor(r, 'precioEscenario'), ref('bono_precio_100pb'));
+  assert.ok(valor(r, 'variacionPrecio') < 0, 'si sube la rentabilidad, baja el precio');
+  const t = await ejecutar('bono-precio-rentabilidad', { sentido: 'precio->tir' });
+  cerca(valor(t, 'tir'), ref('bono_tir_9584'), 1e-9);
+  const s = await ejecutar('bono-precio-rentabilidad', { frecuencia: '2', cupon: '4', anios: '5', tir: '4,6' });
+  cerca(valor(s, 'precio'), ref('bono_precio_sem'));
+});
+
+test('rentabilidad-indice: precio y total return aproximado = LibreOffice', async () => {
+  const r = await ejecutar('rentabilidad-indice');
+  cerca(valor(r, 'acumulada'), ref('ind_acum')); cerca(valor(r, 'anualizada'), ref('ind_anual'));
+  cerca(valor(r, 'totalAcumulada'), ref('ind_total'));
+  assert.equal((await cargarOperacion('rentabilidad-indice')).categoria, 'bolsa-inversion');
+});

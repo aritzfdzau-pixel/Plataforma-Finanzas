@@ -8,6 +8,7 @@ import { join } from 'node:path';
 import { RAIZ, construirIndice } from './indice.js';
 import { rangoMes, mesAnterior, fusionesDelMes, decisionesDelMes, pendientes, cuerpoRevision } from './revision.js';
 import { grafo, disponer, huecos } from '../web/js/lib/mapa.js';
+import { composicionDesfasada } from '../web/js/lib/mercados.js';
 
 const mes = process.argv[2] ?? mesAnterior(new Date().toISOString());
 const repo = process.argv[3] ?? process.env.GITHUB_REPOSITORY ?? '';
@@ -25,6 +26,8 @@ const rutas = git('ls-files').split('\n')
 const archivos = rutas.map((ruta) => ({ ruta, texto: readFileSync(join(RAIZ, ruta), 'utf8') }));
 
 const indice = await construirIndice();
+// Fase 8: aviso si la composición de algún índice tiene más de 3 meses (cambia con cada rebalanceo).
+const composicion = composicionDesfasada(JSON.parse(readFileSync(join(RAIZ, 'conocimiento/mercados/composicion-indices.json'), 'utf8')), new Date().toISOString(), 3);
 process.stdout.write(cuerpoRevision({
   mes,
   repo,
@@ -32,6 +35,7 @@ process.stdout.write(cuerpoRevision({
   decisiones: decisionesDelMes(decisionesMd, mes),
   listaPendientes: pendientes(archivos),
   huecos: huecos(disponer(grafo(indice))),
+  composicion,
   totales: {
     fichas: indice.fichas.length,
     operaciones: indice.operaciones.length,

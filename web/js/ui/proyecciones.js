@@ -27,6 +27,13 @@ export function pintarProyecciones(contenedor) {
   pintar();
 }
 
+/** Abre Montecarlo con la serie `id` de Históricos (botón «Proyectar» de otras zonas). */
+export function proyectarSerie(id) {
+  estado.pestana = 'montecarlo'; estado.id = id; estado.horizonte = null;
+  pintar();
+  raiz?.closest('.zona')?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+}
+
 function pintar() {
   vaciar(raiz);
   const lista = h('div', { class: 'pestanas', role: 'tablist', 'aria-label': 'Proyecciones y escenarios' },

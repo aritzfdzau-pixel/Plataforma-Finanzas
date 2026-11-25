@@ -54,7 +54,7 @@ export function pendientes(archivos) {
 }
 
 /** Cuerpo Markdown del issue de la revisión mensual. */
-export function cuerpoRevision({ mes, repo, fusiones, decisiones, listaPendientes, huecos, totales }) {
+export function cuerpoRevision({ mes, repo, fusiones, decisiones, listaPendientes, huecos, totales, composicion = [] }) {
   const enlacePr = (n) => (repo ? `[#${n}](https://github.com/${repo}/pull/${n})` : `#${n}`);
   const l = [];
   l.push(`# Revisión mensual ${mes}`, '');
@@ -77,7 +77,10 @@ export function cuerpoRevision({ mes, repo, fusiones, decisiones, listaPendiente
   if (h.fichasSinCalculo?.length) l.push(`- Fichas sin patrón ni operación: ${h.fichasSinCalculo.join(' · ')}`);
   if (h.operacionesSinPatron?.length) l.push(`- Operaciones sin patrón: ${h.operacionesSinPatron.join(' · ')}`);
   if (totales) l.push('', `Totales: ${totales.fichas} fichas · ${totales.operaciones} operaciones · ${totales.patrones} patrones · ${totales.decisiones} decisiones.`);
-  l.push('', '## 5. Qué hacer', '');
+  l.push('', '## 5. Composición de índices (más de 3 meses)', '');
+  if (composicion.length) composicion.forEach((c) => l.push(`- ⚠️ ${c.nombre} (${c.id}): composición del ${c.fecha ?? 'sin fecha'}; revisar con su fuente y actualizar \`conocimiento/mercados/composicion-indices.json\`.`));
+  else l.push('- Todas al día.');
+  l.push('', '## 6. Qué hacer', '');
   l.push('- [ ] Aritz pide en el chat: «Haz la revisión mensual de ' + mes + '».');
   l.push('- [ ] Claude prepara **una** PR con propuestas: patrones nuevos o mejorados, decisiones y normas (AGENTS.md), y el registro `revisiones/' + mes + '.md`.');
   l.push('- [ ] Aritz revisa y fusiona (o pide cambios en la misma PR).');

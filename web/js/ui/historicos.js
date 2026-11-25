@@ -70,9 +70,17 @@ export async function pintarHistoricos(raiz) {
 
 function resumen(datos) {
   if (!datos) return h('p', { class: 'vacio' }, 'Series oficiales no disponibles todavía (la tarea diaria las publica). Puedes subir tu propio CSV abajo.');
+  // Las de renta fija (fase 8) van plegadas: se ven completas en la zona de Renta variable y renta fija.
+  const generales = datos.series.filter((s) => s.grupo !== 'renta-fija');
+  const rf = datos.series.filter((s) => s.grupo === 'renta-fija');
+  return h('div', { class: 'historicos__resumen' }, tablaResumen(generales),
+    rf.length ? h('details', { class: 'tabla-op' }, h('summary', {}, `Renta fija soberana: rentabilidades y primas de riesgo (${rf.length} series)`), tablaResumen(rf)) : null);
+}
+
+function tablaResumen(series) {
   return h('div', { class: 'tabla-scroll' }, h('table', { class: 'tabla-num tabla-historicos' },
     h('thead', {}, h('tr', {}, ['Serie', 'Último', 'Fecha', 'Variación', 'Dato'].map((t) => h('th', { scope: 'col' }, t)))),
-    h('tbody', {}, datos.series.map((s) => h('tr', { class: s.id === estado.id ? 'is-activa' : '' },
+    h('tbody', {}, series.map((s) => h('tr', { class: s.id === estado.id ? 'is-activa' : '', 'data-serie': s.id },
       h('th', { scope: 'row' }, s.puntos.length >= 3
         ? h('button', { type: 'button', class: 'enlace-boton', onclick: () => { estado.id = s.id; estado.comparar = ''; pintarAnalisis(); marcarActiva(); } }, s.nombre)
         : s.nombre),
@@ -82,8 +90,15 @@ function resumen(datos) {
       h('td', {}, h('span', { class: 'chip' }, s.etiqueta), s.estado === 'error' ? h('small', { class: 'historicos__error' }, ` ⚠️ ${s.error}`) : null))))));
 }
 
+/** Muestra la serie `id` en el analizador (botón «Ver en Históricos» de otras zonas). */
+export function verSerieEnHistoricos(id) {
+  estado.id = id; estado.comparar = '';
+  pintarAnalisis(); marcarActiva();
+  document.getElementById('zona-historicos')?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+}
+
 function marcarActiva() {
-  document.querySelectorAll('.tabla-historicos tbody tr').forEach((tr, k) => tr.classList.toggle('is-activa', estado.series[k]?.id === estado.id));
+  document.querySelectorAll('.tabla-historicos tbody tr').forEach((tr) => tr.classList.toggle('is-activa', tr.dataset.serie === estado.id));
 }
 
 function pintarAnalisis() {

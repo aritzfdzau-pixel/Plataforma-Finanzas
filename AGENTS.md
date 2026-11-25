@@ -74,6 +74,11 @@ Todo dato mostrado lleva una de estas etiquetas:
 - **"con retraso"** — datos con demora conocida.
 - **"referencia BCE"** — tipos oficiales del BCE.
 (Las series del Banco de España se etiquetan como "referencia Banco de España".)
+- **"referencia oficial (organismo)"** — series de otros organismos oficiales, con su nombre:
+  "referencia oficial (Bundesbank)", "referencia oficial (Banco de Inglaterra)",
+  "referencia oficial (Reserva Federal)" (fase 8, D-036).
+- En los widgets de índices se indica además qué es el símbolo (índice oficial, CFD o índice de
+  TradingView), porque no siempre es el índice oficial (D-037).
 
 ## 8. Convenciones financieras
 - Mercado español por defecto.
@@ -128,12 +133,14 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | Ruta | Contenido |
 | --- | --- |
 | `conocimiento/<categoria>/` | Fichas (Markdown con cabecera YAML). Plantilla: `conocimiento/_plantilla.md` |
+| `conocimiento/mercados/` | Datos de referencia versionados: `composicion-indices.json` (composición de índices con fecha y fuente; se revisa cada mes) |
 | `patrones/` | Catálogo de patrones de cálculo reutilizables |
 | `operativa/lib/` | Funciones puras de cálculo |
 | `operativa/operaciones/` | Una operación por archivo (interfaz + uso de la lib) |
 | `operativa/tests/` | Tests de las funciones y operaciones financieras |
 | `operativa/tests/referencias/` | Hoja `.fods` con las fórmulas de referencia y sus resultados (LibreOffice) |
-| `scripts/` | Utilidades Node sin dependencias (`generar-indice.js`, `descargar-bce.js`, `descargar-noticias.js`, `fuentes-noticias.js`, `descargar-historicos.js`, `series-oficiales.js` y sus funciones puras) |
+| `scripts/` | Utilidades Node sin dependencias (`generar-indice.js`, `descargar-bce.js`, `descargar-noticias.js`, `fuentes-noticias.js`, `descargar-historicos.js`, `series-oficiales.js` —también las de renta fija y las primas de riesgo— y sus funciones puras) |
+| `web/js/lib/mercados.js` | Configuración editable de índices y símbolos de TradingView, países y series de renta fija (único sitio donde se eligen los símbolos) |
 | `datos/` | Archivos generados por tareas programadas (no editar a mano; ver `datos/README.md`) |
 | `web/` | Interfaz publicada en GitHub Pages |
 | `revisiones/` | Procedimiento de la revisión mensual (`README.md`) y un registro por mes (`AAAA-MM.md`) |
@@ -166,7 +173,9 @@ Piezas de la interfaz genérica (fase 7, D-033):
   "no significativo" y un aviso que lo explica.
 
 Enlaces internos de la web: `#op=<id>` abre una operación (admite valores de campos, p. ej.
-`#op=fx-forward&par=GBP`); `#ficha=<ruta>` abre una ficha.
+`#op=fx-forward&par=GBP`); `#ficha=<ruta>` abre una ficha; `#rv=<índice>[&valor=<ticker>]`
+abre la renta variable (p. ej. `#rv=IBEX35&valor=SAN`) y `#rf=<código>` la renta fija
+(p. ej. `#rf=ES10Y`, `#rf=PRIMA-ES`).
 
 ## 15. Aprendizaje continuo (revisión mensual)
 - Cada mes se repasan las PR fusionadas y las correcciones de Aritz, y lo aprendido se escribe

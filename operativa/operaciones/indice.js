@@ -17,6 +17,8 @@ export const OPERACIONES = [
   'factoring',
   'confirming',
   'avales',
+  'bono-precio-rentabilidad',
+  'rentabilidad-indice',
 ];
 
 export async function cargarOperacion(id) {
