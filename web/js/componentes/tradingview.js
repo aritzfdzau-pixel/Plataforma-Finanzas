@@ -17,10 +17,14 @@ const TIPOS = new Set(['tickers', 'market-quotes', 'events']);
 /** Símbolo de TradingView para un par (proveedor ICE / FX_IDC; comprobado, D-026). */
 export const simbolo = (par) => `FX_IDC:${par}`;
 
-/** Dirección del widget: la configuración va en el fragmento (#), que no se envía al servidor. */
+/** Dirección del widget: la configuración va en el fragmento (#), que no se envía al servidor.
+ *  En tema oscuro el widget pinta su propio fondo oscuro (isTransparent: false): si fuera
+ *  transparente, se vería el fondo que pone el navegador detrás del iframe, que puede ser
+ *  blanco (D-028). En tema claro sigue transparente sobre el fondo de la página. */
 export function urlWidget(tipo, config) {
   if (!TIPOS.has(tipo)) throw new Error(`Widget de TradingView no permitido: ${tipo}`);
-  const conf = { width: '100%', height: '100%', isTransparent: true, locale: 'es', ...config };
+  const transparente = config?.colorTheme !== 'dark';
+  const conf = { width: '100%', height: '100%', isTransparent: transparente, locale: 'es', ...config };
   return `${ORIGEN}${RUTA}${tipo}/?locale=es#${encodeURIComponent(JSON.stringify(conf))}`;
 }
 

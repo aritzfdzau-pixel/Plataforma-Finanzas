@@ -319,3 +319,14 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
   cabeceras propias), así que los `.md` y `.json` servidos sueltos no llevan la marca; no
   están enlazados desde fuera. El repositorio de GitHub es público e indexable aparte.
 
+## D-028 · 2026-11-25 · Ajuste · Widgets de TradingView con fondo propio en tema oscuro
+- **Problema:** Aritz vuelve a ver en blanco el panel de Divisas en la web publicada pese al
+  ajuste de `color-scheme` de D-026. Con el widget transparente, lo que se ve detrás es el
+  fondo que pinta el navegador bajo el iframe, y ese fondo depende del esquema de color que
+  declare el documento de TradingView, que no controlamos.
+- **Decisión:** en tema oscuro el widget se pide con `isTransparent: false`, de modo que pinta
+  su propio fondo oscuro y no depende del navegador. En tema claro sigue transparente. Se
+  mantiene `color-scheme: normal` en `.tv-widget`.
+- **Límite:** el oscuro de TradingView no es exactamente el de la web. Desde el entorno de
+  desarrollo no se llega a TradingView; la comprobación final es de Aritz en la web publicada.
+
