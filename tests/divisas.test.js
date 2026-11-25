@@ -67,3 +67,10 @@ test('TradingView: cotizaciones agrupadas y calendario filtrado por EUR, USD, GB
   assert.equal(c.countryFilter, PAISES_CALENDARIO);
   for (const pais of ['eu', 'us', 'gb', 'jp']) assert.ok(PAISES_CALENDARIO.split(',').includes(pais));
 });
+
+test('TradingView D-028: en tema oscuro el widget pinta su fondo (no transparente); en claro, transparente', () => {
+  const leer = (u) => JSON.parse(decodeURIComponent(new URL(u).hash.slice(1)));
+  assert.equal(leer(urlWidget('tickers', configTickers(['EURUSD'], 'dark'))).isTransparent, false);
+  assert.equal(leer(urlWidget('events', configCalendario('dark'))).isTransparent, false);
+  assert.equal(leer(urlWidget('market-quotes', configCotizaciones('G', ['EURUSD'], 'light'))).isTransparent, true);
+});
