@@ -309,3 +309,13 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
   `color-scheme: dark` de la página y el documento del widget no declara ninguno; cuando no
   coinciden, el navegador pinta un fondo opaco. Se fija `color-scheme: normal` en `.tv-widget`.
   Las flechas y colores dentro del widget son de TradingView y no siguen D-013.
+
+## D-027 · 2026-11-24 · Ajuste · La web no aparece en buscadores
+- **Decisión (Aritz):** `<meta name="robots" content="noindex, nofollow">` en `web/index.html`
+  y en la página de redirección. La web sigue abierta para quien tenga el enlace.
+- **Límites:** es una petición que respetan los buscadores principales, no un control de
+  acceso. No se puede usar `robots.txt` (en un sitio de proyecto de GitHub Pages solo cuenta el
+  de la raíz del dominio, que no es nuestro) ni la cabecera `X-Robots-Tag` (Pages no permite
+  cabeceras propias), así que los `.md` y `.json` servidos sueltos no llevan la marca; no
+  están enlazados desde fuera. El repositorio de GitHub es público e indexable aparte.
+
