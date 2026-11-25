@@ -1,7 +1,18 @@
 // Convierte los textos de un formulario en los valores que espera `calcular`. Puro (sin DOM).
 import { leerNumero, leerSerie } from './formato.js';
 
-export const TIPOS_CAMPO = ['numero', 'entero', 'porcentaje', 'seleccion', 'serie'];
+export const TIPOS_CAMPO = ['numero', 'entero', 'porcentaje', 'seleccion', 'serie', 'casilla'];
+
+/**
+ * Un campo con `visibleSi: { campo, valor }` solo se muestra (y se lee) cuando el campo
+ * `campo` tiene el texto `valor`; si no, su valor es null.
+ */
+export function campoVisible(c, textos = {}, campos = []) {
+  if (!c.visibleSi) return true;
+  const ref = campos.find((x) => x.id === c.visibleSi.campo);
+  const texto = textos[c.visibleSi.campo] ?? ref?.defecto ?? '';
+  return texto === c.visibleSi.valor;
+}
 
 /**
  * @param {Array} campos  Definición de campos de la operación.
@@ -13,6 +24,7 @@ export function leerCampos(campos, textos = {}) {
   const errores = {};
   for (const c of campos) {
     const texto = textos[c.id] ?? c.defecto ?? '';
+    if (!campoVisible(c, textos, campos)) { valores[c.id] = null; continue; }
     try {
       valores[c.id] = leerCampo(c, texto);
     } catch (e) {
@@ -23,7 +35,9 @@ export function leerCampos(campos, textos = {}) {
 }
 
 export function leerCampo(c, texto) {
+  if (c.tipo === 'casilla') return texto === 'si';
   if (c.tipo !== 'seleccion' && c.tipo !== 'serie' && String(texto ?? '').trim() === '') {
+    if (c.opcional) return null; // campo opcional vacío
     throw new Error('Obligatorio: introduce un valor');
   }
   switch (c.tipo) {

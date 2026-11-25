@@ -142,3 +142,27 @@ test('sentidoVariacion (D-013): flecha por dirección; en costes el color se inv
   assert.equal(sentidoVariacion(0, 'coste'), null);
   assert.equal(sentidoVariacion(Number.NaN), null);
 });
+
+// --- Fase 7: campos opcionales, condicionales y casilla; formatos "x" y días ----------
+test('campos: casilla, opcional vacío → null y visibleSi (oculto → null, sin validar)', async () => {
+  const { leerCampos, leerCampo, campoVisible } = await import('../web/js/lib/campos.js');
+  assert.equal(leerCampo({ id: 'c', tipo: 'casilla' }, 'si'), true);
+  assert.equal(leerCampo({ id: 'c', tipo: 'casilla' }, 'no'), false);
+  assert.equal(leerCampo({ id: 'o', tipo: 'numero', opcional: true }, ''), null);
+  assert.throws(() => leerCampo({ id: 'o', tipo: 'numero' }, ''), /Obligatorio/);
+  const campos = [
+    { id: 'con', tipo: 'casilla', defecto: 'no' },
+    { id: 'x', tipo: 'numero', defecto: '', visibleSi: { campo: 'con', valor: 'si' } },
+  ];
+  assert.equal(campoVisible(campos[1], {}, campos), false);
+  assert.deepEqual(leerCampos(campos, {}), { valores: { con: false, x: null }, errores: {} });
+  const visible = leerCampos(campos, { con: 'si' });
+  assert.ok(visible.errores.x, 'visible y vacío: obligatorio');
+  assert.equal(leerCampos(campos, { con: 'si', x: '1.000' }).valores.x, 1000);
+});
+
+test('formatear: veces ("x") y días con coma decimal es-ES', async () => {
+  const { formatear } = await import('../web/js/lib/formato.js');
+  assert.equal(formatear(2.72, 'veces:2'), '2,72x');
+  assert.equal(formatear(60.33, 'dias:1'), '60,3 días');
+});

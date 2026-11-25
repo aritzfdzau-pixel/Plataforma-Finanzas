@@ -543,6 +543,182 @@ export function escenarioTipoCambio({ importeDivisa, tipo, movimiento }) {
 }
 
 // ---------------------------------------------------------------------------
+// P-018 · Ratios de estados financieros
+// ---------------------------------------------------------------------------
+/** Cociente o null si el denominador es 0 (la operación decide cómo explicarlo). */
+export function cociente(a, b) {
+  comprobarFinito(a, 'numerador'); comprobarFinito(b, 'denominador');
+  return b === 0 ? null : a / b;
+}
+
+/**
+ * Ratios de un ejercicio. Importes en la misma unidad (EUR o miles de EUR).
+ * Devuelve null en los ratios cuyo denominador es 0.
+ */
+export function ratiosFinancieros(d) {
+  const campos = ['ventas', 'ebit', 'amortizaciones', 'gastosFinancieros', 'beneficioNeto', 'deudaCorto',
+    'deudaLargo', 'caja', 'fondosPropios', 'activoTotal', 'activoCorriente', 'pasivoCorriente', 'flujoServicioDeuda', 'servicioDeuda'];
+  for (const c of campos) comprobarFinito(d[c], c);
+  const ebitda = d.ebit + d.amortizaciones;
+  const deudaFinanciera = d.deudaCorto + d.deudaLargo;
+  const dfn = deudaFinanciera - d.caja;
+  return {
+    ebitda,
+    margenEbitda: cociente(ebitda, d.ventas),
+    margenNeto: cociente(d.beneficioNeto, d.ventas),
+    deudaFinanciera,
+    dfn,
+    dfnEbitda: ebitda > 0 ? dfn / ebitda : null, // con EBITDA ≤ 0 el ratio no es significativo
+    autonomiaFinanciera: cociente(d.fondosPropios, d.activoTotal),
+    fondoManiobra: d.activoCorriente - d.pasivoCorriente,
+    liquidez: cociente(d.activoCorriente, d.pasivoCorriente),
+    tesoreriaNeta: d.caja - d.deudaCorto,
+    dscr: cociente(d.flujoServicioDeuda, d.servicioDeuda),
+    coberturaIntereses: cociente(ebitda, d.gastosFinancieros),
+    roe: d.fondosPropios > 0 ? d.beneficioNeto / d.fondosPropios : null, // FP ≤ 0: no significativo
+    roa: cociente(d.beneficioNeto, d.activoTotal),
+  };
+}
+
+/** Tasa de variación (V_t − V_t−1) / V_t−1; null si el valor anterior es 0. */
+export function crecimiento(actual, anterior) {
+  comprobarFinito(actual, 'valor actual'); comprobarFinito(anterior, 'valor anterior');
+  return anterior === 0 ? null : (actual - anterior) / Math.abs(anterior);
+}
+
+// ---------------------------------------------------------------------------
+// P-019 · Semáforo orientativo de endeudamiento y cobertura de la deuda
+// ---------------------------------------------------------------------------
+// Umbrales: referencias generales de mercado, no criterios de ningún banco (D-029).
+export const UMBRALES_DFN_EBITDA = Object.freeze({ comodo: 3, elevado: 5 });
+export const UMBRALES_DSCR = Object.freeze({ noCubre: 1, aceptable: 1.2 });
+
+/** nivel: 'ok' | 'vigilancia' | 'alto' | 'nd' (no significativo). */
+export function semaforoDfnEbitda({ dfn, ebitda }) {
+  comprobarFinito(dfn, 'DFN'); comprobarFinito(ebitda, 'EBITDA');
+  if (ebitda <= 0) return { nivel: 'nd', texto: 'no significativo (EBITDA ≤ 0)' };
+  if (dfn < 0) return { nivel: 'ok', texto: 'caja neta positiva' };
+  const r = dfn / ebitda;
+  if (r < UMBRALES_DFN_EBITDA.comodo) return { nivel: 'ok', texto: 'cómodo' };
+  if (r < UMBRALES_DFN_EBITDA.elevado) return { nivel: 'vigilancia', texto: 'zona de vigilancia' };
+  return { nivel: 'alto', texto: 'elevado' };
+}
+
+export function semaforoDscr(dscr) {
+  if (dscr === null) return { nivel: 'nd', texto: 'no calculable (sin cuotas de deuda)' };
+  comprobarFinito(dscr, 'DSCR');
+  if (dscr >= UMBRALES_DSCR.aceptable) return { nivel: 'ok', texto: 'aceptable' };
+  if (dscr < UMBRALES_DSCR.noCubre) return { nivel: 'alto', texto: 'no cubre el servicio de la deuda' };
+  return { nivel: 'vigilancia', texto: 'ajustado' };
+}
+
+// ---------------------------------------------------------------------------
+// P-020 · Periodos medios, ciclo de caja y NOF
+// ---------------------------------------------------------------------------
+/**
+ * Periodos medios en días. Si los saldos de clientes y proveedores incluyen IVA, se dividen
+ * entre (1 + iva) para compararlos con ventas y compras (sin IVA). Existencias, sin IVA.
+ */
+export function periodosMedios({ ventas, compras, costeVentas, clientes, proveedores, existencias, dias = 365, iva = 0 }) {
+  for (const [v, n] of [[ventas, 'ventas'], [compras, 'compras'], [costeVentas, 'coste de ventas']]) {
+    comprobarFinito(v, n);
+    if (v <= 0) throw new Error(`${n}: debe ser mayor que 0 (es el denominador)`);
+  }
+  for (const [v, n] of [[clientes, 'clientes'], [proveedores, 'proveedores'], [existencias, 'existencias'], [iva, 'IVA']]) {
+    comprobarFinito(v, n);
+    if (v < 0) throw new Error(`${n}: no puede ser negativo`);
+  }
+  comprobarFinito(dias, 'días');
+  if (dias <= 0) throw new Error('Los días del periodo deben ser mayores que 0');
+  const pmc = (clientes / (1 + iva)) / ventas * dias;
+  const pmp = (proveedores / (1 + iva)) / compras * dias;
+  const pma = existencias / costeVentas * dias;
+  return { pmc, pmp, pma, cicloMaduracion: pma + pmc, cicloCaja: pma + pmc - pmp };
+}
+
+/** NOF = existencias + clientes + tesorería operativa − proveedores − otros acreedores operativos. */
+export function necesidadesOperativas({ existencias, clientes, proveedores, tesoreriaOperativa = 0, otrosAcreedores = 0 }) {
+  for (const [v, n] of [[existencias, 'existencias'], [clientes, 'clientes'], [proveedores, 'proveedores'],
+    [tesoreriaOperativa, 'tesorería operativa'], [otrosAcreedores, 'otros acreedores']]) {
+    comprobarFinito(v, n);
+    if (v < 0) throw new Error(`${n}: no puede ser negativo`);
+  }
+  return existencias + clientes + tesoreriaOperativa - proveedores - otrosAcreedores;
+}
+
+// ---------------------------------------------------------------------------
+// P-021 · Coste de una póliza de crédito (línea de crédito)
+// ---------------------------------------------------------------------------
+/**
+ * Convención: m liquidaciones al año; cada periodo dura 365/m días (año de 365 días, sin
+ * bisiestos) y sus intereses son saldo · tipo · (365/m) / base. Las comisiones de apertura y
+ * estudio se pagan al inicio sobre el límite. La de no disponibilidad se liquida con los
+ * intereses sobre (límite − saldo medio dispuesto). Coste efectivo anual: TIR de los flujos
+ * (P-004) anualizada (P-003), tomando como financiación el saldo medio dispuesto (+ excedido).
+ */
+export function costePolizaCredito({ limite, meses, tipo, saldoMedio, apertura = 0, estudio = 0, noDisponibilidad = 0,
+  periodosAnio = 4, base = 'ACT/360', tipoExcedido = 0, saldoExcedido = 0 }) {
+  for (const [v, n] of [[limite, 'límite'], [saldoMedio, 'saldo medio dispuesto']]) {
+    comprobarFinito(v, n);
+    if (v <= 0) throw new Error(`${n}: debe ser mayor que 0`);
+  }
+  if (saldoMedio > limite) throw new Error('El saldo medio dispuesto no puede superar el límite (usa el excedido)');
+  for (const [v, n] of [[tipo, 'tipo deudor'], [apertura, 'comisión de apertura'], [estudio, 'comisión de estudio'],
+    [noDisponibilidad, 'comisión de no disponibilidad'], [tipoExcedido, 'tipo de excedido'], [saldoExcedido, 'saldo excedido']]) {
+    comprobarFinito(v, n);
+    if (v < 0) throw new Error(`${n}: no puede ser negativo`);
+  }
+  if (![12, 4].includes(periodosAnio)) throw new Error('Liquidación mensual (12) o trimestral (4)');
+  if (!Number.isInteger(meses) || meses <= 0 || (meses * periodosAnio) % 12 !== 0) {
+    throw new Error('El plazo en meses debe ser un número entero de periodos de liquidación');
+  }
+  const n = (meses * periodosAnio) / 12;
+  const fraccion = fraccionAnio(365 / periodosAnio, base);
+  const interesesPeriodo = saldoMedio * tipo * fraccion;
+  const noDispPeriodo = (limite - saldoMedio) * noDisponibilidad * fraccion;
+  const excedidoPeriodo = saldoExcedido * tipoExcedido * fraccion;
+  const pagoPeriodo = interesesPeriodo + noDispPeriodo + excedidoPeriodo;
+  const comisionApertura = limite * apertura;
+  const comisionEstudio = limite * estudio;
+  const financiado = saldoMedio + saldoExcedido;
+  const flujos = [financiado - comisionApertura - comisionEstudio, ...Array(n).fill(-pagoPeriodo)];
+  flujos[n] -= financiado;
+  const r = tir(flujos);
+  return {
+    periodos: n,
+    interesesPeriodo,
+    intereses: interesesPeriodo * n,
+    interesesExcedido: excedidoPeriodo * n,
+    comisionApertura,
+    comisionEstudio,
+    comisionNoDisponibilidad: noDispPeriodo * n,
+    costeTotal: pagoPeriodo * n + comisionApertura + comisionEstudio,
+    costeEfectivo: r.tir === null ? null : periodicoAAnual(r.tir, periodosAnio),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// P-022 · Comisiones periódicas con mínimo por periodo (avales y garantías)
+// ---------------------------------------------------------------------------
+/**
+ * Comisión anual sobre un importe cobrada en m periodos al año; se cobra el periodo completo
+ * aunque solo se use una parte (sin prorrata) y cada cobro tiene un mínimo.
+ * Periodos = ⌈días / (365/m)⌉.
+ */
+export function comisionesPeriodicas({ importe, tasaAnual, dias, periodosAnio = 4, minimo = 0 }) {
+  comprobarFinito(importe, 'importe');
+  if (importe <= 0) throw new Error('El importe debe ser mayor que 0');
+  comprobarFinito(tasaAnual, 'comisión'); comprobarFinito(minimo, 'mínimo');
+  if (tasaAnual < 0 || minimo < 0) throw new Error('Comisión y mínimo no pueden ser negativos');
+  if (!Number.isInteger(dias) || dias <= 0) throw new Error('El plazo debe ser un número entero de días mayor que 0');
+  comprobarPeriodos(periodosAnio);
+  const periodos = Math.ceil((dias * periodosAnio) / 365 - 1e-12);
+  const calculada = (importe * tasaAnual) / periodosAnio;
+  const comisionPeriodo = Math.max(calculada, minimo);
+  return { periodos, comisionPeriodo, total: comisionPeriodo * periodos, aplicaMinimo: minimo > calculada };
+}
+
+// ---------------------------------------------------------------------------
 // Validaciones comunes
 // ---------------------------------------------------------------------------
 function comprobarPares(a, b) {

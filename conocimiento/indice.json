@@ -91,6 +91,49 @@
       "ultima_revision": "2026-11-24"
     },
     {
+      "ruta": "conocimiento/empresas/avales-y-garantias.md",
+      "titulo": "Avales y garantías bancarias: coste",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "empresas",
+      "etiquetas": [
+        "avales",
+        "garantias",
+        "bank-guarantee",
+        "comisiones",
+        "riesgo-de-firma"
+      ],
+      "operaciones": [
+        "avales"
+      ],
+      "patrones": [
+        "P-022"
+      ],
+      "ultima_revision": "2026-11-25"
+    },
+    {
+      "ruta": "conocimiento/empresas/circulante-nof.md",
+      "titulo": "Circulante: periodos medios, ciclo de caja y NOF",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "empresas",
+      "etiquetas": [
+        "circulante",
+        "working-capital",
+        "nof",
+        "fondo-de-maniobra",
+        "periodo-medio-de-cobro",
+        "ciclo-de-caja"
+      ],
+      "operaciones": [
+        "circulante-nof"
+      ],
+      "patrones": [
+        "P-020"
+      ],
+      "ultima_revision": "2026-11-25"
+    },
+    {
       "ruta": "conocimiento/empresas/descuento-comercial-confirming.md",
       "titulo": "Descuento comercial y confirming: coste efectivo",
       "idioma": "es",
@@ -104,14 +147,63 @@
         "coste-efectivo"
       ],
       "operaciones": [
-        "descuento-comercial"
+        "descuento-comercial",
+        "confirming"
       ],
       "patrones": [
         "P-001",
         "P-002",
         "P-009"
       ],
-      "ultima_revision": "2026-11-24"
+      "ultima_revision": "2026-11-25"
+    },
+    {
+      "ruta": "conocimiento/empresas/factoring.md",
+      "titulo": "Factoring: coste efectivo, con y sin recurso",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "empresas",
+      "etiquetas": [
+        "factoring",
+        "circulante",
+        "anticipo",
+        "coste-efectivo",
+        "recurso",
+        "cobro"
+      ],
+      "operaciones": [
+        "factoring"
+      ],
+      "patrones": [
+        "P-001",
+        "P-002",
+        "P-009"
+      ],
+      "ultima_revision": "2026-11-25"
+    },
+    {
+      "ruta": "conocimiento/empresas/poliza-de-credito.md",
+      "titulo": "Póliza de crédito: coste total y coste efectivo",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "empresas",
+      "etiquetas": [
+        "poliza-de-credito",
+        "linea-de-credito",
+        "circulante",
+        "comisiones",
+        "coste-efectivo",
+        "excedido"
+      ],
+      "operaciones": [
+        "poliza-credito"
+      ],
+      "patrones": [
+        "P-021",
+        "P-003",
+        "P-004"
+      ],
+      "ultima_revision": "2026-11-25"
     },
     {
       "ruta": "conocimiento/empresas/prestamos-sistemas-de-amortizacion.md",
@@ -126,16 +218,45 @@
         "carencia",
         "financiacion",
         "bullet",
-        "cuota-constante"
+        "cuota-constante",
+        "comisiones",
+        "tae",
+        "coste-total"
       ],
       "operaciones": [
         "prestamo-amortizacion"
       ],
       "patrones": [
         "P-003",
+        "P-004",
         "P-005"
       ],
-      "ultima_revision": "2026-11-24"
+      "ultima_revision": "2026-11-25"
+    },
+    {
+      "ruta": "conocimiento/empresas/ratios-analisis-financiero.md",
+      "titulo": "Análisis de estados financieros: ratios de una empresa",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "empresas",
+      "etiquetas": [
+        "ratios",
+        "ebitda",
+        "deuda-financiera-neta",
+        "dscr",
+        "liquidez",
+        "rentabilidad",
+        "solvencia",
+        "riesgo-de-credito"
+      ],
+      "operaciones": [
+        "analisis-estados-financieros"
+      ],
+      "patrones": [
+        "P-018",
+        "P-019"
+      ],
+      "ultima_revision": "2026-11-25"
     },
     {
       "ruta": "conocimiento/empresas/tin-tae.md",
@@ -390,6 +511,37 @@
       ]
     },
     {
+      "id": "avales",
+      "titulo": "Coste de avales y garantías",
+      "tituloIngles": "Bank guarantees cost",
+      "resumen": "Comisión de riesgo por periodo (con mínimo), formalización, gastos, coste total y % anual equivalente.",
+      "categoria": "empresas",
+      "ficha": "conocimiento/empresas/avales-y-garantias.md",
+      "etiquetas": [
+        "avales",
+        "garantias",
+        "bank-guarantee",
+        "comisiones",
+        "riesgo-de-firma"
+      ]
+    },
+    {
+      "id": "circulante-nof",
+      "titulo": "Circulante: periodos medios y NOF",
+      "tituloIngles": "Working capital: cash conversion cycle and operating needs",
+      "resumen": "PMC (alias PMR), PMP, PMA, ciclo de maduración y de caja; NOF frente al fondo de maniobra.",
+      "categoria": "empresas",
+      "ficha": "conocimiento/empresas/circulante-nof.md",
+      "etiquetas": [
+        "circulante",
+        "working-capital",
+        "nof",
+        "fondo-de-maniobra",
+        "periodo-medio-de-cobro",
+        "ciclo-de-caja"
+      ]
+    },
+    {
       "id": "descuento-comercial",
       "titulo": "Coste efectivo de descuento comercial / confirming",
       "tituloIngles": "Trade bill discounting / reverse factoring",
@@ -405,10 +557,57 @@
       ]
     },
     {
+      "id": "confirming",
+      "titulo": "Confirming: visión del cliente pagador",
+      "tituloIngles": "Reverse factoring (buyer side)",
+      "resumen": "Coste del servicio y del aplazamiento del pago para la empresa que paga a sus proveedores.",
+      "categoria": "empresas",
+      "ficha": "conocimiento/empresas/descuento-comercial-confirming.md",
+      "etiquetas": [
+        "descuento",
+        "confirming",
+        "circulante",
+        "anticipo",
+        "coste-efectivo"
+      ]
+    },
+    {
+      "id": "factoring",
+      "titulo": "Coste efectivo de factoring",
+      "tituloIngles": "Factoring cost",
+      "resumen": "Anticipo, intereses, comisiones, efectivo recibido y coste efectivo anual; con o sin recurso.",
+      "categoria": "empresas",
+      "ficha": "conocimiento/empresas/factoring.md",
+      "etiquetas": [
+        "factoring",
+        "circulante",
+        "anticipo",
+        "coste-efectivo",
+        "recurso",
+        "cobro"
+      ]
+    },
+    {
+      "id": "poliza-credito",
+      "titulo": "Coste de una póliza de crédito",
+      "tituloIngles": "Credit line cost",
+      "resumen": "Intereses sobre lo dispuesto, comisiones de apertura, estudio y no disponibilidad, excedido y coste efectivo anual.",
+      "categoria": "empresas",
+      "ficha": "conocimiento/empresas/poliza-de-credito.md",
+      "etiquetas": [
+        "poliza-de-credito",
+        "linea-de-credito",
+        "circulante",
+        "comisiones",
+        "coste-efectivo",
+        "excedido"
+      ]
+    },
+    {
       "id": "prestamo-amortizacion",
       "titulo": "Préstamo: cuadro de amortización (francés, alemán, americano)",
       "tituloIngles": "Loan amortization schedule",
-      "resumen": "Cuota constante, amortización constante o bullet; con carencia y exportable a CSV.",
+      "resumen": "Cuota constante, amortización constante o bullet; con carencia, comisiones, coste total y TAE; exportable a CSV.",
       "categoria": "empresas",
       "ficha": "conocimiento/empresas/prestamos-sistemas-de-amortizacion.md",
       "etiquetas": [
@@ -418,7 +617,28 @@
         "carencia",
         "financiacion",
         "bullet",
-        "cuota-constante"
+        "cuota-constante",
+        "comisiones",
+        "tae",
+        "coste-total"
+      ]
+    },
+    {
+      "id": "analisis-estados-financieros",
+      "titulo": "Análisis de estados financieros (ratios)",
+      "tituloIngles": "Financial statement analysis",
+      "resumen": "EBITDA, márgenes, DFN/EBITDA, liquidez, DSCR, cobertura de intereses, ROE y ROA con semáforo orientativo.",
+      "categoria": "empresas",
+      "ficha": "conocimiento/empresas/ratios-analisis-financiero.md",
+      "etiquetas": [
+        "ratios",
+        "ebitda",
+        "deuda-financiera-neta",
+        "dscr",
+        "liquidez",
+        "rentabilidad",
+        "solvencia",
+        "riesgo-de-credito"
       ]
     },
     {
@@ -511,7 +731,9 @@
       ],
       "operaciones": [
         "fx-forward",
-        "descuento-comercial"
+        "descuento-comercial",
+        "factoring",
+        "confirming"
       ],
       "otros": [],
       "estado": "Estable"
@@ -525,7 +747,9 @@
       ],
       "operaciones": [
         "fx-forward",
-        "descuento-comercial"
+        "descuento-comercial",
+        "factoring",
+        "confirming"
       ],
       "otros": [],
       "estado": "Estable"
@@ -540,7 +764,8 @@
       ],
       "operaciones": [
         "tin-tae",
-        "prestamo-amortizacion"
+        "prestamo-amortizacion",
+        "poliza-credito"
       ],
       "otros": [],
       "estado": "Estable"
@@ -555,7 +780,9 @@
       ],
       "operaciones": [
         "van-tir",
-        "tin-tae"
+        "tin-tae",
+        "prestamo-amortizacion",
+        "poliza-credito"
       ],
       "otros": [],
       "estado": "Estable"
@@ -628,7 +855,9 @@
         "costeEfectivoAnual"
       ],
       "operaciones": [
-        "descuento-comercial"
+        "descuento-comercial",
+        "factoring",
+        "confirming"
       ],
       "otros": [],
       "estado": "Estable"
@@ -737,6 +966,70 @@
       ],
       "operaciones": [
         "escenario-tipo-cambio"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-018",
+      "nombre": "Ratios de estados financieros (EBITDA, márgenes, DFN, liquidez, DSCR, rentabilidad)",
+      "funciones": [
+        "ratiosFinancieros",
+        "crecimiento",
+        "cociente"
+      ],
+      "operaciones": [
+        "analisis-estados-financieros"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-019",
+      "nombre": "Semáforo orientativo DFN/EBITDA y DSCR (umbrales generales de mercado)",
+      "funciones": [
+        "semaforoDfnEbitda",
+        "semaforoDscr"
+      ],
+      "operaciones": [
+        "analisis-estados-financieros"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-020",
+      "nombre": "Periodos medios (PMC, PMP, PMA), ciclo de caja y NOF (ajuste de IVA)",
+      "funciones": [
+        "periodosMedios",
+        "necesidadesOperativas"
+      ],
+      "operaciones": [
+        "circulante-nof"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-021",
+      "nombre": "Coste de una póliza de crédito (intereses, comisiones, excedido y coste efectivo por TIR)",
+      "funciones": [
+        "costePolizaCredito"
+      ],
+      "operaciones": [
+        "poliza-credito"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-022",
+      "nombre": "Comisiones periódicas con mínimo por periodo iniciado",
+      "funciones": [
+        "comisionesPeriodicas"
+      ],
+      "operaciones": [
+        "avales"
       ],
       "otros": [],
       "estado": "Estable"

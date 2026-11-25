@@ -96,6 +96,59 @@ f('macro_tipo_real', 'Tipo real (Fisher exacta): (1+3,5%)/(1+2,5%) - 1', '(1+0.0
 f('macro_poder_compra', 'Poder adquisitivo de 1.000 € tras 3 años al 3% de inflación', '1000/(1+0.03)^3')
 f('letra_precio_6m', 'Letra del Tesoro: nominal 1.000; 182 días; tipo 2,25% (Act/360, simple)', '1000/(1+0.0225*182/360)')
 
+# --- Fase 7: empresas (ejemplos inventados, importes redondos) ---
+# Análisis de estados financieros: ventas 2.000.000; EBIT 180.000; amortizaciones 70.000;
+# gastos financieros 40.000; BN 100.000; deuda CP 150.000 y LP 650.000; caja 120.000;
+# FP 900.000; activo 2.400.000; AC 1.000.000; PC 700.000; CFADS 260.000; cuotas 200.000.
+f('rat_ebitda', 'EBITDA = EBIT + amortizaciones', '180000+70000')
+f('rat_margen_ebitda', 'Margen EBITDA = EBITDA / ventas', '(180000+70000)/2000000')
+f('rat_margen_neto', 'Margen neto = BN / ventas', '100000/2000000')
+f('rat_crec_ventas', 'Crecimiento de ventas 2.000.000 frente a 1.850.000', '(2000000-1850000)/1850000')
+f('rat_dfn', 'DFN = deuda CP + LP - caja', '150000+650000-120000')
+f('rat_dfn_ebitda', 'DFN / EBITDA', '(150000+650000-120000)/(180000+70000)')
+f('rat_autonomia', 'Autonomía financiera = FP / activo total', '900000/2400000')
+f('rat_fm', 'Fondo de maniobra = AC - PC', '1000000-700000')
+f('rat_liquidez', 'Ratio de liquidez = AC / PC', '1000000/700000')
+f('rat_tes_neta', 'Tesorería neta = caja - deuda CP', '120000-150000')
+f('rat_dscr', 'DSCR = CFADS / cuotas', '260000/200000')
+f('rat_cobertura', 'Cobertura de intereses = EBITDA / gastos financieros', '(180000+70000)/40000')
+f('rat_roe', 'ROE = BN / FP', '100000/900000')
+f('rat_roa', 'ROA = BN / activo total', '100000/2400000')
+# Circulante: ventas 2.400.000; compras 1.500.000; coste de ventas 1.600.000; clientes 480.000;
+# proveedores 300.000; existencias 250.000; 365 días; saldos con IVA del 21 %.
+f('circ_pmc_iva', 'PMC con saldos con IVA 21 %: clientes/1,21/ventas x 365', '480000/1.21/2400000*365')
+f('circ_pmp_iva', 'PMP con saldos con IVA 21 %: proveedores/1,21/compras x 365', '300000/1.21/1500000*365')
+f('circ_pma', 'PMA = existencias / coste de ventas x 365', '250000/1600000*365')
+f('circ_ciclo_caja_iva', 'Ciclo de caja = PMA + PMC - PMP (con IVA)', '250000/1600000*365+480000/1.21/2400000*365-300000/1.21/1500000*365')
+f('circ_pmc', 'PMC sin ajuste de IVA', '480000/2400000*365')
+f('circ_ciclo_mad', 'Ciclo de maduración sin IVA = PMA + PMC', '250000/1600000*365+480000/2400000*365')
+f('circ_nof', 'NOF = existencias + clientes + tesorería 20.000 - proveedores - otros 30.000', '250000+480000+20000-300000-30000')
+# Póliza: límite 200.000; 12 meses; saldo medio 120.000; 5 % Act/360 trimestral; apertura 0,5 %;
+# estudio 0,25 %; no disponibilidad 0,10 %. Periodo de 365/4 días.
+f('pol_int_trim', 'Póliza: intereses por trimestre = 120.000 x 5 % x (365/4)/360', '120000*0.05*(365/4)/360')
+f('pol_int', 'Póliza: intereses del año (4 liquidaciones)', '4*120000*0.05*(365/4)/360')
+f('pol_nodisp', 'Póliza: no disponibilidad = 80.000 x 0,10 % x (365/4)/360 x 4', '4*80000*0.001*(365/4)/360')
+f('pol_total', 'Póliza: coste total = intereses + no disponibilidad + apertura 1.000 + estudio 500', '4*(120000*0.05+80000*0.001)*(365/4)/360+1000+500')
+f('pol_tae', 'Póliza: coste efectivo = (1 + TASA(4; -pago trimestral; 120.000 - 1.500; -120.000))^4 - 1', '(1+RATE(4;-(120000*0.05+80000*0.001)*(365/4)/360;120000-1500;-120000))^4-1')
+f('pol2_total', 'Póliza mensual Act/365: límite 200.000; saldo 150.000 al 6 %; no disp. 0,15 %; excedido 10.000 al 12 %; apertura 0,5 %: coste total', '12*(150000*0.06+50000*0.0015+10000*0.12)*(365/12)/365+1000')
+f('pol2_tae', 'Idem: coste efectivo sobre 160.000 (dispuesto + excedido)', '(1+RATE(12;-(150000*0.06+50000*0.0015+10000*0.12)*(365/12)/365;160000-1000;-160000))^12-1')
+# Préstamo con comisiones: 100.000; 5 % mensual; 60 cuotas francés sin carencia; apertura 1 %,
+# estudio 0,25 %, gastos 300.
+f('pre_com_tae', 'Préstamo francés con comisiones 1.250 y gastos 300: TAE', '(1+RATE(60;-PMT(0.05/12;60;-100000);100000-1250-300))^12-1')
+f('pre_com_total', 'Idem: coste financiero total = intereses + 1.550', '-CUMIPMT(0.05/12;60;100000;1;60;0)+1550')
+# Factoring: 100.000; anticipo 80 %; 90 días; 5 % Act/360; comisión 0,8 %; estudio 60 x 1 deudor.
+f('fac_int', 'Factoring: intereses = 80.000 x 5 % x 90/360', '80000*0.05*90/360')
+f('fac_efe', 'Factoring: efectivo = 80.000 - intereses - 800 - 60', '80000-80000*0.05*90/360-800-60')
+f('fac_tae', 'Factoring: coste efectivo = (80.000/efectivo)^(365/90) - 1', '(80000/(80000-80000*0.05*90/360-800-60))^(365/90)-1')
+# Confirming (cliente pagador): 50.000; comisión 0,10 %; aplazamiento 30 días al 4,5 % Act/360.
+f('cnf_int', 'Confirming pagador: intereses de aplazamiento = 50.000 x 4,5 % x 30/360', '50000*0.045*30/360')
+f('cnf_tae', 'Confirming pagador: coste efectivo = ((50.000 + intereses)/(50.000 - 50))^(365/30) - 1', '((50000+50000*0.045*30/360)/(50000-50))^(365/30)-1')
+# Avales: 100.000; 365 días; 1 % trimestral, mínimo 30; formalización 0,5 %; gastos 50.
+f('ava_total', 'Aval 100.000 un año: 4 x MAX(250; 30) + 500 + 50', '4*MAX(100000*0.01/4;30)+100000*0.005+50')
+f('ava_anual', 'Idem: % anual equivalente = coste / 100.000 x 365/365', '(4*MAX(100000*0.01/4;30)+100000*0.005+50)/100000*365/365')
+f('ava2_total', 'Aval 10.000 a 200 días: CEILING(200 x 4/365) periodos x MAX(25; 30) + 0,5 % + 50', 'CEILING(200*4/365;1)*MAX(10000*0.01/4;30)+10000*0.005+50')
+f('ava2_anual', 'Idem: % anual equivalente (base 365)', '(CEILING(200*4/365;1)*MAX(10000*0.01/4;30)+10000*0.005+50)/10000*365/200')
+
 # --- 6. Rentabilidades: bloque de datos en celdas ---
 precios = [100, 102, 101, 105, 104, 108]
 

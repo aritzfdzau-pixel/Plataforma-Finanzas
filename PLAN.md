@@ -14,7 +14,8 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 | 3 | Noticias | Cerrada | `claude/intelligent-bardeen-t224t5` | #4 (fusionada) |
 | 4 | Históricos | Cerrada | `claude/intelligent-bardeen-t224t5` | #5 (fusionada) |
 | 5 | Proyecciones y escenarios | Cerrada | `claude/intelligent-bardeen-t224t5` | #6 (fusionada) |
-| 6 | Aprendizaje continuo y mapa de conocimiento | En revisión | `claude/intelligent-bardeen-t224t5` | #7 |
+| 6 | Aprendizaje continuo y mapa de conocimiento | Cerrada | `claude/intelligent-bardeen-t224t5` | #7 (fusionada) |
+| 7 | Análisis de empresas, circulante y operativa bancaria | En revisión | `claude/intelligent-bardeen-t224t5` | (ver PR de la fase 7) |
 
 ## Fase 0 — Cimientos
 - [x] Estructura de carpetas (`conocimiento/`, `patrones/`, `operativa/`, `datos/`, `web/`, `.github/`).
@@ -65,3 +66,13 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 - [x] Procedimiento documentado de revisión mensual (`revisiones/README.md`, AGENTS.md §15).
 - [x] Tarea mensual que abre el issue con el resumen (PR, decisiones, ⚠️ pendientes, huecos).
 - [x] Mapa de conocimiento en SVG 2D: fichas ↔ patrones ↔ operaciones, con huecos (D-025).
+
+## Fase 7 — Análisis de empresas, circulante y operativa bancaria
+- [x] Análisis de estados financieros: EBITDA, márgenes, crecimiento, DFN/EBITDA, autonomía, liquidez, DSCR, cobertura, ROE y ROA, con semáforo orientativo y año anterior opcional (`analisis-estados-financieros`).
+- [x] Circulante: PMC (alias PMR), PMP, PMA, ciclos de maduración y de caja, NOF frente al fondo de maniobra, ajuste de IVA (`circulante-nof`).
+- [x] Coste de una póliza de crédito: intereses, apertura, estudio, no disponibilidad, excedido y coste efectivo (`poliza-credito`).
+- [x] Préstamo con comisiones y gastos: coste financiero total y TAE con comisiones (amplía `prestamo-amortizacion`).
+- [x] Factoring con y sin recurso (`factoring`); confirming del cliente pagador (`confirming`); avales y garantías (`avales`).
+- [x] Patrones P-018 a P-022 con referencias de LibreOffice; 5 fichas nuevas y 2 actualizadas; sin huecos nuevos en el mapa.
+- [x] Interfaz genérica: campos agrupados, opcionales y condicionales, casilla, bloques de resultados desplegables y semáforo con icono y texto.
+

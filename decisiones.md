@@ -330,3 +330,68 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
 - **Límite:** el oscuro de TradingView no es exactamente el de la web. Desde el entorno de
   desarrollo no se llega a TradingView; la comprobación final es de Aritz en la web publicada.
 
+## D-029 · 2026-11-25 · Fase 7 · Operaciones de empresas y patrones P-018 a P-022
+- **Decisión:** seis operaciones nuevas (`analisis-estados-financieros`, `circulante-nof`,
+  `poliza-credito`, `factoring`, `confirming`, `avales`) y `prestamo-amortizacion` ampliada con
+  comisiones de apertura y estudio, gastos iniciales, coste financiero total y TAE con comisiones.
+  Todas en la categoría `empresas`: son operativa de banca de empresas; ninguna encaja mejor en
+  otra (los avales y el factoring no son FX ni inversión).
+- **Préstamo:** se amplía la operación existente en lugar de crear `prestamo-coste-total`, porque
+  el cuadro (P-005) ya da las cuotas; la TAE con comisiones es la TIR de esas cuotas (P-004)
+  anualizada (P-003), así que vale para francés, alemán, americano y carencias. Se mantiene el
+  aviso de periodos iguales frente a días/365.
+- **Patrones nuevos:** P-018 ratios, P-019 semáforo, P-020 periodos medios y NOF, P-021 póliza de
+  crédito, P-022 comisiones periódicas con mínimo. Factoring y confirming reutilizan P-001,
+  P-002 y P-009.
+- **Semáforo (P-019):** DFN/EBITDA < 3x cómodo, 3x–5x zona de vigilancia, ≥ 5x elevado; con
+  EBITDA ≤ 0 no significativo; con DFN < 0, "caja neta positiva". DSCR ≥ 1,20x aceptable,
+  < 1,00x no cubre, entre medias ajustado. Son **referencias generales de mercado, no criterios
+  de ningún banco** (lo dicen la ficha y la interfaz). Siempre icono + texto.
+- **Divisiones por cero:** ventas y activo total deben ser > 0 (sin ellos no hay análisis). Con
+  PC, cuotas o gastos financieros en 0, el ratio afectado sale "no calculable" con un aviso; con
+  EBITDA ≤ 0 o FP ≤ 0, DFN/EBITDA y ROE salen "no significativo". Así no se pierden el resto de
+  ratios.
+- **Referencias:** todas las fórmulas, en `generar_fods.py` (prefijos `rat_`, `circ_`, `pol_`,
+  `pre_com_`, `fac_`, `cnf_`, `ava_`), calculadas por LibreOffice Calc (TASA, PAGO,
+  PAGO.INT.ENTRE, MAX, MULTIPLO.SUPERIOR).
+
+## D-030 · 2026-11-25 · Fase 7 · Confirming del cliente pagador en una operación aparte
+- **Decisión:** `descuento-comercial` mantiene la modalidad confirming (anticipo del proveedor) y se
+  crea `confirming` para el cliente pagador: comisión del servicio, gastos, intereses del
+  aplazamiento y coste efectivo del aplazamiento. Las dos las genera la misma ficha
+  (`descuento-comercial-confirming.md`).
+- **Motivo:** son dos empresas distintas con datos distintos (el proveedor anticipa un cobro; el
+  pagador aplaza un pago). Meterlo en el mismo formulario obligaba a campos que no se usan según
+  la modalidad y mezclaba "efectivo recibido" con "pago aplazado".
+- **Descartado:** un único formulario con tres modalidades.
+
+## D-031 · 2026-11-25 · Fase 7 · `variacion: 'coste'` en los sobrecostes
+- **Decisión:** en las operaciones de coste, `variacion: 'coste'` se pone en el resultado
+  **sobrecoste** (coste efectivo − tipo nominal; en avales, % anual − comisión de riesgo; en el
+  préstamo, TAE con comisiones − TAE sin comisiones), que sale con ▲ en rojo.
+- **Motivo:** según D-013, la flecha indica dirección. Marcar un importe de coste (que no es una
+  variación) mostraría "▲ sube" sin que nada suba. El sobrecoste sí es una diferencia, y es la
+  que interesa: cuánto encarecen las comisiones.
+
+## D-032 · 2026-11-25 · Fase 7 · Convenciones de cálculo (⚠️ Pendiente de verificar)
+- **Póliza:** cada liquidación dura 365/m días (año de 365 días) y el saldo dispuesto es constante
+  e igual al saldo medio. Apertura y estudio, sobre el límite y al inicio. La no disponibilidad se
+  liquida con los intereses, con la misma base. Coste efectivo: TIR de los flujos sobre el saldo
+  medio (+ excedido), no comparable con la TAE normalizada que publican las entidades.
+- **Factoring:** intereses sobre lo anticipado y cobrados por anticipado; comisión de factoring
+  sobre el nominal; IVA de las comisiones no incluido.
+- **Confirming del pagador:** comisión y gastos en la fecha original; intereses en la fecha
+  aplazada.
+- **Avales:** cada periodo iniciado se cobra entero (sin prorrata), por anticipado, con mínimo
+  por periodo; % anual equivalente simple sobre el importe (no hay financiación).
+- **Circulante:** un único tipo de IVA para homogeneizar clientes y proveedores.
+- **Ratios:** variantes de autonomía financiera, EBITDA y flujo del DSCR (explicadas en la ficha).
+
+## D-033 · 2026-11-25 · Fase 7 · Interfaz genérica de operaciones ampliada
+- **Decisión:** campos con `grupo`, `opcional`, `visibleSi` y tipo `casilla`; resultados con
+  `grupo` (bloques desplegables: divulgación progresiva), `estado` (semáforo) y `anterior`;
+  formatos `veces:N` y `dias:N`. Documentado en AGENTS.md §14.
+- **Motivo:** el análisis de estados financieros tiene 28 campos y 16 resultados; sin bloques no
+  se puede leer. Sigue sin haber lógica financiera en la interfaz.
+- **Nota:** Aritz ha comprobado en la web publicada que el panel de Divisas se ve bien tras D-028.
+

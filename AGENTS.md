@@ -156,6 +156,15 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
    `(#op=<id>)` en "Operaciones relacionadas". Los números del ejemplo resuelto salen de la operación.
 5. `node scripts/generar-indice.js` y `node --test`.
 
+Piezas de la interfaz genérica (fase 7, D-033):
+- **Campos:** `grupo` (se reúnen en un bloque con título), `opcional` (vacío → `null`),
+  `visibleSi: { campo, valor }` (oculto → `null`, no se valida) y el tipo `casilla`.
+- **Resultados:** `grupo` (bloque desplegable; lo que no tiene grupo queda a la vista),
+  `estado: { nivel: 'ok'|'vigilancia'|'alto'|'nd', texto }` (semáforo con icono y texto) y
+  `anterior` (valor del año anterior). Formatos `veces:N` ("2,72x") y `dias:N`.
+- Una división por cero no rompe la operación: el ratio afectado muestra "no calculable" o
+  "no significativo" y un aviso que lo explica.
+
 Enlaces internos de la web: `#op=<id>` abre una operación (admite valores de campos, p. ej.
 `#op=fx-forward&par=GBP`); `#ficha=<ruta>` abre una ficha.
 

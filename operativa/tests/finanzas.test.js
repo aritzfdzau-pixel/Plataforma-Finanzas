@@ -311,3 +311,72 @@ test('P-017 escenarioTipoCambio = contravalores de LibreOffice', () => {
   cerca(e.tipoEscenario, 1.085 * 0.95);
   assert.throws(() => F.escenarioTipoCambio({ importeDivisa: 1, tipo: 1, movimiento: -1 }));
 });
+
+// --- Fase 7: empresas -------------------------------------------------------
+const DATOS_EF = {
+  ventas: 2000000, ebit: 180000, amortizaciones: 70000, gastosFinancieros: 40000, beneficioNeto: 100000,
+  deudaCorto: 150000, deudaLargo: 650000, caja: 120000, fondosPropios: 900000, activoTotal: 2400000,
+  activoCorriente: 1000000, pasivoCorriente: 700000, flujoServicioDeuda: 260000, servicioDeuda: 200000,
+};
+
+test('P-018 ratiosFinancieros = fórmulas de LibreOffice (rat_*)', () => {
+  const r = F.ratiosFinancieros(DATOS_EF);
+  cerca(r.ebitda, ref('rat_ebitda')); cerca(r.margenEbitda, ref('rat_margen_ebitda')); cerca(r.margenNeto, ref('rat_margen_neto'));
+  cerca(r.dfn, ref('rat_dfn')); cerca(r.dfnEbitda, ref('rat_dfn_ebitda')); cerca(r.autonomiaFinanciera, ref('rat_autonomia'));
+  cerca(r.fondoManiobra, ref('rat_fm')); cerca(r.liquidez, ref('rat_liquidez')); cerca(r.tesoreriaNeta, ref('rat_tes_neta'));
+  cerca(r.dscr, ref('rat_dscr')); cerca(r.coberturaIntereses, ref('rat_cobertura')); cerca(r.roe, ref('rat_roe')); cerca(r.roa, ref('rat_roa'));
+  cerca(F.crecimiento(2000000, 1850000), ref('rat_crec_ventas'));
+});
+
+test('P-018 ratiosFinancieros: denominadores en 0 → null; EBITDA ≤ 0 y FP ≤ 0 → no significativo', () => {
+  const r = F.ratiosFinancieros({ ...DATOS_EF, pasivoCorriente: 0, servicioDeuda: 0, gastosFinancieros: 0, ebit: -70000, fondosPropios: -10 });
+  assert.equal(r.liquidez, null); assert.equal(r.dscr, null); assert.equal(r.coberturaIntereses, null);
+  assert.equal(r.ebitda, 0); assert.equal(r.dfnEbitda, null); assert.equal(r.roe, null);
+  assert.equal(F.crecimiento(100, 0), null);
+  assert.throws(() => F.ratiosFinancieros({ ...DATOS_EF, ventas: Number.NaN }));
+});
+
+test('P-019 semáforos: umbrales DFN/EBITDA (3x, 5x) y DSCR (1,00x, 1,20x) por definición', () => {
+  const s = (dfn, ebitda) => F.semaforoDfnEbitda({ dfn, ebitda });
+  assert.deepEqual([s(2.99, 1).nivel, s(3, 1).nivel, s(4.99, 1).nivel, s(5, 1).nivel], ['ok', 'vigilancia', 'vigilancia', 'alto']);
+  assert.equal(s(-1, 1).texto, 'caja neta positiva');
+  assert.equal(s(100, 0).nivel, 'nd'); assert.equal(s(100, -5).nivel, 'nd');
+  assert.deepEqual([F.semaforoDscr(1.2).texto, F.semaforoDscr(1.19).texto, F.semaforoDscr(1).texto, F.semaforoDscr(0.99).texto],
+    ['aceptable', 'ajustado', 'ajustado', 'no cubre el servicio de la deuda']);
+  assert.equal(F.semaforoDscr(null).nivel, 'nd');
+});
+
+test('P-020 periodosMedios y NOF = LibreOffice (circ_*), con y sin IVA', () => {
+  const base = { ventas: 2400000, compras: 1500000, costeVentas: 1600000, clientes: 480000, proveedores: 300000, existencias: 250000, dias: 365 };
+  const con = F.periodosMedios({ ...base, iva: 0.21 });
+  cerca(con.pmc, ref('circ_pmc_iva')); cerca(con.pmp, ref('circ_pmp_iva')); cerca(con.pma, ref('circ_pma'));
+  cerca(con.cicloCaja, ref('circ_ciclo_caja_iva'));
+  const sin = F.periodosMedios(base);
+  cerca(sin.pmc, ref('circ_pmc')); cerca(sin.cicloMaduracion, ref('circ_ciclo_mad'));
+  cerca(F.necesidadesOperativas({ existencias: 250000, clientes: 480000, proveedores: 300000, tesoreriaOperativa: 20000, otrosAcreedores: 30000 }), ref('circ_nof'));
+  assert.throws(() => F.periodosMedios({ ...base, ventas: 0 }), /ventas/);
+  assert.throws(() => F.periodosMedios({ ...base, costeVentas: 0 }), /coste de ventas/);
+});
+
+test('P-021 costePolizaCredito = LibreOffice (pol_*): trimestral Act/360 y mensual Act/365 con excedido', () => {
+  const p = F.costePolizaCredito({ limite: 200000, meses: 12, tipo: 0.05, saldoMedio: 120000, apertura: 0.005, estudio: 0.0025, noDisponibilidad: 0.001, periodosAnio: 4 });
+  cerca(p.interesesPeriodo, ref('pol_int_trim')); cerca(p.intereses, ref('pol_int')); cerca(p.comisionNoDisponibilidad, ref('pol_nodisp'));
+  cerca(p.costeTotal, ref('pol_total')); cerca(p.costeEfectivo, ref('pol_tae'), 1e-9);
+  const q = F.costePolizaCredito({ limite: 200000, meses: 12, tipo: 0.06, saldoMedio: 150000, apertura: 0.005, noDisponibilidad: 0.0015,
+    periodosAnio: 12, base: 'ACT/365', tipoExcedido: 0.12, saldoExcedido: 10000 });
+  cerca(q.costeTotal, ref('pol2_total')); cerca(q.costeEfectivo, ref('pol2_tae'), 1e-9);
+  assert.throws(() => F.costePolizaCredito({ limite: 100, meses: 12, tipo: 0.05, saldoMedio: 200 }), /límite/);
+  assert.throws(() => F.costePolizaCredito({ limite: 100, meses: 5, tipo: 0.05, saldoMedio: 50, periodosAnio: 4 }), /plazo/);
+});
+
+test('P-022 comisionesPeriodicas = LibreOffice (ava_*): periodos iniciados y mínimo', () => {
+  const a = F.comisionesPeriodicas({ importe: 100000, tasaAnual: 0.01, dias: 365, periodosAnio: 4, minimo: 30 });
+  assert.equal(a.periodos, 4); assert.equal(a.aplicaMinimo, false);
+  cerca(a.total + 500 + 50, ref('ava_total'));
+  const b = F.comisionesPeriodicas({ importe: 10000, tasaAnual: 0.01, dias: 200, periodosAnio: 4, minimo: 30 });
+  assert.equal(b.periodos, 3); assert.equal(b.aplicaMinimo, true);
+  cerca(b.total + 50 + 50, ref('ava2_total'));
+  // Un periodo exacto no cuenta como dos (por definición: 365/4 días × 4 = 365).
+  assert.equal(F.comisionesPeriodicas({ importe: 1, tasaAnual: 0, dias: 365, periodosAnio: 1 }).periodos, 1);
+  assert.throws(() => F.comisionesPeriodicas({ importe: 0, tasaAnual: 0.01, dias: 10 }));
+});

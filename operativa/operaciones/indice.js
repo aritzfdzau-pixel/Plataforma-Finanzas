@@ -11,6 +11,12 @@ export const OPERACIONES = [
   'hipoteca-variable',
   'escenario-tipo-cambio',
   'escenario-euribor',
+  'analisis-estados-financieros',
+  'circulante-nof',
+  'poliza-credito',
+  'factoring',
+  'confirming',
+  'avales',
 ];
 
 export async function cargarOperacion(id) {

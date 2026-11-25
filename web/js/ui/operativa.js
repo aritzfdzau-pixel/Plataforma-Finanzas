@@ -2,7 +2,7 @@
 import { h, vaciar, chipCategoria } from './dom.js';
 import { cargarOperacion } from '../../../operativa/operaciones/indice.js';
 import { AVISO_ESTUDIO } from '../../../operativa/operaciones/_comun.js';
-import { leerCampo } from '../lib/campos.js';
+import { leerCampo, campoVisible } from '../lib/campos.js';
 import { formatear, leerNumero, esMilesConPunto, numero, sentidoVariacion } from '../lib/formato.js';
 import { buscar } from '../lib/buscar.js';
 import { CATEGORIAS, nombreCategoria } from '../lib/categorias.js';
@@ -73,6 +73,9 @@ export async function pintarOperacion(contenedor, id, params = {}, { prefijo = '
     const valores = {}; let hayErrores = false;
     for (const c of op.campos) {
       const ayuda = form.querySelector(`[data-lectura="${c.id}"]`);
+      const visible = campoVisible(c, textos, op.campos);
+      form.querySelector(`[data-campo="${c.id}"]`).hidden = !visible;
+      if (!visible) { valores[c.id] = null; continue; }
       try {
         valores[c.id] = leerCampo(c, textos[c.id]);
         ayuda.textContent = lectura(c, textos[c.id], valores[c.id]);
@@ -92,7 +95,16 @@ export async function pintarOperacion(contenedor, id, params = {}, { prefijo = '
     }
   };
 
-  for (const c of op.campos) form.append(campo(c, textos, recalcular, prefijo));
+  // Los campos con `grupo` se reúnen en un fieldset con su título (p. ej. "Año anterior").
+  let grupoActual = null; let destino = form;
+  for (const c of op.campos) {
+    if ((c.grupo ?? null) !== grupoActual) {
+      grupoActual = c.grupo ?? null;
+      destino = grupoActual ? h('fieldset', { class: 'op__grupo' }, h('legend', {}, grupoActual)) : form;
+      if (grupoActual) form.append(destino);
+    }
+    destino.append(campo(c, textos, recalcular, prefijo));
+  }
   for (const c of conBce) {
     const nota = form.querySelector(`[data-nota-bce="${c.id}"]`);
     if (params[c.id] === undefined) nota.textContent = notaBce(c);
@@ -121,6 +133,14 @@ function campo(c, textos, recalcular, prefijo = 'campo') {
   const idInput = `${prefijo}-${c.id}`;
   let control;
   const alCambiar = (e) => { textos[c.id] = e.target.value; recalcular(); };
+  if (c.tipo === 'casilla') {
+    control = h('input', { id: idInput, type: 'checkbox', checked: textos[c.id] === 'si',
+      onchange: (e) => { textos[c.id] = e.target.checked ? 'si' : 'no'; recalcular(); } });
+    return h('div', { class: 'campo campo--casilla', 'data-campo': c.id },
+      h('label', { for: idInput }, control, ` ${c.etiqueta}`),
+      c.ayuda ? h('small', { class: 'campo__ayuda' }, c.ayuda) : null,
+      h('small', { class: 'campo__lectura', 'data-lectura': c.id }));
+  }
   if (c.tipo === 'seleccion') {
     control = h('select', { id: idInput, onchange: alCambiar },
       c.opciones.map((o) => h('option', { value: o.valor, selected: o.valor === textos[c.id] }, o.etiqueta)));
@@ -128,10 +148,11 @@ function campo(c, textos, recalcular, prefijo = 'campo') {
     control = h('textarea', { id: idInput, rows: 6, spellcheck: 'false', oninput: alCambiar });
     control.value = textos[c.id];
   } else {
-    control = h('input', { id: idInput, type: 'text', inputmode: c.tipo === 'entero' ? 'numeric' : 'decimal', autocomplete: 'off', spellcheck: 'false', oninput: alCambiar });
+    control = h('input', { id: idInput, type: 'text', inputmode: c.tipo === 'entero' ? 'numeric' : 'decimal', autocomplete: 'off', spellcheck: 'false', oninput: alCambiar,
+      placeholder: c.opcional ? 'opcional' : null });
     control.value = textos[c.id];
   }
-  return h('div', { class: `campo campo--${c.tipo}` },
+  return h('div', { class: `campo campo--${c.tipo}`, 'data-campo': c.id },
     h('label', { for: idInput }, c.etiqueta, c.unidad ? h('span', { class: 'campo__unidad' }, ` (${c.unidad})`) : null),
     control,
     c.ayuda ? h('small', { class: 'campo__ayuda' }, c.ayuda) : null,
@@ -141,28 +162,47 @@ function campo(c, textos, recalcular, prefijo = 'campo') {
 
 /** Texto que muestra cómo se ha interpretado lo escrito. */
 function lectura(c, texto, valor) {
-  if (c.tipo === 'seleccion') return '';
+  if (c.tipo === 'seleccion' || c.tipo === 'casilla') return '';
+  if (valor === null) return 'Sin dato (opcional)';
   if (c.tipo === 'serie') return `${valor.length} valores leídos`;
   const n = leerNumero(texto);
   const base = c.tipo === 'porcentaje' ? `= ${numero(n, 2, 6)} %` : `= ${numero(n, c.tipo === 'entero' ? 0 : 2, 6)}`;
   return esMilesConPunto(texto) ? `${base} (punto leído como separador de miles)` : base;
 }
 
+// Semáforo: siempre icono + texto (nunca solo color, AGENTS §12).
+const ICONO_ESTADO = { ok: '✓', vigilancia: '!', alto: '✕', nd: '–' };
+
+function filaResultado(r) {
+  const clases = ['num', 'res__valor'];
+  const sv = r.variacion ? sentidoVariacion(r.valor, r.variacion) : null;
+  if (sv) clases.push(sv.clase);
+  const numerico = Number.isFinite(r.valor);
+  const texto = r.variacion && numerico ? formatear(Math.abs(r.valor), r.formato) : formatear(r.valor, r.formato);
+  return h('div', { class: `res${r.destacado ? ' res--destacado' : ''}` },
+    h('dt', { class: 'res__etiqueta' }, r.etiqueta,
+      r.nota ? h('small', { class: 'res__nota' }, r.nota) : null,
+      r.anterior !== undefined && r.anterior !== null
+        ? h('small', { class: 'res__nota' }, `Año anterior: ${formatear(r.anterior, r.formato)}`) : null),
+    h('dd', { class: clases.join(' ') },
+      sv ? h('span', { class: 'visually-hidden' }, sv.texto) : null,
+      texto,
+      r.estado ? h('span', { class: `semaforo semaforo--${r.estado.nivel}` },
+        h('span', { 'aria-hidden': 'true' }, ICONO_ESTADO[r.estado.nivel] ?? ''), ` ${r.estado.texto}`) : null));
+}
+
 function pintarResultado(salida, res) {
-  const filas = res.resultados.map((r) => {
-    const clases = ['num', 'res__valor'];
-    const sv = r.variacion ? sentidoVariacion(r.valor, r.variacion) : null;
-    if (sv) clases.push(sv.clase);
-    const texto = r.variacion && Number.isFinite(r.valor) ? formatear(Math.abs(r.valor), r.formato) : formatear(r.valor, r.formato);
-    return h('div', { class: `res${r.destacado ? ' res--destacado' : ''}` },
-      h('dt', { class: 'res__etiqueta' }, r.etiqueta, r.nota ? h('small', { class: 'res__nota' }, r.nota) : null),
-      h('dd', { class: clases.join(' ') },
-        sv ? h('span', { class: 'visually-hidden' }, sv.texto) : null,
-        texto));
-  });
+  // Divulgación progresiva: los destacados y los resultados sin grupo, a la vista; cada grupo
+  // ("Liquidez", "Rentabilidad"…), en un bloque desplegable con su detalle.
+  const sueltos = res.resultados.filter((r) => !r.grupo);
+  const grupos = [...new Set(res.resultados.filter((r) => r.grupo).map((r) => r.grupo))];
+  const resumen = sueltos.length ? sueltos : res.resultados.filter((r) => r.destacado);
   salida.append(...[
     res.etiquetaDato ? h('p', {}, h('span', { class: 'chip' }, res.etiquetaDato)) : null,
-    h('dl', { class: 'resultados' }, filas),
+    h('dl', { class: 'resultados' }, resumen.map(filaResultado)),
+    ...grupos.map((g) => h('details', { class: 'res-grupo' },
+      h('summary', {}, g),
+      h('dl', { class: 'resultados' }, res.resultados.filter((r) => r.grupo === g).map(filaResultado)))),
     h('div', { class: 'convenciones' },
       h('h4', {}, 'Convenciones'),
       h('dl', {}, Object.entries(ETIQUETAS_CONVENCIONES).map(([k, et]) => h('div', {}, h('dt', {}, et), h('dd', {}, res.convenciones[k]))))),
