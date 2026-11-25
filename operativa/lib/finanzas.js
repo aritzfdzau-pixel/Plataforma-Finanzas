@@ -719,6 +719,68 @@ export function comisionesPeriodicas({ importe, tasaAnual, dias, periodosAnio = 
 }
 
 // ---------------------------------------------------------------------------
+// P-023 · Diferenciales de rentabilidad en puntos básicos (prima de riesgo, pendiente)
+// ---------------------------------------------------------------------------
+/** Diferencial en pb entre dos rentabilidades expresadas en % (3,25 − 2,60 = 65 pb). */
+export function diferencialPb(rentabilidad, referencia) {
+  comprobarFinito(rentabilidad, 'rentabilidad'); comprobarFinito(referencia, 'rentabilidad de referencia');
+  return Math.round((rentabilidad - referencia) * 100 * 1e9) / 1e9; // evita 64,99999 por la coma flotante
+}
+
+/**
+ * Serie de diferenciales en pb en las fechas comunes de dos series [[fecha, %], …] (prima de
+ * riesgo = bono del país − Bund; pendiente = 10 años − 2 años).
+ */
+export function serieDiferencial(serie, referencia) {
+  if (!Array.isArray(serie) || !Array.isArray(referencia)) throw new Error('Se necesitan dos series');
+  const ref = new Map(referencia);
+  return serie.filter(([f]) => ref.has(f)).map(([f, v]) => [f, diferencialPb(v, ref.get(f))]);
+}
+
+// ---------------------------------------------------------------------------
+// P-024 · Precio de un bono a partir de su rentabilidad (TIR) y al revés
+// ---------------------------------------------------------------------------
+/**
+ * Precio (por 100 de nominal) de un bono en fecha de cupón (sin cupón corrido): valor actual de
+ * los cupones y del principal descontados a la TIR. `tir` y `cupon` anuales en tanto por uno;
+ * `frecuencia` = cupones al año; `anios` × frecuencia debe ser entero.
+ */
+export function precioBono({ cupon, tir: y, anios, frecuencia = 1 }) {
+  comprobarFinito(cupon, 'cupón'); comprobarFinito(y, 'TIR'); comprobarFinito(anios, 'años');
+  if (cupon < 0) throw new Error('El cupón no puede ser negativo');
+  const n = anios * frecuencia;
+  if (!Number.isInteger(n) || n <= 0) throw new Error('Años × frecuencia debe ser un entero positivo');
+  if (y / frecuencia <= -1) throw new Error('TIR no válida');
+  const c = (100 * cupon) / frecuencia;
+  const flujos = [0, ...Array(n - 1).fill(c), c + 100];
+  return van(y / frecuencia, flujos);
+}
+
+/** TIR anual (con la misma frecuencia) que iguala el precio con los flujos del bono (P-004). */
+export function tirBono({ precio, cupon, anios, frecuencia = 1 }) {
+  comprobarFinito(precio, 'precio');
+  if (precio <= 0) throw new Error('El precio debe ser mayor que 0');
+  const n = anios * frecuencia;
+  if (!Number.isInteger(n) || n <= 0) throw new Error('Años × frecuencia debe ser un entero positivo');
+  const c = (100 * cupon) / frecuencia;
+  const r = tir([-precio, ...Array(n - 1).fill(c), c + 100]);
+  if (r.tir === null) throw new Error('No se ha podido calcular la TIR');
+  return r.tir * frecuencia;
+}
+
+// ---------------------------------------------------------------------------
+// P-025 · Rentabilidad acumulada y anualizada entre dos fechas
+// ---------------------------------------------------------------------------
+/** De un nivel inicial a uno final en `dias` naturales: acumulada y anualizada (base 365). */
+export function rentabilidadAcumulada(inicial, final, dias) {
+  comprobarFinito(inicial, 'nivel inicial'); comprobarFinito(final, 'nivel final'); comprobarFinito(dias, 'días');
+  if (inicial <= 0 || final <= 0) throw new Error('Los niveles deben ser mayores que 0');
+  if (dias <= 0) throw new Error('Los días deben ser mayores que 0');
+  const acumulada = final / inicial - 1;
+  return { acumulada, anualizada: (final / inicial) ** (365 / dias) - 1 };
+}
+
+// ---------------------------------------------------------------------------
 // Validaciones comunes
 // ---------------------------------------------------------------------------
 function comprobarPares(a, b) {
