@@ -485,6 +485,46 @@
    "descripcion": "Idem: % anual equivalente (base 365)",
    "valor": 0.034675
   },
+  "rf_prima_es": {
+   "descripcion": "Prima de riesgo: 4,066 % - 3,416 % en pb",
+   "valor": 65.0
+  },
+  "rf_pendiente": {
+   "descripcion": "Pendiente 10a-2a: 3,3121 % - 3,0168 % en pb",
+   "valor": 29.53
+  },
+  "bono_precio_anual": {
+   "descripcion": "Bono cupón 3 % anual, 10 años, TIR 3,5 %: precio (VA de cupones y principal)",
+   "valor": 95.841697338711
+  },
+  "bono_precio_100pb": {
+   "descripcion": "Idem con TIR 4,5 %",
+   "valor": 88.1309227343348
+  },
+  "bono_precio_sem": {
+   "descripcion": "Bono cupón 4 % semestral, 5 años, TIR 4,6 % (semestral): precio",
+   "valor": 97.3470369288423
+  },
+  "bono_tir_9584": {
+   "descripcion": "TIR de un bono cupón 3 % anual, 10 años, precio 95,84",
+   "valor": 0.0350020936894982
+  },
+  "bono_tir_sem": {
+   "descripcion": "TIR semestral anualizada (x2) de cupón 4 %, 5 años, precio 102",
+   "valor": 0.0355980640888583
+  },
+  "ind_acum": {
+   "descripcion": "Índice de 10.000 a 11.500 puntos: rentabilidad acumulada",
+   "valor": 0.15
+  },
+  "ind_anual": {
+   "descripcion": "Idem en 730 días: anualizada base 365",
+   "valor": 0.0723805294763609
+  },
+  "ind_total": {
+   "descripcion": "Idem con dividendo 3 % anual: total acumulada aproximada",
+   "valor": 0.220035
+  },
   "precios": {
    "descripcion": "Serie inventada (6 precios)",
    "valor": [

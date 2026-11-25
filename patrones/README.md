@@ -12,7 +12,7 @@ pasen los tests de todas las operaciones que lo usan.
 | P-001 | Fracción de año según base (Act/360, Act/365) | `fraccionAnio` | `operativa/tests/finanzas.test.js` | fx-forward, descuento-comercial, factoring, confirming | Estable |
 | P-002 | Interés simple a corto plazo | `factorSimple`, `interesSimple` | `operativa/tests/finanzas.test.js` | fx-forward, descuento-comercial, factoring, confirming | Estable |
 | P-003 | Conversión de tipos entre periodicidades (TIN ↔ TAE) | `tinATae`, `taeATin`, `periodicoAAnual` | `operativa/tests/finanzas.test.js` | tin-tae, prestamo-amortizacion, poliza-credito | Estable |
-| P-004 | Descuento de flujos (VAN, TIR Newton-Raphson + bisección) | `van`, `tir`, `cambiosDeSigno` | `operativa/tests/finanzas.test.js` | van-tir, tin-tae, prestamo-amortizacion, poliza-credito | Estable |
+| P-004 | Descuento de flujos (VAN, TIR Newton-Raphson + bisección) | `van`, `tir`, `cambiosDeSigno` | `operativa/tests/finanzas.test.js` | van-tir, tin-tae, prestamo-amortizacion, poliza-credito, bono-precio-rentabilidad | Estable |
 | P-005 | Cuadro de amortización (francés / alemán / americano, carencia) | `cuotaFrancesa`, `pendienteFrances`, `cuadroAmortizacion` | `operativa/tests/finanzas.test.js` | prestamo-amortizacion, hipoteca-variable, tin-tae, escenario-euribor | Estable |
 | P-006 | Rentabilidades, varianza y volatilidad | `rentabilidadesSimples`, `rentabilidadesLog`, `media`, `varianzaMuestral`, `desviacionMuestral`, `volatilidadAnualizada` | `operativa/tests/finanzas.test.js` | rentabilidad-volatilidad, históricos | Estable |
 | P-007 | Paridad cubierta de tipos (forward) | `forwardParidad` | `operativa/tests/finanzas.test.js` | fx-forward | Estable |
@@ -31,8 +31,11 @@ pasen los tests de todas las operaciones que lo usan.
 | P-020 | Periodos medios (PMC, PMP, PMA), ciclo de caja y NOF (ajuste de IVA) | `periodosMedios`, `necesidadesOperativas` | `operativa/tests/finanzas.test.js` | circulante-nof | Estable |
 | P-021 | Coste de una póliza de crédito (intereses, comisiones, excedido y coste efectivo por TIR) | `costePolizaCredito` | `operativa/tests/finanzas.test.js` | poliza-credito | Estable |
 | P-022 | Comisiones periódicas con mínimo por periodo iniciado | `comisionesPeriodicas` | `operativa/tests/finanzas.test.js` | avales | Estable |
+| P-023 | Diferenciales de rentabilidad en pb (prima de riesgo, pendiente 10a–2a) | `diferencialPb`, `serieDiferencial` | `operativa/tests/finanzas.test.js` | bono-precio-rentabilidad, renta fija (primas en la tarea diaria y panel) | Estable |
+| P-024 | Precio de un bono a partir de su TIR y TIR a partir del precio | `precioBono`, `tirBono` | `operativa/tests/finanzas.test.js` | bono-precio-rentabilidad | Estable |
+| P-025 | Rentabilidad acumulada y anualizada entre dos fechas | `rentabilidadAcumulada` | `operativa/tests/finanzas.test.js` | rentabilidad-indice | Estable |
 
-Las funciones P-001 a P-009 y P-011 a P-022 viven en `operativa/lib/finanzas.js`; P-010, en `scripts/bce.js` (lo usa la tarea programada). Los tests comparan con valores
+Las funciones P-001 a P-009 y P-011 a P-025 viven en `operativa/lib/finanzas.js`; P-010, en `scripts/bce.js` (lo usa la tarea programada). Los tests comparan con valores
 calculados por **LibreOffice Calc** (`operativa/tests/referencias/referencias.fods`, con las
 fórmulas visibles; resultados en `referencias.json`). Cualquier hoja de cálculo (Google Sheets,
 Excel) puede abrir el `.fods` para comprobarlos.

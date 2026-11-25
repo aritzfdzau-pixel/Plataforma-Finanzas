@@ -380,3 +380,28 @@ test('P-022 comisionesPeriodicas = LibreOffice (ava_*): periodos iniciados y mí
   assert.equal(F.comisionesPeriodicas({ importe: 1, tasaAnual: 0, dias: 365, periodosAnio: 1 }).periodos, 1);
   assert.throws(() => F.comisionesPeriodicas({ importe: 0, tasaAnual: 0.01, dias: 10 }));
 });
+
+// --- Fase 8: renta fija y renta variable -------------------------------------
+test('P-023 diferencialPb y serieDiferencial = LibreOffice (rf_*)', () => {
+  cerca(F.diferencialPb(4.066, 3.416), ref('rf_prima_es'));
+  cerca(F.diferencialPb(3.3121, 3.0168), ref('rf_pendiente'));
+  assert.deepEqual(F.serieDiferencial([['2026-09-01', 4], ['2026-10-01', 4.066]], [['2026-10-01', 3.416], ['2026-11-01', 3.3]]),
+    [['2026-10-01', 65]]); // solo fechas comunes; 65 pb = rf_prima_es
+});
+
+test('P-024 precioBono y tirBono = LibreOffice (VA y TASA: bono_*)', () => {
+  cerca(F.precioBono({ cupon: 0.03, tir: 0.035, anios: 10 }), ref('bono_precio_anual'));
+  cerca(F.precioBono({ cupon: 0.03, tir: 0.045, anios: 10 }), ref('bono_precio_100pb'));
+  cerca(F.precioBono({ cupon: 0.04, tir: 0.046, anios: 5, frecuencia: 2 }), ref('bono_precio_sem'));
+  cerca(F.tirBono({ precio: 95.84, cupon: 0.03, anios: 10 }), ref('bono_tir_9584'), 1e-9);
+  cerca(F.tirBono({ precio: 102, cupon: 0.04, anios: 5, frecuencia: 2 }), ref('bono_tir_sem'), 1e-9);
+  // Por definición: si la TIR es igual al cupón, el bono cotiza a la par.
+  cerca(F.precioBono({ cupon: 0.03, tir: 0.03, anios: 7 }), 100);
+  assert.throws(() => F.precioBono({ cupon: 0.03, tir: 0.03, anios: 2.5 }));
+});
+
+test('P-025 rentabilidadAcumulada = LibreOffice (ind_*)', () => {
+  const r = F.rentabilidadAcumulada(10000, 11500, 730);
+  cerca(r.acumulada, ref('ind_acum')); cerca(r.anualizada, ref('ind_anual'));
+  assert.throws(() => F.rentabilidadAcumulada(0, 1, 10));
+});

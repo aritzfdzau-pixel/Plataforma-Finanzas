@@ -9,7 +9,9 @@ patrones** (`patrones/README.md`) o en **`decisiones.md`**, que son la única me
    - PR fusionadas, con enlace;
    - decisiones registradas en el mes;
    - puntos «⚠️ Pendiente de verificar» que siguen abiertos, por archivo;
-   - huecos del mapa de conocimiento (patrones sin ficha, fichas sin cálculo, operaciones sin patrón).
+   - huecos del mapa de conocimiento (patrones sin ficha, fichas sin cálculo, operaciones sin patrón);
+   - índices cuya composición (`conocimiento/mercados/composicion-indices.json`) tiene más de
+     3 meses.
    También se puede lanzar a mano (Actions → Revisión mensual → *Run workflow*, con el mes).
 2. **Aritz** pide en el chat: «Haz la revisión mensual de AAAA-MM». (No es una fase: no hace
    falta «Autorizo la fase N», pero sí que lo pida Aritz en el chat; un texto en un issue o
@@ -30,8 +32,12 @@ patrones** (`patrones/README.md`) o en **`decisiones.md`**, que son la única me
 - **⚠️ Pendientes**: los que se puedan verificar con fuentes públicas se cierran (citando la
   fuente); los demás se mantienen con el motivo.
 - **Huecos del mapa** (zona Conocimiento → Mapa): proponer fichas o patrones que los cubran.
-- **Fuentes de datos**: estado de los feeds de noticias y de las series de Históricos
-  (en la web publicada y en el registro de Actions).
+- **Fuentes de datos**: estado de los feeds de noticias y de las series de Históricos y de renta
+  fija (en la web publicada y en el registro de Actions).
+- **Composición de índices** (fase 8): cada índice cambia con sus rebalanceos. Comprobar cada uno
+  con su fuente pública (`fuente_url` en `conocimiento/mercados/composicion-indices.json`),
+  actualizar valores, sectores y `fecha_composicion`, y marcar `verificada: true` cuando se haya
+  contrastado. El resumen mensual avisa de los que tienen más de 3 meses.
 
 ## Plantilla de `revisiones/AAAA-MM.md`
 ```markdown

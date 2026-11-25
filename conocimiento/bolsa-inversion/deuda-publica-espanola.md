@@ -7,7 +7,7 @@ etiquetas: [renta-fija, letras-del-tesoro, bonos, obligaciones, curva-de-tipos, 
 operaciones: []
 patrones: [P-001, P-002, P-004]
 fecha_creacion: 2026-11-24
-ultima_revision: 2026-11-24
+ultima_revision: 2026-11-25
 fuentes: ["Tesoro Público — información pública sobre instrumentos y subastas", "Banco de España — mercado de deuda pública anotada"]
 ---
 
@@ -80,6 +80,9 @@ flujos −precio, cupones y, el último año, cupón + nominal.
 ## Operaciones relacionadas
 - [VAN y TIR](#op=van-tir)
 - [Conversor TIN ↔ TAE](#op=tin-tae)
+- [Bono: precio ↔ rentabilidad (TIR)](#op=bono-precio-rentabilidad)
+- Ficha [Curva de tipos soberana y prima de riesgo](#ficha=conocimiento%2Fbolsa-inversion%2Fcurva-de-tipos-y-prima-de-riesgo.md)
+- Zona **Renta variable y renta fija** → Renta fija: el bono español a 10 años y la prima de riesgo (`#rf=ES10Y`, `#rf=PRIMA-ES`).
 
 ## Fuentes
 - Tesoro Público — información pública sobre Letras, Bonos y Obligaciones y su calendario de subastas.

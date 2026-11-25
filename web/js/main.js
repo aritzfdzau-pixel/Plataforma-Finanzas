@@ -8,6 +8,8 @@ import { pintarCabeceraDivisas, pintarPanelDivisas } from './ui/divisas.js';
 import { pintarCabeceraNoticias, pintarPanelNoticias } from './ui/noticias.js';
 import { pintarHistoricos } from './ui/historicos.js';
 import { pintarProyecciones } from './ui/proyecciones.js';
+import { pintarCabeceraMercados, pintarPanelMercados, cargarComposicion } from './ui/mercados.js';
+import { elementosBusqueda, destinoDeRuta } from './lib/mercados.js';
 import { h } from './ui/dom.js';
 
 // ---- Tema ----
@@ -70,7 +72,7 @@ const zonaProy = document.getElementById('zona-proyecciones');
 const botonProy = document.getElementById('expandir-proyecciones');
 botonProy.addEventListener('click', () => expandir(zonaProy, botonProy, !zonaProy.classList.contains('zona--expandida')));
 document.addEventListener('keydown', (e) => {
-  if (e.key !== 'Escape' || document.getElementById('paleta').open || panelDivisas.open || panelNoticias.open) return;
+  if (e.key !== 'Escape' || document.getElementById('paleta').open || panelDivisas.open || panelNoticias.open || panelMercados.open) return;
   if (zonaOp.classList.contains('zona--expandida')) expandir(zonaOp, botonExpandir, false);
   if (zonaHist.classList.contains('zona--expandida')) expandir(zonaHist, botonHist, false);
   if (zonaProy.classList.contains('zona--expandida')) expandir(zonaProy, botonProy, false);
@@ -87,6 +89,19 @@ function abrirDivisas() {
 document.getElementById('abrir-divisas').addEventListener('click', abrirDivisas);
 document.getElementById('cerrar-divisas').addEventListener('click', cerrarDivisas);
 pintarCabeceraDivisas(document.getElementById('cuerpo-divisas'), abrirDivisas);
+
+// ---- Renta variable y renta fija ----
+const panelMercados = document.getElementById('panel-mercados');
+let controlMercados = null;
+const cerrarMercados = () => { if (panelMercados.open) panelMercados.close(); };
+function abrirMercados(destino = {}) {
+  controlMercados ??= pintarPanelMercados(panelMercados, cerrarMercados);
+  controlMercados.ir(destino);
+  if (!panelMercados.open) panelMercados.showModal();
+}
+document.getElementById('abrir-mercados').addEventListener('click', () => abrirMercados({}));
+document.getElementById('cerrar-mercados').addEventListener('click', cerrarMercados);
+pintarCabeceraMercados(document.getElementById('cuerpo-mercados'), abrirMercados);
 
 // ---- Noticias ----
 const panelNoticias = document.getElementById('panel-noticias');
@@ -115,7 +130,7 @@ async function iniciar() {
   indiceCargado = indice;
   pintarFichas(listaFichas, indice.fichas);
   filtroOps.addEventListener('input', () => pintarListado(listaOps, operaciones, filtroOps.value));
-  iniciarPaleta({ ...indice, operaciones });
+  iniciarPaleta({ ...indice, operaciones }, cargarComposicion().then(elementosBusqueda));
 
   const enrutar = async () => {
     const ruta = leerRuta();
@@ -125,6 +140,8 @@ async function iniciar() {
       await pintarOperacion(detalleOp, ruta.id, ruta.params);
       zonaOp.scrollIntoView({ block: 'start', behavior: 'smooth' });
       detalleOp.querySelector('.op__titulo')?.focus?.();
+    } else if (ruta.tipo === 'rv' || ruta.tipo === 'rf') {
+      abrirMercados(destinoDeRuta(ruta));
     } else if (ruta.tipo === 'ficha') {
       listaFichas.hidden = true; mapaConocimiento.hidden = true; visorFicha.hidden = false;
       await pintarFicha(visorFicha, ruta.ruta, indice.fichas);

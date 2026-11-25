@@ -10,7 +10,7 @@
   <meta name="robots" content="noindex, nofollow">
   <meta name="color-scheme" content="dark light">
   <title>Terminal financiero</title>
-  <meta name="description" content="Terminal financiero personal de estudio: operativa, divisas, noticias y conocimiento.">
+  <meta name="description" content="Terminal financiero personal de estudio: operativa, divisas, renta variable y renta fija, noticias y conocimiento.">
   <link rel="preload" href="fuentes/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fuentes/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
@@ -26,7 +26,7 @@
     <header class="topbar">
       <h1 class="marca">Terminal <span class="marca__acento">financiero</span></h1>
       <div class="topbar__acciones">
-        <button type="button" class="topbar__buscar" id="abrir-paleta" aria-keyshortcuts="/"><kbd>/</kbd> Buscar<span class="solo-escritorio"> operaciones y fichas</span></button>
+        <button type="button" class="topbar__buscar" id="abrir-paleta" aria-keyshortcuts="/"><kbd>/</kbd> Buscar<span class="solo-escritorio"> operaciones, fichas, índices y valores</span></button>
         <button type="button" class="button" id="cambiar-tema" aria-pressed="false">Modo claro</button>
       </div>
     </header>
@@ -50,6 +50,16 @@
         <span class="chip">tiempo real (indicativo)</span>
       </div>
       <div class="zona__cuerpo zona__cuerpo--divisas" id="cuerpo-divisas">
+        <p class="vacio">Cargando…</p>
+      </div>
+    </section>
+
+    <section class="zona zona--mercados" id="zona-mercados" aria-labelledby="t-mercados">
+      <div class="zona__cabecera">
+        <h2 class="zona__titulo" id="t-mercados"><button type="button" class="zona__titulo-boton" id="abrir-mercados">Renta variable y renta fija <span class="zona__en">(Equities &amp; Fixed income)</span></button></h2>
+        <span class="chip">tiempo real (indicativo) · con retraso · referencias oficiales</span>
+      </div>
+      <div class="zona__cuerpo zona__cuerpo--mercados" id="cuerpo-mercados">
         <p class="vacio">Cargando…</p>
       </div>
     </section>
@@ -84,7 +94,7 @@
       <div class="zona__cabecera">
         <h2 class="zona__titulo" id="t-historicos">Históricos</h2>
         <div class="zona__herramientas">
-          <span class="chip">referencia BCE · referencia Banco de España</span>
+          <span class="chip">referencias oficiales (BCE, BdE y otros)</span>
           <button type="button" class="button" id="expandir-historicos" aria-pressed="false">Pantalla grande</button>
         </div>
       </div>
@@ -144,9 +154,17 @@
     <div class="panel__contenido"></div>
   </dialog>
 
+  <dialog id="panel-mercados" class="panel" aria-labelledby="t-panel-mercados">
+    <header class="panel__cabecera">
+      <h2 class="zona__titulo" id="t-panel-mercados">Renta variable y renta fija (Equities &amp; Fixed income)</h2>
+      <button type="button" class="button" id="cerrar-mercados">Cerrar</button>
+    </header>
+    <div class="panel__contenido"></div>
+  </dialog>
+
   <dialog id="paleta" class="paleta" aria-label="Barra de comandos">
     <label class="visually-hidden" for="paleta-input">Buscar operaciones y fichas</label>
-    <input id="paleta-input" class="paleta__input" type="search" placeholder="Buscar operaciones y fichas…" autocomplete="off" role="combobox" aria-controls="paleta-resultados" aria-expanded="true">
+    <input id="paleta-input" class="paleta__input" type="search" placeholder="Buscar operaciones, fichas, índices, valores y bonos…" autocomplete="off" role="combobox" aria-controls="paleta-resultados" aria-expanded="true">
     <ul id="paleta-resultados" class="paleta__resultados" role="listbox"></ul>
     <p class="paleta__ayuda"><kbd>↑</kbd> <kbd>↓</kbd> moverse · <kbd>Enter</kbd> abrir · <kbd>Esc</kbd> cerrar</p>
   </dialog>

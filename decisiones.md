@@ -409,3 +409,97 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
 - **Descartado:** un servicio de cron externo con un token de GitHub guardado fuera de los
   secretos de Actions (choca con AGENTS §6).
 
+## D-035 · 2026-11-25 · Fase 8 · Datos históricos de índices y acciones: ninguna fuente válida
+- **Pregunta:** ¿hay una fuente gratuita, sin clave y cuyas condiciones permitan descargar y
+  **publicar** en una web pública (GitHub Pages) cierres diarios de índices y acciones?
+- **Fuentes evaluadas:**
+  - **Yahoo Finance:** solo API no oficial; sus condiciones no permiten redistribuir los datos.
+    Descartada (además sería *scraping*).
+  - **Stooq:** descarga CSV sin clave, pero sin API oficial; los datos son de stooq.com o de sus
+    proveedores (bolsas con licencia) y sus condiciones no autorizan publicarlos. Descartada.
+  - **FRED** (Fed de San Luis): `fredgraph.csv` sin clave incluye S&P 500, Nasdaq 100 y Dow
+    Jones, pero con copyright de S&P Dow Jones Indices y Nasdaq: la reproducción está prohibida
+    sin permiso escrito. Descartada para índices (sí se usa para los Treasury, dato público).
+  - **BCE, conjunto FM:** publica el Euro Stoxx 50 (y otros) en frecuencia mensual con origen en
+    Refinitiv Datastream (datos de terceros, sin condiciones de reutilización claras). Descartada.
+  - **Alpha Vantage, Twelve Data, Marketstack, EOD, Finnhub, Nasdaq Data Link:** exigen clave
+    (prohibido en la web por AGENTS §6) y sus planes gratuitos no permiten redistribuir.
+  - **BME, Euronext, Deutsche Börse, LSE:** los datos de mercado se licencian; las webs no
+    ofrecen una descarga reutilizable.
+- **Decisión:** no se genera `datos/renta-variable.json`. Índices y valores se ven solo con los
+  widgets de TradingView; su histórico y su proyección se hacen con un **CSV subido por el
+  usuario** (ya existía; no sale del navegador). La renta fija usa datos oficiales (D-036).
+- **Alternativas para el futuro:** (1) que Aritz descargue sus CSV desde su banco o bróker y los
+  suba; (2) pedir permiso a un proveedor (p. ej. BME) para un uso de estudio; (3) un servicio de
+  pago con licencia de redistribución, con la clave como secreto de Actions.
+
+## D-036 · 2026-11-25 · Fase 8 · Renta fija soberana: fuentes oficiales y categoría
+- **Fuentes** (oficiales, gratuitas, sin clave; comprobadas desde GitHub Actions el 2026-11-25:
+  26 series con datos):
+  - **Bundesbank** (API SDMX, `BBSIS/D.I.ZST.ZI.EUR.S1311.B.A604.R{02,05,10,30}XX.R.A.A._Z._Z.A`):
+    Bund a 2, 5, 10 y 30 años de vencimiento residual, diaria. Su SDMX-CSV va separado por «;».
+  - **Banco de Inglaterra** (IADB, `IUDSNPY` 5 años e `IUDMNPY` 10 años, par yields), diaria.
+  - **Reserva Federal (FRED)** (`DGS2`, `DGS5`, `DGS10`, `DGS30`; dato del Tesoro), diaria.
+  - **BCE:** curva AAA del área del euro (`YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_{2,5,10,30}Y`),
+    diaria; y tipos a largo plazo por país (`IRS/M.{ES,DE,FR,IT}.L.L40.CI.0000.EUR.N.Z`),
+    media mensual del bono a 10 años.
+- **Fuera:** curva diaria de España, Francia e Italia (no hay serie oficial sin clave localizada;
+  ⚠️ Pendiente de verificar el código BIEST de la rentabilidad diaria del 10 años del Banco de
+  España); 2 y 30 años del Reino Unido (códigos IADB no confirmados).
+- **Primas de riesgo** (España, Italia y Francia frente al Bund): con la media mensual del BCE
+  para los dos países (misma fuente y fecha), calculadas con P-023 en la tarea diaria.
+- **Etiqueta nueva:** "referencia oficial (organismo)" (AGENTS §7).
+- **Categoría:** `bolsa-inversion`, como la ficha de deuda pública española: son activos de
+  inversión; `macroeconomia` queda para la política monetaria y los indicadores.
+- **Siempre rentabilidad (%) y no precio; diferenciales en pb.** Las series son de tipo `tipo`:
+  Históricos las analiza en variaciones en pb y Proyecciones usa el modelo aditivo.
+- En la zona de Históricos se pliegan bajo «Renta fija soberana» para no alargar la portada.
+
+## D-037 · 2026-11-25 · Fase 8 · Widgets de TradingView de índices (⚠️ Pendiente de verificar)
+- **Decisión:** todos los símbolos están en `web/js/lib/mercados.js` (único módulo editable). Los
+  widgets nuevos (`stock-heatmap` y `symbol-overview`) usan el mismo componente aislado
+  (`iframe` con `sandbox`; CSP solo `frame-src`).
+- **Símbolos elegidos** (los oficiales de algunas bolsas no se muestran en los widgets gratuitos):
+  - S&P 500 `FOREXCOM:SPXUSD`, Nasdaq 100 `FOREXCOM:NSXUSD`, Dow Jones `FOREXCOM:DJI` y
+    FTSE 100 `FOREXCOM:UKXGBP`: CFD sobre el índice, "tiempo real (indicativo)". Son los que
+    usan los ejemplos oficiales de los widgets.
+  - DAX 40 `INDEX:DEU40` y Nikkei 225 `INDEX:NKY`: índices de TradingView que replican el
+    oficial, "tiempo real (indicativo)".
+  - IBEX 35 `BME:IBC` y CAC 40 `EURONEXT:PX1`: índices oficiales, "con retraso"
+    (alternativas: `TVC:IBEX35` y `TVC:CAC40`). Euro Stoxx 50 `TVC:SX5E`, "con retraso".
+- **Mapa de calor** (`dataSource`): `SPX500` está documentado; `NASDAQ100`, `DJDJI`, `IBEX35`,
+  `UK100`, `DAX`, `SX5E` y `CAC40` no se han podido confirmar. Si alguno sale vacío, se quita
+  (`mapaCalor: null`) o se cambia en el módulo.
+- Desde el entorno de desarrollo no se llega a TradingView: la comprobación es de Aritz en la web
+  publicada.
+
+## D-038 · 2026-11-25 · Fase 8 · Composición de índices versionada
+- **Decisión:** `conocimiento/mercados/composicion-indices.json` con nombre, ticker, sector y
+  símbolo de TradingView de cada valor, y por índice `fecha_composicion`, `fuente`,
+  `fuente_url`, `completa` y `verificada`. Listas completas de IBEX 35, DAX 40, Euro Stoxx 50,
+  CAC 40 y Dow Jones (30); los 30 mayores por peso (aproximado) de S&P 500, Nasdaq 100 y FTSE 100.
+- **⚠️ Pendiente de verificar:** las listas se han preparado a partir de conocimiento general
+  hasta mediados de 2026 (`fecha_composicion` 2026-06-30, `verificada: false`) y no se han
+  contrastado con las fuentes (no accesibles desde el entorno). La web lo avisa.
+- **Revisión:** paso mensual en `revisiones/README.md`; el resumen mensual avisa de los índices
+  con la composición de hace más de 3 meses (hoy, todos: obliga a revisarlos).
+
+## D-039 · 2026-11-25 · Fase 8 · Patrones P-023 a P-025 y operaciones
+- **P-023** diferencial en pb (prima de riesgo, pendiente 10a–2a); **P-024** precio de un bono a
+  partir de su TIR y TIR a partir del precio (reutiliza P-004); **P-025** rentabilidad acumulada y
+  anualizada entre dos fechas. Referencias de LibreOffice (`rf_`, `bono_`, `ind_`: VA, TASA).
+- **Operaciones** (categoría `bolsa-inversion`): `bono-precio-rentabilidad` (precio ↔
+  rentabilidad y escenario de subida en pb) y `rentabilidad-indice` (precio y aproximación de
+  rentabilidad total con dividendos).
+- **Convenciones ⚠️:** el bono se valora en fecha de cupón (sin cupón corrido, periodos enteros);
+  la rentabilidad total del índice supone dividendos constantes reinvertidos.
+
+## D-040 · 2026-11-25 · Fase 8 · Situación de la zona y navegación
+- **Decisión:** la zona va en la columna derecha, justo debajo de Divisas (Noticias ocupa las
+  dos filas a la izquierda); en móvil, apilada tras Divisas. El panel es un `<dialog>` como el de
+  Divisas, con cuatro pestañas.
+- **Rutas:** `#rv`, `#rv=IBEX35`, `#rv=IBEX35&valor=SAN`, `#rf=ES10Y`, `#rf=PRIMA-ES`.
+- **Barra «/»:** busca también índices, valores (de la composición) y bonos.
+- **Reutilización:** «Ver en Históricos» y «Proyectar» abren esas zonas con la serie cargada
+  (sin duplicar código); «Subir CSV» lleva a la subida de Históricos.
+

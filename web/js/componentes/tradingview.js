@@ -12,7 +12,9 @@
 
 export const ORIGEN = 'https://www.tradingview-widget.com';
 const RUTA = '/embed-widget/';
-const TIPOS = new Set(['tickers', 'market-quotes', 'events']);
+// Fase 8: mapa de calor de componentes (stock-heatmap) y gráfica simple de un valor
+// (symbol-overview). ⚠️ Pendiente de verificar en la web publicada (D-037).
+const TIPOS = new Set(['tickers', 'market-quotes', 'events', 'stock-heatmap', 'symbol-overview']);
 
 /** Símbolo de TradingView para un par (proveedor ICE / FX_IDC; comprobado, D-026). */
 export const simbolo = (par) => `FX_IDC:${par}`;
@@ -37,6 +39,34 @@ export const configTickers = (pares, tema) => ({
 export const configCotizaciones = (nombreGrupo, pares, tema) => ({
   colorTheme: tema, showSymbolLogo: false,
   symbolsGroups: [{ name: nombreGrupo, symbols: pares.map((p) => ({ name: simbolo(p), displayName: `${p.slice(0, 3)}/${p.slice(3)}` })) }],
+});
+
+/**
+ * Cotizaciones en grupos con símbolos propios (índices de renta variable).
+ * grupos: [{ nombre, simbolos: [{ simbolo, nombre }] }]
+ */
+export const configGrupos = (grupos, tema) => ({
+  colorTheme: tema, showSymbolLogo: false,
+  symbolsGroups: grupos.map((g) => ({ name: g.nombre, symbols: g.simbolos.map((x) => ({ name: x.simbolo, displayName: x.nombre })) })),
+});
+
+/** Cinta de cotizaciones con símbolos propios: [{ simbolo, nombre }]. */
+export const configCinta = (simbolos, tema) => ({
+  colorTheme: tema, showSymbolLogo: false,
+  symbols: simbolos.map((x) => ({ proName: x.simbolo, title: x.nombre })),
+});
+
+/** Mapa de calor de los componentes de un índice (dataSource del widget, p. ej. "SPX500"). */
+export const configMapaCalor = (fuente, tema) => ({
+  colorTheme: tema, dataSource: fuente, exchanges: [], grouping: 'sector',
+  blockSize: 'market_cap_basic', blockColor: 'change', hasTopBar: false, isDataSetEnabled: false,
+  isZoomEnabled: true, hasSymbolTooltip: true, isMonoSize: false,
+});
+
+/** Gráfica simple de un valor o índice (símbolo de TradingView, p. ej. "BME:SAN"). */
+export const configGrafico = (simbolo, nombre, tema) => ({
+  colorTheme: tema, symbols: [[nombre, `${simbolo}|12M`]], chartOnly: false, scalePosition: 'right',
+  scaleMode: 'Normal', chartType: 'area', dateRanges: ['1m|30', '3m|60', '12m|1D', '60m|1W', 'all|1M'],
 });
 
 /** Calendario: zona euro (eu y sus mayores economías), EE. UU., Reino Unido y Japón. */

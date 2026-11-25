@@ -407,3 +407,40 @@ a.noticia__titulo:hover { color: var(--color-accent); text-decoration: underline
 .mapa__icono--patron { background: var(--color-accent); transform: rotate(45deg) scale(0.8); }
 .mapa__detalle { font-size: var(--fs-sm); min-height: 3rem; }
 .mapa__detalle p { margin: 0 0 var(--space-1); }
+
+/* ---------- Renta variable y renta fija (fase 8) ---------- */
+.zona__en { font-size: var(--fs-sm); color: var(--color-text-muted); font-weight: var(--fw-regular); }
+.mercados__subtitulo { margin: 0 0 var(--space-1); font-size: var(--fs-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.mercados__etiquetas { margin: var(--space-2) 0 var(--space-3); font-size: var(--fs-xs); }
+.mercados__etiquetas > summary { cursor: pointer; color: var(--color-text-muted); }
+.mercados__lista-etiquetas { margin: var(--space-2) 0 0; padding: 0; list-style: none; display: grid; gap: var(--space-1); }
+.mercados__lista-etiquetas li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.linea-rf { margin-bottom: var(--space-3); }
+.linea-rf__lista { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: var(--space-2); }
+.linea-rf__lista li {
+  display: grid; grid-template-columns: 1fr auto; gap: 0 var(--space-2); align-items: baseline;
+  padding: var(--space-1) var(--space-2); border: var(--border-width) solid var(--color-border);
+}
+.linea-rf__nombre { font-size: var(--fs-xs); color: var(--color-text-muted); grid-column: 1 / -1; }
+.linea-rf__valor { font-size: var(--fs-md); color: var(--color-text); }
+.linea-rf__dato { grid-column: 1 / -1; font-size: var(--fs-2xs); color: var(--color-text-muted); }
+.tv-marco--mapa { height: 34rem; }
+.tv-marco--grafico { height: 24rem; margin-bottom: var(--space-3); }
+.tabla-mercados .button--mini + .button--mini { margin-left: var(--space-1); }
+.tabla-mercados tr.is-activa { background: var(--color-surface-raised); }
+.campo--linea { display: flex; align-items: center; gap: var(--space-2); margin: var(--space-2) 0; }
+.pestanas--mini { flex-wrap: wrap; margin-bottom: var(--space-3); }
+.pestanas--mini .pestana[aria-pressed="true"] { color: var(--color-accent); border-color: var(--color-accent); }
+.mercados__curva { display: grid; grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); gap: var(--space-4); align-items: start; }
+.curva-svg { width: 100%; height: auto; }
+.curva-svg__eje { stroke: var(--color-border-strong); stroke-width: 1; }
+.curva-svg__linea { fill: none; stroke: var(--serie-1); stroke-width: 2; }
+.curva-svg__punto { fill: var(--serie-1); }
+.curva-svg__texto { fill: var(--color-text-muted); font-family: var(--font-mono); font-size: 10px; }
+@media (max-width: 760px) {
+  .mercados__curva { grid-template-columns: minmax(0, 1fr); }
+  .tv-marco--mapa { height: 26rem; }
+}
+.tabla-mercados th[scope="row"], .tabla-mercados td:not(.num) { text-align: left; }
+.historicos__resumen { min-width: 0; max-width: 100%; }
+.historicos > *, .mercados__panel > *, .zona__cuerpo--mercados > * { min-width: 0; }

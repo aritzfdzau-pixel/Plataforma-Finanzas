@@ -282,6 +282,31 @@
       "ultima_revision": "2026-11-24"
     },
     {
+      "ruta": "conocimiento/bolsa-inversion/curva-de-tipos-y-prima-de-riesgo.md",
+      "titulo": "Curva de tipos soberana y prima de riesgo",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "bolsa-inversion",
+      "etiquetas": [
+        "renta-fija",
+        "fixed-income",
+        "curva-de-tipos",
+        "prima-de-riesgo",
+        "spread",
+        "bonos",
+        "yield"
+      ],
+      "operaciones": [
+        "bono-precio-rentabilidad"
+      ],
+      "patrones": [
+        "P-023",
+        "P-024",
+        "P-004"
+      ],
+      "ultima_revision": "2026-11-25"
+    },
+    {
       "ruta": "conocimiento/bolsa-inversion/deuda-publica-espanola.md",
       "titulo": "Deuda pública española: Letras, Bonos y Obligaciones, y la curva de tipos",
       "idioma": "es",
@@ -301,7 +326,32 @@
         "P-002",
         "P-004"
       ],
-      "ultima_revision": "2026-11-24"
+      "ultima_revision": "2026-11-25"
+    },
+    {
+      "ruta": "conocimiento/bolsa-inversion/indices-bursatiles.md",
+      "titulo": "Índices bursátiles: qué son, cómo se ponderan y cómo se revisan",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "bolsa-inversion",
+      "etiquetas": [
+        "indices",
+        "renta-variable",
+        "equities",
+        "ponderacion",
+        "capitalizacion",
+        "rentabilidad-total",
+        "rebalanceo"
+      ],
+      "operaciones": [
+        "rentabilidad-indice"
+      ],
+      "patrones": [
+        "P-025",
+        "P-006",
+        "P-014"
+      ],
+      "ultima_revision": "2026-11-25"
     },
     {
       "ruta": "conocimiento/bolsa-inversion/proyecciones-montecarlo.md",
@@ -657,6 +707,40 @@
       ]
     },
     {
+      "id": "bono-precio-rentabilidad",
+      "titulo": "Bono: precio ↔ rentabilidad (TIR)",
+      "tituloIngles": "Bond price ↔ yield",
+      "resumen": "Precio de un bono a partir de su rentabilidad (o al revés) y cuánto cambia el precio si la rentabilidad sube.",
+      "categoria": "bolsa-inversion",
+      "ficha": "conocimiento/bolsa-inversion/curva-de-tipos-y-prima-de-riesgo.md",
+      "etiquetas": [
+        "renta-fija",
+        "fixed-income",
+        "curva-de-tipos",
+        "prima-de-riesgo",
+        "spread",
+        "bonos",
+        "yield"
+      ]
+    },
+    {
+      "id": "rentabilidad-indice",
+      "titulo": "Rentabilidad de un índice entre dos fechas",
+      "tituloIngles": "Index return (price vs. total return)",
+      "resumen": "Rentabilidad acumulada y anualizada de un índice de precios, y aproximación con dividendos (rentabilidad total).",
+      "categoria": "bolsa-inversion",
+      "ficha": "conocimiento/bolsa-inversion/indices-bursatiles.md",
+      "etiquetas": [
+        "indices",
+        "renta-variable",
+        "equities",
+        "ponderacion",
+        "capitalizacion",
+        "rentabilidad-total",
+        "rebalanceo"
+      ]
+    },
+    {
       "id": "rentabilidad-volatilidad",
       "titulo": "Rentabilidad, varianza y volatilidad anualizada",
       "tituloIngles": "Returns & volatility",
@@ -782,7 +866,8 @@
         "van-tir",
         "tin-tae",
         "prestamo-amortizacion",
-        "poliza-credito"
+        "poliza-credito",
+        "bono-precio-rentabilidad"
       ],
       "otros": [],
       "estado": "Estable"
@@ -1030,6 +1115,46 @@
       ],
       "operaciones": [
         "avales"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-023",
+      "nombre": "Diferenciales de rentabilidad en pb (prima de riesgo, pendiente 10a–2a)",
+      "funciones": [
+        "diferencialPb",
+        "serieDiferencial"
+      ],
+      "operaciones": [
+        "bono-precio-rentabilidad"
+      ],
+      "otros": [
+        "renta fija (primas en la tarea diaria y panel)"
+      ],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-024",
+      "nombre": "Precio de un bono a partir de su TIR y TIR a partir del precio",
+      "funciones": [
+        "precioBono",
+        "tirBono"
+      ],
+      "operaciones": [
+        "bono-precio-rentabilidad"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-025",
+      "nombre": "Rentabilidad acumulada y anualizada entre dos fechas",
+      "funciones": [
+        "rentabilidadAcumulada"
+      ],
+      "operaciones": [
+        "rentabilidad-indice"
       ],
       "otros": [],
       "estado": "Estable"
