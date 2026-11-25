@@ -12,8 +12,8 @@ export function normalizarFecha(t) {
   return null;
 }
 
-/** Divide una línea CSV respetando comillas dobles. */
-export function celdasCsv(linea) {
+/** Divide una línea CSV respetando comillas dobles (separador «,» o «;»). */
+export function celdasCsv(linea, sep = ',') {
   const out = [];
   let actual = '', comillas = false;
   for (let i = 0; i < linea.length; i++) {
@@ -21,7 +21,7 @@ export function celdasCsv(linea) {
     if (comillas) {
       if (c === '"' && linea[i + 1] === '"') { actual += '"'; i++; } else if (c === '"') comillas = false; else actual += c;
     } else if (c === '"') comillas = true;
-    else if (c === ',') { out.push(actual); actual = ''; } else actual += c;
+    else if (c === sep) { out.push(actual); actual = ''; } else actual += c;
   }
   out.push(actual);
   return out;
@@ -33,19 +33,21 @@ export function celdasCsv(linea) {
  */
 export function parsearCsvBce(texto) {
   const lineas = String(texto).replace(/^﻿/, '').split(/\r?\n/).filter((l) => l.trim());
-  if (lineas.length < 2) throw new Error('CSV del BCE vacío');
-  const cab = celdasCsv(lineas[0]).map((c) => c.trim().toUpperCase());
+  if (lineas.length < 2) throw new Error('CSV SDMX vacío');
+  // SDMX-CSV: el BCE separa con «,»; el Bundesbank, con «;» (y puede usar coma decimal).
+  const sep = lineas[0].includes(';') && !lineas[0].includes(',') ? ';' : ',';
+  const cab = celdasCsv(lineas[0], sep).map((c) => c.trim().toUpperCase());
   const iF = cab.indexOf('TIME_PERIOD');
   const iV = cab.indexOf('OBS_VALUE');
-  if (iF < 0 || iV < 0) throw new Error('El CSV del BCE no tiene TIME_PERIOD y OBS_VALUE');
+  if (iF < 0 || iV < 0) throw new Error('El CSV SDMX no tiene TIME_PERIOD y OBS_VALUE');
   const puntos = [];
   for (const l of lineas.slice(1)) {
-    const c = celdasCsv(l);
+    const c = celdasCsv(l, sep);
     const f = normalizarFecha(c[iF]);
-    const v = Number(c[iV]);
+    const v = Number(sep === ';' ? String(c[iV]).replace(',', '.') : c[iV]);
     if (f && c[iV]?.trim() !== '' && Number.isFinite(v)) puntos.push([f, v]);
   }
-  if (!puntos.length) throw new Error('El CSV del BCE no tiene observaciones');
+  if (!puntos.length) throw new Error('El CSV SDMX no tiene observaciones');
   return ordenar(puntos);
 }
 
