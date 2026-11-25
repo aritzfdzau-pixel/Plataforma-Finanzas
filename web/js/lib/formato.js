@@ -111,6 +111,10 @@ export function formatear(valor, formato) {
   if (m) return pct(valor, m[1] ? Number(m[1]) : 2);
   m = /^num:(\d+)$/.exec(formato);
   if (m) return numero(valor, Number(m[1]));
+  m = /^veces:(\d+)$/.exec(formato);
+  if (m) return `${numero(valor, Number(m[1]))}x`;
+  m = /^dias:(\d+)$/.exec(formato);
+  if (m) return `${numero(valor, Number(m[1]))} días`;
   m = /^divisa:([A-Z]{3}):(\d+)$/.exec(formato);
   if (m) return divisa(valor, m[1], Number(m[2]));
   throw new Error(`Formato desconocido: ${formato}`);

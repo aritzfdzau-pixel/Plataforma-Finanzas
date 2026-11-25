@@ -1,4 +1,4 @@
-// Tests de las 8 operaciones. Referencias: LibreOffice Calc (referencias/referencias.json).
+// Tests de las operaciones. Referencias: LibreOffice Calc (referencias/referencias.json).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -25,7 +25,7 @@ async function ejecutar(id, textos = {}) {
 }
 
 // --- Contrato común --------------------------------------------------------
-const FORMATO = /^(eur|entero|texto|pct(:\d+)?|num:\d+|divisa:[A-Z]{3}:\d+)$/;
+const FORMATO = /^(eur|entero|texto|pct(:\d+)?|num:\d+|veces:\d+|dias:\d+|divisa:[A-Z]{3}:\d+)$/;
 
 for (const id of OPERACIONES) {
   test(`contrato: ${id}`, async () => {
@@ -262,4 +262,118 @@ test('D-013: el CSS de resultados no anula la inversión de color de los costes'
   const css = (await import('node:fs')).readFileSync(new URL('../../web/css/componentes.css', import.meta.url), 'utf8');
   assert.match(css, /\.res__valor\.var-up\.var--coste\s*\{\s*color:\s*var\(--color-down\)/);
   assert.match(css, /\.res__valor\.var-down\.var--coste\s*\{\s*color:\s*var\(--color-up\)/);
+});
+
+// --- Fase 7: empresas -------------------------------------------------------
+test('analisis-estados-financieros: ratios = LibreOffice, semáforos y año anterior', async () => {
+  const r = await ejecutar('analisis-estados-financieros');
+  for (const [id, k] of [['ebitda', 'rat_ebitda'], ['margenEbitda', 'rat_margen_ebitda'], ['margenNeto', 'rat_margen_neto'], ['dfn', 'rat_dfn'],
+    ['dfnEbitda', 'rat_dfn_ebitda'], ['autonomia', 'rat_autonomia'], ['fondoManiobra', 'rat_fm'], ['liquidez', 'rat_liquidez'],
+    ['tesoreriaNeta', 'rat_tes_neta'], ['dscr', 'rat_dscr'], ['coberturaIntereses', 'rat_cobertura'], ['roe', 'rat_roe'], ['roa', 'rat_roa']]) {
+    cerca(valor(r, id), ref(k));
+  }
+  assert.equal(r.resultados.find((x) => x.id === 'resumenDfnEbitda').estado.texto, 'cómodo');
+  assert.equal(r.resultados.find((x) => x.id === 'resumenDscr').estado.texto, 'aceptable');
+  assert.ok(!r.resultados.some((x) => x.id === 'crecimientoVentas'), 'sin año anterior no hay crecimiento');
+  assert.ok(r.avisos.some((a) => a.includes('no criterios de ningún banco')));
+  // Año anterior: mismas cifras salvo ventas 1.850.000
+  const ant = { conAnterior: 'si' };
+  const op = (await import('../operaciones/analisis-estados-financieros.js')).default;
+  for (const c of op.campos.filter((x) => x.grupo === 'Año actual')) ant[`${c.id}Ant`] = c.defecto;
+  ant.ventasAnt = '1.850.000';
+  const c = await ejecutar('analisis-estados-financieros', ant);
+  cerca(valor(c, 'crecimientoVentas'), ref('rat_crec_ventas'));
+  cerca(c.resultados.find((x) => x.id === 'dfnEbitda').anterior, ref('rat_dfn_ebitda'));
+});
+
+test('analisis-estados-financieros: EBITDA ≤ 0, caja neta, divisiones por cero y año anterior incompleto', async () => {
+  const neg = await ejecutar('analisis-estados-financieros', { ebit: '-70.000', amortizaciones: '70.000' });
+  assert.equal(valor(neg, 'dfnEbitda'), 'no significativo');
+  assert.ok(neg.avisos.some((a) => a.includes('EBITDA ≤ 0')));
+  const caja = await ejecutar('analisis-estados-financieros', { caja: '900.000' });
+  assert.equal(caja.resultados.find((x) => x.id === 'dfnEbitda').estado.texto, 'caja neta positiva');
+  const cero = await ejecutar('analisis-estados-financieros', { pasivoCorriente: '0', servicioDeuda: '0', gastosFinancieros: '0', fondosPropios: '0' });
+  for (const id of ['liquidez', 'dscr', 'coberturaIntereses']) assert.equal(valor(cero, id), 'no calculable');
+  assert.equal(valor(cero, 'roe'), 'no significativo');
+  assert.equal(cero.avisos.filter((a) => a.includes('división por cero')).length, 3);
+  const op = (await import('../operaciones/analisis-estados-financieros.js')).default;
+  const { valores } = leerCampos(op.campos, { ventas: '0' });
+  assert.throws(() => op.calcular(valores), /Ventas.*mayor que 0/);
+  const { valores: v2 } = leerCampos(op.campos, { conAnterior: 'si' });
+  assert.throws(() => op.calcular(v2), /año anterior/);
+});
+
+test('circulante-nof: periodos con IVA, NOF y comparación con el fondo de maniobra = LibreOffice', async () => {
+  const r = await ejecutar('circulante-nof', { conIva: 'si', tesoreriaOperativa: '20.000', otrosAcreedores: '30.000' });
+  cerca(valor(r, 'pmc'), ref('circ_pmc_iva')); cerca(valor(r, 'pmp'), ref('circ_pmp_iva')); cerca(valor(r, 'pma'), ref('circ_pma'));
+  cerca(valor(r, 'cicloCaja'), ref('circ_ciclo_caja_iva')); cerca(valor(r, 'nof'), ref('circ_nof'));
+  cerca(valor(r, 'diferencia'), 300000 - ref('circ_nof'));
+  assert.match(r.resultados.find((x) => x.id === 'diferencia').estado.texto, /déficit/);
+  const sin = await ejecutar('circulante-nof', { fondoManiobra: '500.000' });
+  cerca(valor(sin, 'pmc'), ref('circ_pmc')); cerca(valor(sin, 'cicloMaduracion'), ref('circ_ciclo_mad'));
+  assert.match(sin.resultados.find((x) => x.id === 'diferencia').estado.texto, /exceso/);
+  assert.ok(r.resultados.find((x) => x.id === 'pmc').etiqueta.includes('PMR'), 'menciona el alias PMR');
+});
+
+test('poliza-credito: coste total y coste efectivo = LibreOffice; validaciones', async () => {
+  const r = await ejecutar('poliza-credito');
+  cerca(valor(r, 'intereses'), ref('pol_int')); cerca(valor(r, 'comisionNoDisponibilidad'), ref('pol_nodisp'));
+  cerca(valor(r, 'costeTotal'), ref('pol_total')); cerca(valor(r, 'costeEfectivo'), ref('pol_tae'), 1e-9);
+  const q = await ejecutar('poliza-credito', { saldoMedio: '150.000', tipo: '6', periodicidad: '12', base: 'ACT/365', estudio: '0',
+    noDisponibilidad: '0,15', conExcedido: 'si', saldoExcedido: '10.000', tipoExcedido: '12' });
+  cerca(valor(q, 'costeTotal'), ref('pol2_total')); cerca(valor(q, 'costeEfectivo'), ref('pol2_tae'), 1e-9);
+  const op = (await import('../operaciones/poliza-credito.js')).default;
+  assert.throws(() => op.calcular(leerCampos(op.campos, { saldoMedio: '250.000' }).valores), /límite/);
+  assert.throws(() => op.calcular(leerCampos(op.campos, { meses: '5' }).valores), /múltiplo de 3/);
+});
+
+test('prestamo-amortizacion: comisiones, coste total y TAE con comisiones = LibreOffice', async () => {
+  const r = await ejecutar('prestamo-amortizacion', { carencia: '0' });
+  cerca(valor(r, 'taeComisiones'), ref('pre_com_tae'), 1e-9);
+  cerca(valor(r, 'costeTotal'), ref('pre_com_total'));
+  assert.ok(r.avisos.some((a) => a.includes('días/365')), 'mantiene el aviso de periodos iguales');
+  const sin = await ejecutar('prestamo-amortizacion', { apertura: '0', estudio: '0', gastos: '0' });
+  assert.ok(!sin.resultados.some((x) => x.id === 'taeComisiones'));
+});
+
+test('factoring: anticipo, efectivo y coste efectivo = LibreOffice; avisos de recurso', async () => {
+  const r = await ejecutar('factoring');
+  cerca(valor(r, 'intereses'), ref('fac_int')); cerca(valor(r, 'efectivo'), ref('fac_efe')); cerca(valor(r, 'costeEfectivo'), ref('fac_tae'));
+  assert.ok(r.avisos[0].startsWith('Con recurso'));
+  assert.ok((await ejecutar('factoring', { modalidad: 'sin' })).avisos[0].startsWith('Sin recurso'));
+  const op = (await import('../operaciones/factoring.js')).default;
+  assert.throws(() => op.calcular(leerCampos(op.campos, { anticipo: '120' }).valores), /anticipo/);
+});
+
+test('confirming (cliente pagador): aplazamiento y coste efectivo = LibreOffice; sin aplazamiento', async () => {
+  const r = await ejecutar('confirming');
+  cerca(valor(r, 'intereses'), ref('cnf_int')); cerca(valor(r, 'costeEfectivo'), ref('cnf_tae'));
+  const sin = await ejecutar('confirming', { diasAplazamiento: '0' });
+  assert.equal(valor(sin, 'costeTotal'), 50); // por definición: 50.000 × 0,10 %
+  assert.ok(!sin.resultados.some((x) => x.id === 'costeEfectivo'));
+});
+
+test('avales: coste total y % anual = LibreOffice; mínimo por periodo y plazo parcial', async () => {
+  const r = await ejecutar('avales');
+  cerca(valor(r, 'costeTotal'), ref('ava_total')); cerca(valor(r, 'costeAnual'), ref('ava_anual'));
+  const b = await ejecutar('avales', { importe: '10.000', dias: '200' });
+  cerca(valor(b, 'costeTotal'), ref('ava2_total')); cerca(valor(b, 'costeAnual'), ref('ava2_anual'));
+  assert.ok(b.avisos.includes('Se aplica el mínimo por periodo.'));
+});
+
+test('D-013 (fase 7): los sobrecostes de las operaciones de coste se marcan como coste', async () => {
+  for (const id of ['poliza-credito', 'factoring', 'confirming', 'avales', 'prestamo-amortizacion']) {
+    const r = await ejecutar(id);
+    const s = r.resultados.find((x) => x.id === 'sobrecoste');
+    assert.ok(s, `${id}: falta el sobrecoste`);
+    assert.equal(s.variacion, 'coste', `${id}: sobrecoste sin variacion 'coste'`);
+  }
+});
+
+test('fase 7: las operaciones nuevas son de la categoría empresas y avisan de lo pendiente de verificar', async () => {
+  for (const id of ['analisis-estados-financieros', 'circulante-nof', 'poliza-credito', 'factoring', 'confirming', 'avales']) {
+    const op = await cargarOperacion(id);
+    assert.equal(op.categoria, 'empresas');
+    assert.ok(op.tituloIngles, `${id}: falta el término inglés`);
+  }
 });

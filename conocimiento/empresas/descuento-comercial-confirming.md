@@ -4,10 +4,10 @@ idioma: es
 traduccion: ""
 categoria: empresas
 etiquetas: [descuento, confirming, circulante, anticipo, coste-efectivo]
-operaciones: [descuento-comercial]
+operaciones: [descuento-comercial, confirming]
 patrones: [P-001, P-002, P-009]
 fecha_creacion: 2026-11-24
-ultima_revision: 2026-11-24
+ultima_revision: 2026-11-25
 fuentes: ["Manuales generales de gestión financiera a corto plazo"]
 ---
 
@@ -16,8 +16,12 @@ fuentes: ["Manuales generales de gestión financiera a corto plazo"]
 ## Qué es
 - **Descuento comercial:** la empresa cede al banco efectos o pagarés de sus clientes y recibe
   hoy su importe menos intereses y comisiones.
-- **Confirming:** un cliente encarga al banco el pago a sus proveedores; el proveedor puede
-  **anticipar** el cobro pagando intereses y comisiones.
+- **Confirming** (*reverse factoring*): un cliente encarga al banco el pago a sus proveedores.
+  Tiene dos lados:
+  - **Proveedor:** puede **anticipar** el cobro pagando intereses y comisiones.
+  - **Cliente pagador:** externaliza los pagos y a veces **aplaza** el pago más allá del
+    vencimiento original, pagando intereses por ese aplazamiento y, si la entidad la cobra,
+    una comisión por el servicio.
 
 ## Para qué se usa
 - Convertir ventas a plazo en liquidez inmediata.
@@ -32,6 +36,11 @@ fuentes: ["Manuales generales de gestión financiera a corto plazo"]
   nominal al vencimiento. Permite comparar operaciones con plazos distintos.
 - En confirming, el proveedor que **no** anticipa cobra el nominal al vencimiento sin coste.
 - Algunas entidades aplican un número mínimo de días: no está incluido.
+- **Cliente pagador:** coste = comisión del servicio + gastos + intereses del aplazamiento
+  (nominal × tipo × días de aplazamiento / base). Si aplaza, su coste efectivo anual compara lo
+  que deja de pagar hoy (nominal − comisión − gastos) con lo que paga en la fecha aplazada
+  (nominal + intereses). ⚠️ Pendiente de verificar: muchas líneas no cobran nada al cliente
+  pagador; se supone que la comisión se paga en la fecha original.
 
 ## Fórmulas
 $$
@@ -40,6 +49,12 @@ $$
 
 $$
 E = N - I - \text{Comisión} - \text{Gastos}, \qquad i_{ef} = \left(\frac{N}{E}\right)^{365/t} - 1
+$$
+
+Cliente pagador que aplaza $t_a$ días al tipo $r_a$ con comisión $c_s$ y gastos $G$:
+
+$$
+I_a = N \cdot r_a \cdot \frac{t_a}{B}, \qquad i_{ef} = \left(\frac{N + I_a}{N - N \cdot c_s - G}\right)^{365/t_a} - 1
 $$
 
 Donde: $N$ = nominal; $d_{\%}$ = tipo de descuento anual; $t$ = días; $B$ = 360 o 365;
@@ -54,6 +69,10 @@ Con la operación [Coste efectivo de descuento comercial / confirming](#op=descu
 | Tipo / comisión | 6 % / 0,5 % (mín. 6 €) + 3 € | 4,5 % / 0,25 % |
 | Efectivo | 19.697,00 € | 49.312,50 € |
 | Coste efectivo anual | 9,732 % | 5,776 % |
+
+Cliente pagador, con la operación [Confirming: visión del cliente pagador](#op=confirming):
+50.000 € con comisión del servicio del 0,10 % y aplazamiento de 30 días al 4,5 % Act/360 →
+intereses 187,50 €, coste total 237,50 € y coste efectivo anual del aplazamiento 5,941 %.
 
 Con importes pequeños pesan los mínimos: 800 € a 30 días con las mismas condiciones del
 descuento sale a un coste efectivo del 22,06 %. Verificado con LibreOffice Calc.
@@ -70,7 +89,9 @@ descuento sale a un coste efectivo del 22,06 %. Verificado con LibreOffice Calc.
 - Dependencia del circulante de líneas bancarias renovables.
 
 ## Operaciones relacionadas
-- [Coste efectivo de descuento comercial / confirming](#op=descuento-comercial)
+- [Coste efectivo de descuento comercial / confirming](#op=descuento-comercial) (descuento y anticipo del proveedor)
+- [Confirming: visión del cliente pagador](#op=confirming)
+- [Coste efectivo de factoring](#op=factoring)
 - [Conversor TIN ↔ TAE](#op=tin-tae)
 
 ## Fuentes

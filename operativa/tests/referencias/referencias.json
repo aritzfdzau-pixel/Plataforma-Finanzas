@@ -329,6 +329,162 @@
    "descripcion": "Letra del Tesoro: nominal 1.000; 182 días; tipo 2,25% (Act/360, simple)",
    "valor": 988.752935360277
   },
+  "rat_ebitda": {
+   "descripcion": "EBITDA = EBIT + amortizaciones",
+   "valor": 250000.0
+  },
+  "rat_margen_ebitda": {
+   "descripcion": "Margen EBITDA = EBITDA / ventas",
+   "valor": 0.125
+  },
+  "rat_margen_neto": {
+   "descripcion": "Margen neto = BN / ventas",
+   "valor": 0.05
+  },
+  "rat_crec_ventas": {
+   "descripcion": "Crecimiento de ventas 2.000.000 frente a 1.850.000",
+   "valor": 0.0810810810810811
+  },
+  "rat_dfn": {
+   "descripcion": "DFN = deuda CP + LP - caja",
+   "valor": 680000.0
+  },
+  "rat_dfn_ebitda": {
+   "descripcion": "DFN / EBITDA",
+   "valor": 2.72
+  },
+  "rat_autonomia": {
+   "descripcion": "Autonomía financiera = FP / activo total",
+   "valor": 0.375
+  },
+  "rat_fm": {
+   "descripcion": "Fondo de maniobra = AC - PC",
+   "valor": 300000.0
+  },
+  "rat_liquidez": {
+   "descripcion": "Ratio de liquidez = AC / PC",
+   "valor": 1.42857142857143
+  },
+  "rat_tes_neta": {
+   "descripcion": "Tesorería neta = caja - deuda CP",
+   "valor": -30000.0
+  },
+  "rat_dscr": {
+   "descripcion": "DSCR = CFADS / cuotas",
+   "valor": 1.3
+  },
+  "rat_cobertura": {
+   "descripcion": "Cobertura de intereses = EBITDA / gastos financieros",
+   "valor": 6.25
+  },
+  "rat_roe": {
+   "descripcion": "ROE = BN / FP",
+   "valor": 0.111111111111111
+  },
+  "rat_roa": {
+   "descripcion": "ROA = BN / activo total",
+   "valor": 0.0416666666666667
+  },
+  "circ_pmc_iva": {
+   "descripcion": "PMC con saldos con IVA 21 %: clientes/1,21/ventas x 365",
+   "valor": 60.3305785123967
+  },
+  "circ_pmp_iva": {
+   "descripcion": "PMP con saldos con IVA 21 %: proveedores/1,21/compras x 365",
+   "valor": 60.3305785123967
+  },
+  "circ_pma": {
+   "descripcion": "PMA = existencias / coste de ventas x 365",
+   "valor": 57.03125
+  },
+  "circ_ciclo_caja_iva": {
+   "descripcion": "Ciclo de caja = PMA + PMC - PMP (con IVA)",
+   "valor": 57.03125
+  },
+  "circ_pmc": {
+   "descripcion": "PMC sin ajuste de IVA",
+   "valor": 73.0
+  },
+  "circ_ciclo_mad": {
+   "descripcion": "Ciclo de maduración sin IVA = PMA + PMC",
+   "valor": 130.03125
+  },
+  "circ_nof": {
+   "descripcion": "NOF = existencias + clientes + tesorería 20.000 - proveedores - otros 30.000",
+   "valor": 420000.0
+  },
+  "pol_int_trim": {
+   "descripcion": "Póliza: intereses por trimestre = 120.000 x 5 % x (365/4)/360",
+   "valor": 1520.83333333333
+  },
+  "pol_int": {
+   "descripcion": "Póliza: intereses del año (4 liquidaciones)",
+   "valor": 6083.33333333333
+  },
+  "pol_nodisp": {
+   "descripcion": "Póliza: no disponibilidad = 80.000 x 0,10 % x (365/4)/360 x 4",
+   "valor": 81.1111111111111
+  },
+  "pol_total": {
+   "descripcion": "Póliza: coste total = intereses + no disponibilidad + apertura 1.000 + estudio 500",
+   "valor": 7664.44444444444
+  },
+  "pol_tae": {
+   "descripcion": "Póliza: coste efectivo = (1 + TASA(4; -pago trimestral; 120.000 - 1.500; -120.000))^4 - 1",
+   "valor": 0.0659482410559675
+  },
+  "pol2_total": {
+   "descripcion": "Póliza mensual Act/365: límite 200.000; saldo 150.000 al 6 %; no disp. 0,15 %; excedido 10.000 al 12 %; apertura 0,5 %: coste total",
+   "valor": 11275.0
+  },
+  "pol2_tae": {
+   "descripcion": "Idem: coste efectivo sobre 160.000 (dispuesto + excedido)",
+   "valor": 0.0730479975756222
+  },
+  "pre_com_tae": {
+   "descripcion": "Préstamo francés con comisiones 1.250 y gastos 300: TAE",
+   "valor": 0.0579378005902695
+  },
+  "pre_com_total": {
+   "descripcion": "Idem: coste financiero total = intereses + 1.550",
+   "valor": 14777.4018640656
+  },
+  "fac_int": {
+   "descripcion": "Factoring: intereses = 80.000 x 5 % x 90/360",
+   "valor": 1000.0
+  },
+  "fac_efe": {
+   "descripcion": "Factoring: efectivo = 80.000 - intereses - 800 - 60",
+   "valor": 78140.0
+  },
+  "fac_tae": {
+   "descripcion": "Factoring: coste efectivo = (80.000/efectivo)^(365/90) - 1",
+   "valor": 0.10010441646356
+  },
+  "cnf_int": {
+   "descripcion": "Confirming pagador: intereses de aplazamiento = 50.000 x 4,5 % x 30/360",
+   "valor": 187.5
+  },
+  "cnf_tae": {
+   "descripcion": "Confirming pagador: coste efectivo = ((50.000 + intereses)/(50.000 - 50))^(365/30) - 1",
+   "valor": 0.0594102871659163
+  },
+  "ava_total": {
+   "descripcion": "Aval 100.000 un año: 4 x MAX(250; 30) + 500 + 50",
+   "valor": 1550.0
+  },
+  "ava_anual": {
+   "descripcion": "Idem: % anual equivalente = coste / 100.000 x 365/365",
+   "valor": 0.0155
+  },
+  "ava2_total": {
+   "descripcion": "Aval 10.000 a 200 días: CEILING(200 x 4/365) periodos x MAX(25; 30) + 0,5 % + 50",
+   "valor": 190.0
+  },
+  "ava2_anual": {
+   "descripcion": "Idem: % anual equivalente (base 365)",
+   "valor": 0.034675
+  },
   "precios": {
    "descripcion": "Serie inventada (6 precios)",
    "valor": [
