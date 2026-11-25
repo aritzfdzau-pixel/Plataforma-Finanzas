@@ -15,7 +15,7 @@ escribiendo en el chat exactamente «Autorizo la fase N», autoriza la siguiente
 | 4 | Históricos | Cerrada | `claude/intelligent-bardeen-t224t5` | #5 (fusionada) |
 | 5 | Proyecciones y escenarios | Cerrada | `claude/intelligent-bardeen-t224t5` | #6 (fusionada) |
 | 6 | Aprendizaje continuo y mapa de conocimiento | Cerrada | `claude/intelligent-bardeen-t224t5` | #7 (fusionada) |
-| 7 | Análisis de empresas, circulante y operativa bancaria | En revisión | `claude/intelligent-bardeen-t224t5` | (ver PR de la fase 7) |
+| 7 | Análisis de empresas, circulante y operativa bancaria | En revisión | `claude/intelligent-bardeen-t224t5` | #12 |
 
 ## Fase 0 — Cimientos
 - [x] Estructura de carpetas (`conocimiento/`, `patrones/`, `operativa/`, `datos/`, `web/`, `.github/`).
