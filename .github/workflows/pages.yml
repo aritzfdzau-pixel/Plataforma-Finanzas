@@ -3,10 +3,12 @@ name: Despliegue en GitHub Pages
 on:
   push:
     branches: [main]
-  # Tarea programada cada hora (minuto 17): noticias RSS y tipos de referencia del BCE
+  # Tarea programada (minutos 17 y 47): noticias RSS y tipos de referencia del BCE
   # (el BCE publica hacia las 16:00 CET los días hábiles; el resto de horas se reutiliza).
+  # GitHub no garantiza los horarios y se salta muchos: el segundo da más ocasiones. Además,
+  # una tarea programada de Claude lo lanza cada hora con workflow_dispatch (D-034).
   schedule:
-    - cron: '17 * * * *'
+    - cron: '17,47 * * * *'
   workflow_dispatch:
 
 permissions:

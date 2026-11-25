@@ -395,3 +395,17 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
   se puede leer. Sigue sin haber lógica financiera en la interfaz.
 - **Nota:** Aritz ha comprobado en la web publicada que el panel de Divisas se ve bien tras D-028.
 
+## D-034 · 2026-11-25 · Ajuste · Actualización horaria más fiable
+- **Problema:** `pages.yml` tiene un horario cada hora, pero GitHub no garantiza los horarios
+  programados y se salta muchos en repositorios con poca actividad: del 24 al 25 de noviembre
+  solo hubo una ejecución programada en unas 17 horas.
+- **Decisión (Aritz):** las dos medidas a la vez.
+  1. Segundo horario en `pages.yml` (minutos 17 y 47), para dar a GitHub más ocasiones.
+  2. Una tarea programada de Claude en la cuenta de Aritz que cada hora lanza `pages.yml`
+     con `workflow_dispatch` sobre `main`. No necesita claves nuevas ni guarda nada en la web.
+- **Notas:** `concurrency: pages` encola las ejecuciones que coincidan, sin cancelar ninguna.
+  Los históricos siguen descargándose una vez al día y el BCE publica una vez al día, así que
+  ejecutar de más no cambia los datos; solo renueva las noticias.
+- **Descartado:** un servicio de cron externo con un token de GitHub guardado fuera de los
+  secretos de Actions (choca con AGENTS §6).
+
