@@ -44,11 +44,13 @@ test('construirHistoricos: una serie caída conserva los datos anteriores y qued
   assert.equal(d.series[1].etiqueta, 'referencia BCE');
 });
 
-test('necesitaDescarga: una vez al día salvo que haya series con error', () => {
+test('necesitaDescarga: una vez al día a partir de las 08:00 de Madrid (D-041), salvo series con error', () => {
   assert.equal(necesitaDescarga(null, '2026-11-24T10:00:00Z'), true);
-  assert.equal(necesitaDescarga({ generado: '2026-11-24T02:00:00Z', series: [{ estado: 'ok' }] }, '2026-11-24T10:00:00Z'), false);
-  assert.equal(necesitaDescarga({ generado: '2026-11-23T22:00:00Z', series: [{ estado: 'ok' }] }, '2026-11-24T10:00:00Z'), true);
-  assert.equal(necesitaDescarga({ generado: '2026-11-24T02:00:00Z', series: [{ estado: 'error' }] }, '2026-11-24T10:00:00Z'), true);
+  // 08:00 de Madrid en invierno = 07:00 UTC.
+  assert.equal(necesitaDescarga({ generado: '2026-11-24T07:01:00Z', series: [{ estado: 'ok' }] }, '2026-11-24T10:00:00Z'), false);
+  assert.equal(necesitaDescarga({ generado: '2026-11-24T02:00:00Z', series: [{ estado: 'ok' }] }, '2026-11-24T10:00:00Z'), true);
+  assert.equal(necesitaDescarga({ generado: '2026-11-23T22:00:00Z', series: [{ estado: 'ok' }] }, '2026-11-24T06:45:00Z'), false);
+  assert.equal(necesitaDescarga({ generado: '2026-11-24T07:01:00Z', series: [{ estado: 'error' }] }, '2026-11-24T10:00:00Z'), true);
 });
 
 test('series oficiales configuradas: las del plan (tipos BCE, €STR, Euribor medio BdE) con etiqueta y https', () => {

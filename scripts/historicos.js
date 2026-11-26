@@ -1,6 +1,8 @@
 // Lectura de series oficiales (BCE csvdata y Banco de España JSON) y construcción de
 // datos/historicos.json. Funciones puras: las usan scripts/descargar-historicos.js y los tests.
 
+import { tocaDescargaDiaria } from './horario.js';
+
 const FECHA_DIA = /^\d{4}-\d{2}-\d{2}$/;
 const FECHA_MES = /^\d{4}-\d{2}$/;
 
@@ -156,10 +158,13 @@ export function resultadosPrimas(primas, resultados, diferencial) {
   });
 }
 
-/** ¿Hace falta descargar otra vez? Solo una vez al día (tarea diaria): si el último es de hoy, no. */
+/**
+ * ¿Hace falta descargar otra vez? Una vez al día, en la primera actualización a partir de las
+ * 08:00 de Madrid (D-041); antes, si falta una serie nueva o alguna dio error.
+ */
 export function necesitaDescarga(anterior, ahora, ids = []) {
   if (!anterior?.generado) return true;
   if (ids.some((id) => !anterior.series?.some((s) => s.id === id))) return true; // serie nueva en la configuración
   if (anterior.series?.some((s) => s.estado !== 'ok')) return true;
-  return anterior.generado.slice(0, 10) !== ahora.slice(0, 10);
+  return tocaDescargaDiaria(anterior.generado, ahora);
 }

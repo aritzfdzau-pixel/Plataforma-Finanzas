@@ -503,3 +503,24 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
 - **Reutilización:** «Ver en Históricos» y «Proyectar» abren esas zonas con la serie cargada
   (sin duplicar código); «Subir CSV» lleva a la subida de Históricos.
 
+## D-041 · 2026-11-26 · Ajuste · Reloj cada 15 minutos y datos diarios a las 08:00 (sustituye a D-034)
+- **Decisión (Aritz):** las noticias se actualizan cada 15 minutos (en punto, y cuarto, y media
+  y menos cuarto); los datos que se publican una vez al día (tipos de referencia del BCE, series
+  de Históricos y de renta fija) se descargan a las 08:00 de Madrid. Mecanismo gratuito.
+- **Cómo:** `.github/workflows/reloj.yml` espera hasta el siguiente cuarto de hora, lanza
+  `pages.yml` y se vuelve a lanzar a sí mismo (los `workflow_dispatch` creados con `GITHUB_TOKEN`
+  sí inician workflows). Gratis en un repositorio público; sin claves. Una sola cadena
+  (`concurrency` sin cancelar). Un horario cada 3 horas intenta rearrancarla si se corta,
+  aunque en este repositorio los horarios de GitHub casi nunca saltan (D-034).
+- **Datos diarios:** `scripts/horario.js` calcula el último corte de las 08:00 de Madrid (con
+  horario de verano); `descargar-bce.js` y `descargar-historicos.js` reutilizan lo publicado
+  si se descargó después de ese corte.
+- **Consecuencia:** el BCE publica hacia las 16:00; sus tipos del día aparecen en la web a las
+  08:00 del día siguiente.
+- **Descartado:** tarea programada de Claude cada 15 minutos (unas 96 sesiones al día, del orden
+  de 10 $ diarios; y la sesión creada sin conector no tenía la herramienta de GitHub). La tarea
+  horaria de D-034 se ha borrado.
+- **Riesgos:** si una vuelta del reloj falla, la cadena se corta hasta que se relance (Actions →
+  «Reloj» → Run workflow, o pidiéndoselo a Claude). GitHub puede limitar el uso continuo de
+  Actions si lo considera abusivo.
+

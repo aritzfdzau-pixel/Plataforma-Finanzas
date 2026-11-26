@@ -1,0 +1,40 @@
+name: Reloj (cada 15 minutos)
+
+# Reloj de la web (D-041). Cada ejecución espera hasta el próximo cuarto de hora (en punto,
+# y cuarto, y media, menos cuarto), lanza la publicación (pages.yml) y se vuelve a lanzar a sí
+# misma. Los eventos workflow_dispatch creados con GITHUB_TOKEN sí inician workflows.
+# Gratis en un repositorio público. Si la cadena se corta: Actions → «Reloj» → Run workflow.
+# El horario de abajo solo sirve para rearrancarla si GitHub lo lanza (no se puede confiar en él).
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7 */3 * * *'
+
+permissions:
+  actions: write   # para lanzar pages.yml y el siguiente tic
+  contents: read
+
+# Una sola cadena: el siguiente tic espera a que acabe el actual; si se lanzan varios a la vez,
+# GitHub deja solo el último pendiente (nunca hay dos relojes corriendo).
+concurrency:
+  group: reloj
+  cancel-in-progress: false
+
+jobs:
+  tic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Esperar al próximo cuarto de hora
+        run: |
+          espera=$(( 900 - $(date -u +%s) % 900 ))
+          echo "Espera de ${espera} s hasta $(date -u -d "@$(( $(date -u +%s) + espera ))" +%H:%M) UTC"
+          sleep "$espera"
+      - name: Lanzar la publicación (noticias cada 15 min; datos diarios desde las 08:00)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main --repo "${{ github.repository }}"
+      - name: Programar el siguiente tic
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run reloj.yml --ref main --repo "${{ github.repository }}"

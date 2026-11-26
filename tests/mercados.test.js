@@ -116,7 +116,7 @@ test('series de renta fija: rentabilidades (tipo "tipo", %) de fuentes oficiales
   assert.equal(es.serie.tipo, 'tipo');
   assert.match(it.error, /Falta/);
   // Una serie nueva en la configuración obliga a descargar aunque ya se descargara hoy.
-  const hoy = '2026-11-25T10:00:00Z';
+  const hoy = '2026-11-25T08:00:00Z';
   assert.equal(necesitaDescarga({ generado: hoy, series: [{ id: 'a', estado: 'ok' }] }, hoy, ['a']), false);
   assert.equal(necesitaDescarga({ generado: hoy, series: [{ id: 'a', estado: 'ok' }] }, hoy, ['a', 'b']), true);
 });
