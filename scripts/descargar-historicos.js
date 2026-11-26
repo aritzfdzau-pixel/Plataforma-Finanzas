@@ -1,7 +1,7 @@
 // Descarga las series oficiales de Históricos y escribe datos/historicos.json.
 // Uso: node scripts/descargar-historicos.js <salida.json> [url-del-último-publicado]
-// Corre en cada publicación (cada hora), pero solo descarga una vez al día: si el último
-// archivo publicado es de hoy y todas las series estaban bien, lo reutiliza.
+// Corre en cada publicación (cada 15 minutos, D-041), pero solo descarga una vez al día, en la
+// primera publicación a partir de las 08:00 de Madrid; el resto del día reutiliza lo publicado.
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { SERIES_OFICIALES, PRIMAS_RIESGO } from './series-oficiales.js';
@@ -27,7 +27,7 @@ if (respaldo) {
 let datos;
 if (!necesitaDescarga(anterior, ahora, [...SERIES_OFICIALES, ...PRIMAS_RIESGO].map((s) => s.id))) {
   datos = anterior;
-  console.log(`Históricos: se reutiliza la descarga de hoy (${anterior.generado}).`);
+  console.log(`Históricos: se reutiliza la descarga diaria de las 08:00 (${anterior.generado}).`);
 } else {
   const resultados = [];
   for (const serie of SERIES_OFICIALES) {
