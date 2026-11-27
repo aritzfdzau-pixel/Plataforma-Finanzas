@@ -110,6 +110,7 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | Bolsa e Inversión | `bolsa-inversion` | `--cat-bolsa-inversion` |
 | Real Estate | `real-estate` | `--cat-real-estate` |
 | Macroeconomía (política monetaria, indicadores, sistema financiero) | `macroeconomia` | `--cat-macroeconomia` |
+| Tipos de interés (cálculos con tipos, cuentas, depósitos, mercado monetario) | `tipos-interes` | `--cat-tipos-interes` |
 | Institucional (solo noticias BCE / Banco de España) | `institucional` | `--cat-institucional` |
 
 ## 12. Estética

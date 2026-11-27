@@ -453,3 +453,70 @@ test('analisis-estados-financieros: informe con resumen, conclusión, bloques y 
   assert.match(md, /\| Ratio \| Valor \| Rango recomendado \| Valoración \|/);
   assert.match(md, /Liquidez \(current ratio\) = AC \/ PC \| 1,43x \| 1,5 – 2,0 \| en zona de vigilancia/);
 });
+
+// --- Tipos de interés (D-044) ------------------------------------------------
+test('saldos-medios: ejemplo por defecto (fechas valor) y tabla de tramos', async () => {
+  const r = await ejecutar('saldos-medios');
+  cerca(valor(r, 'saldoMedio'), ref('sm_medio'));
+  assert.equal(valor(r, 'dias'), ref('sm_dias'));
+  cerca(valor(r, 'numerosAcreedores'), ref('sm_num_acr'));
+  cerca(valor(r, 'interesesNetos'), ref('sm_int_neto'));
+  cerca(valor(r, 'interesesDeudores'), -ref('sm_int_deu'));
+  assert.deepEqual(r.tabla.filas.map((f) => [f.desde, f.hasta, f.dias]), [
+    ['01/01/2026', '14/01/2026', 14], ['15/01/2026', '09/02/2026', 26], ['10/02/2026', '28/02/2026', 19], ['01/03/2026', '31/03/2026', 31]]);
+  assert.ok(r.avisos.some((a) => /descubierto/.test(a)));
+});
+test('saldos-medios: líneas no válidas o fuera del periodo dan un error legible', async () => {
+  const op = await cargarOperacion('saldos-medios');
+  const calc = (mov) => op.calcular(leerCampos(op.campos, { movimientos: mov }).valores);
+  assert.throws(() => calc('32/01/2026; 100'), /Línea 1: fecha no válida/);
+  assert.throws(() => calc('# comentario\n15/01/2026; abc'), /Línea 2: importe no válido/);
+  assert.throws(() => calc('01/04/2026; 100'), /fuera del periodo/);
+  assert.equal(valor(calc(''), 'saldoMedio'), 5000);
+});
+test('capitalizacion: simple, compuesta y continua', async () => {
+  const r = await ejecutar('capitalizacion');
+  cerca(valor(r, 'compuesto'), ref('cap_anual'));
+  cerca(valor(r, 'simple'), ref('cap_simple'));
+  cerca(valor(r, 'continuo'), ref('cap_continua'));
+  cerca(valor(await ejecutar('capitalizacion', { periodicidad: '12' }), 'compuesto'), ref('cap_mensual'));
+  assert.equal(r.tabla.filas.length, 5);
+});
+test('deposito-plazo: al vencimiento y con liquidación mensual', async () => {
+  const r = await ejecutar('deposito-plazo');
+  cerca(valor(r, 'brutos'), ref('dep_int'));
+  cerca(valor(r, 'netos'), ref('dep_neto'));
+  cerca(valor(r, 'tae'), ref('dep_tae'));
+  const p = await ejecutar('deposito-plazo', { modalidad: 'periodico' });
+  cerca(valor(p, 'porPeriodo'), ref('dep_mes_int'));
+  cerca(valor(p, 'tae'), F_EFFECT(0.025, 12));
+});
+const F_EFFECT = (r, m) => (1 + r / m) ** m - 1; // definición de EFFECT (P-003, ya contrastado con LibreOffice)
+test('equivalencia-tipos: base, descuento, interés y nominal → efectivo', async () => {
+  cerca(valor(await ejecutar('equivalencia-tipos'), 'equivalente'), ref('eq_base'));
+  cerca(valor(await ejecutar('equivalencia-tipos', { conversion: 'descuento', tipo: '4' }), 'equivalente'), ref('eq_dto_int'));
+  cerca(valor(await ejecutar('equivalencia-tipos', { conversion: 'interes', tipo: '4' }), 'equivalente'), ref('eq_int_dto'));
+  cerca(valor(await ejecutar('equivalencia-tipos', { conversion: 'efectivo', tipo: '6' }), 'equivalente'), ref('tae_6_12'));
+});
+test('forward-tipos: forward 3x6 y liquidación del FRA', async () => {
+  const r = await ejecutar('forward-tipos');
+  cerca(valor(r, 'forward'), ref('fwd_3x6'));
+  cerca(valor(r, 'liquidacion'), ref('fra_liq'));
+  assert.ok(!(await ejecutar('forward-tipos', { conFra: 'no' })).resultados.some((x) => x.id === 'liquidacion'));
+});
+test('intereses-demora: interés legal y demora comercial (BCE + 8 pp)', async () => {
+  const r = await ejecutar('intereses-demora');
+  assert.equal(valor(r, 'dias'), ref('dem_dias'));
+  cerca(valor(r, 'intereses'), ref('dem_legal'));
+  cerca(valor(await ejecutar('intereses-demora', { regimen: 'comercial' }), 'intereses'), ref('dem_comercial'));
+  const op = await cargarOperacion('intereses-demora');
+  assert.throws(() => op.calcular(leerCampos(op.campos, { pago: '01/10/2026' }).valores), /posterior/);
+});
+test('tipo-real: Fisher exacto', async () => {
+  const r = await ejecutar('tipo-real');
+  cerca(valor(r, 'real'), ref('real_exacto'));
+  cerca(valor(r, 'realFinal'), 10000 * (1 + ref('real_exacto')) ** 5);
+});
+test('forward-tipos: diferencia con el plazo largo en pb', async () => {
+  cerca(valor(await ejecutar('forward-tipos'), 'primaPb'), (ref('fwd_3x6') - 0.022) * 10000, 1e-9);
+});

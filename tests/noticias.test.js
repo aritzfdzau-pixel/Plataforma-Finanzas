@@ -72,10 +72,10 @@ test('etiquetar: sección del feed + palabras clave; varias etiquetas; Instituci
   const mercados = { seccion: 'bolsa-inversion' };
   assert.deepEqual(etiquetar(ibex, mercados, PALABRAS), ['bolsa-inversion', 'macroeconomia']);
   assert.deepEqual(etiquetar(euro, { seccion: null }, PALABRAS), ['fx']);
-  assert.deepEqual(etiquetar(hipotecas, { seccion: null }, PALABRAS), ['real-estate']);
+  assert.deepEqual(etiquetar(hipotecas, { seccion: null }, PALABRAS), ['real-estate', 'tipos-interes']); // «Euríbor»
   const bce = { titulo: 'El BCE mantiene los tipos de interés', categorias: [] };
-  assert.deepEqual(etiquetar(bce, { seccion: null }, PALABRAS), ['macroeconomia']); // prensa: sin "institucional"
-  assert.deepEqual(etiquetar(bce, { seccion: null, institucional: true }, PALABRAS), ['macroeconomia', 'institucional']);
+  assert.deepEqual(etiquetar(bce, { seccion: null }, PALABRAS), ['macroeconomia', 'tipos-interes']); // prensa: sin "institucional"
+  assert.deepEqual(etiquetar(bce, { seccion: null, institucional: true }, PALABRAS), ['macroeconomia', 'tipos-interes', 'institucional']);
 });
 
 test('combinar: sin duplicados, más recientes primero, máximo 7 días y límite', () => {

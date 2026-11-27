@@ -441,3 +441,60 @@ test('P-026 evolucionRatio: mejora según el sentido del ratio', () => {
   assert.deepEqual(F.evolucionRatio('roe', 0.1, 0.1), { diferencia: 0, mejora: null });
   assert.equal(F.evolucionRatio('roe', null, 0.1).mejora, null);
 });
+
+// --- P-027 a P-031: tipos de interés (D-044) -----------------------------------
+// Cuenta de ejemplo (inventada): 01/01–31/03/2026, saldo inicial 5.000; +3.000 el 15/01,
+// −9.000 el 10/02 y +4.000 el 01/03 (días desde el inicio: 14, 40 y 59).
+const CUENTA = { saldoInicial: 5000, dias: 90, movimientos: [{ dia: 40, importe: -9000 }, { dia: 14, importe: 3000 }, { dia: 59, importe: 4000 }] };
+test('P-027 liquidacionCuenta: tramos, números, saldo medio e intereses', () => {
+  const r = F.liquidacionCuenta({ ...CUENTA, tipoAcreedor: 0.01, tipoDeudor: 0.07, base: 'ACT/365', retencion: 0.19 });
+  assert.equal(r.dias, ref('sm_dias'));
+  assert.deepEqual(r.tramos.map((t) => [t.dias, t.saldo]), [[14, 5000], [26, 8000], [19, -1000], [31, 3000]]);
+  cerca(r.numerosAcreedores, ref('sm_num_acr'));
+  cerca(r.numerosDeudores, ref('sm_num_deu'));
+  cerca(r.saldoMedio, ref('sm_medio'));
+  cerca(r.interesesAcreedores, ref('sm_int_acr'));
+  cerca(r.interesesNetos, ref('sm_int_neto'));
+  cerca(r.interesesDeudores, ref('sm_int_deu'));
+  assert.equal(r.saldoFinal, 3000);
+  cerca(r.liquidacion, ref('sm_int_neto') - ref('sm_int_deu'));
+});
+test('P-027 liquidacionCuenta: movimiento el primer día, varios el mismo día y errores', () => {
+  const r = F.liquidacionCuenta({ saldoInicial: 0, dias: 10, movimientos: [{ dia: 0, importe: 100 }, { dia: 5, importe: 50 }, { dia: 5, importe: -50 }] });
+  assert.deepEqual(r.tramos.map((t) => [t.desde, t.hasta, t.saldo]), [[0, 5, 100], [5, 10, 100]]);
+  assert.equal(r.saldoMedio, 100);
+  assert.throws(() => F.liquidacionCuenta({ saldoInicial: 0, dias: 10, movimientos: [{ dia: 10, importe: 1 }] }));
+  assert.throws(() => F.liquidacionCuenta({ saldoInicial: 0, dias: 0 }));
+  assert.throws(() => F.liquidacionCuenta({ saldoInicial: 0, dias: 5, base: '30/360' }));
+});
+test('P-028 capitalFinal: simple, compuesta anual y mensual, continua', () => {
+  const base = { capital: 10000, tipo: 0.03, anios: 5 };
+  cerca(F.capitalFinal({ ...base, regimen: 'simple' }), ref('cap_simple'));
+  cerca(F.capitalFinal(base), ref('cap_anual'));
+  cerca(F.capitalFinal({ ...base, m: 12 }), ref('cap_mensual'));
+  cerca(F.capitalFinal({ ...base, regimen: 'continuo' }), ref('cap_continua'));
+  assert.throws(() => F.capitalFinal({ ...base, regimen: 'otro' }));
+  assert.throws(() => F.capitalFinal({ ...base, m: 0 }));
+});
+test('P-029 cambioBase, descuentoAInteres e interesADescuento', () => {
+  cerca(F.cambioBase(0.03, 'ACT/360', 'ACT/365'), ref('eq_base'));
+  cerca(F.cambioBase(ref('eq_base'), 'ACT/365', 'ACT/360'), 0.03);
+  cerca(F.descuentoAInteres(0.04, 90), ref('eq_dto_int'));
+  cerca(F.interesADescuento(0.04, 90), ref('eq_int_dto'));
+  cerca(F.interesADescuento(F.descuentoAInteres(0.05, 120), 120), 0.05); // ida y vuelta
+  assert.throws(() => F.descuentoAInteres(4, 90));
+});
+test('P-030 forwardImplicito y liquidacionFra', () => {
+  const f = F.forwardImplicito({ tipoCorto: 0.02, diasCorto: 90, tipoLargo: 0.022, diasLargo: 180 });
+  cerca(f.forward, ref('fwd_3x6'));
+  assert.equal(f.dias, 90);
+  cerca(F.liquidacionFra({ nominal: 1e6, tipoFra: 0.024, tipoReferencia: 0.026, dias: 90 }), ref('fra_liq'));
+  assert.ok(F.liquidacionFra({ nominal: 1e6, tipoFra: 0.026, tipoReferencia: 0.024, dias: 90 }) < 0);
+  assert.throws(() => F.forwardImplicito({ tipoCorto: 0.02, diasCorto: 180, tipoLargo: 0.022, diasLargo: 90 }));
+});
+test('P-031 tipoReal: Fisher exacto y aproximado', () => {
+  const r = F.tipoReal(0.03, 0.022);
+  cerca(r.exacto, ref('real_exacto'));
+  cerca(r.aproximado, 0.008);
+  assert.throws(() => F.tipoReal(0.03, -1));
+});

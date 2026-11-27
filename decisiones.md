@@ -292,6 +292,7 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
 | `bolsa-inversion` | bolsa, ibex, ibex 35, acciones, cotización, dividendo, dividendos, bono, bonos, renta fija, renta variable, fondos de inversión, etf, wall street, s&p 500, nasdaq, stocks, shares, equities, bonds, yields, investors |
 | `real-estate` | vivienda, viviendas, hipoteca, hipotecas, inmobiliario, inmobiliaria, alquiler, euríbor, euribor, promotora, socimi, housing, mortgage, mortgages, property, real estate |
 | `macroeconomia` | inflación, ipc, ipca, pib, paro, desempleo, empleo, déficit, deuda pública, prima de riesgo, tipos de interés, política monetaria, recesión, crecimiento económico, inflation, gdp, unemployment, interest rates, monetary policy, recession, central bank |
+| `tipos-interes` | tipos de interés, tipo de interés, euríbor, euribor, €str, estr, subida de tipos, bajada de tipos, recorte de tipos, sube los tipos, baja los tipos, depósitos, depósito, interest rates, interest rate, rate cut, rate cuts, rate hike, rate hikes, deposit rate |
 | `institucional` | bce, banco central europeo, banco de españa, eurosistema, supervisión bancaria, ecb, eurosystem, banking supervision |
 
 ## D-026 · 2026-11-24 · Ajuste · Verificación de fuentes en la web publicada

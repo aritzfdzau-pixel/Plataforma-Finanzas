@@ -39,6 +39,16 @@ export const SERIES_OFICIALES = Object.freeze([
   { id: 'mlf', nombre: 'Facilidad marginal de crédito del BCE (MLF)', tipo: 'tipo', unidad: '%', etiqueta: 'referencia BCE', formato: 'bce-csv', url: BCE('FM/B.U2.EUR.4F.KR.MLFR.LEV') },
   { id: 'estr', nombre: '€STR (tipo a un día del euro)', tipo: 'tipo', unidad: '%', etiqueta: 'referencia BCE', formato: 'bce-csv', url: BCE('EST/B.EU000A2X2A25.WT') },
   { id: 'euribor-12m', nombre: 'Euribor a un año, media mensual (índice oficial hipotecario)', tipo: 'tipo', unidad: '%', etiqueta: 'referencia Banco de España', formato: 'bde-json', url: 'https://app.bde.es/bierest/resources/srdatosapp/listaSeries?idioma=es&series=D_1NBAF472&rango=60M' },
+  // --- Tipos de interés (D-044): Euribor por plazos (media mensual, BCE), bancos centrales y
+  // tipos a un día de EE. UU. y Reino Unido. Sin claves. ⚠️ Pendiente de verificar los códigos
+  // hasta la primera descarga desde Actions.
+  ...[['1m', '1 mes', 'EURIBOR1MD_'], ['3m', '3 meses', 'EURIBOR3MD_'], ['6m', '6 meses', 'EURIBOR6MD_'], ['12m-bce', '12 meses', 'EURIBOR1YD_']].map(([id, plazo, clave]) =>
+    ({ id: `euribor-${id}`, nombre: `Euribor a ${plazo}, media mensual (BCE)`, tipo: 'tipo', unidad: '%', etiqueta: 'referencia BCE', formato: 'bce-csv', url: BCE(`FM/M.U2.EUR.RT.MM.${clave}.HSTA`), grupo: 'monetario' })),
+  { id: 'fed-sup', nombre: 'Fondos federales de la Reserva Federal, límite superior del objetivo', tipo: 'tipo', unidad: '%', etiqueta: ETQ_OFICIAL('Reserva Federal'), formato: 'fred-csv', url: FRED('DFEDTARU'), grupo: 'monetario' },
+  { id: 'fed-inf', nombre: 'Fondos federales de la Reserva Federal, límite inferior del objetivo', tipo: 'tipo', unidad: '%', etiqueta: ETQ_OFICIAL('Reserva Federal'), formato: 'fred-csv', url: FRED('DFEDTARL'), grupo: 'monetario' },
+  { id: 'sofr', nombre: 'SOFR (tipo a un día garantizado del dólar)', tipo: 'tipo', unidad: '%', etiqueta: ETQ_OFICIAL('Reserva Federal'), formato: 'fred-csv', url: FRED('SOFR'), grupo: 'monetario' },
+  { id: 'boe-bank-rate', nombre: 'Bank Rate del Banco de Inglaterra', tipo: 'tipo', unidad: '%', etiqueta: ETQ_OFICIAL('Banco de Inglaterra'), formato: 'boe-csv', url: BOE('IUDBEDR'), grupo: 'monetario' },
+  { id: 'sonia', nombre: 'SONIA (tipo a un día de la libra)', tipo: 'tipo', unidad: '%', etiqueta: ETQ_OFICIAL('Banco de Inglaterra'), formato: 'boe-csv', url: BOE('IUDSOIA'), grupo: 'monetario' },
   { id: 'eurusd', nombre: 'EUR/USD (tipo de referencia BCE)', tipo: 'precio', unidad: 'USD por EUR', etiqueta: 'referencia BCE', formato: 'bce-csv', url: BCE('EXR/D.USD.EUR.SP00.A') },
   { id: 'eurgbp', nombre: 'EUR/GBP (tipo de referencia BCE)', tipo: 'precio', unidad: 'GBP por EUR', etiqueta: 'referencia BCE', formato: 'bce-csv', url: BCE('EXR/D.GBP.EUR.SP00.A') },
   { id: 'eurjpy', nombre: 'EUR/JPY (tipo de referencia BCE)', tipo: 'precio', unidad: 'JPY por EUR', etiqueta: 'referencia BCE', formato: 'bce-csv', url: BCE('EXR/D.JPY.EUR.SP00.A') },

@@ -513,6 +513,131 @@
         "P-002"
       ],
       "ultima_revision": "2026-11-24"
+    },
+    {
+      "ruta": "conocimiento/tipos-interes/capitalizacion-y-depositos.md",
+      "titulo": "Capitalización simple y compuesta y depósitos a plazo",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "tipos-interes",
+      "etiquetas": [
+        "interes-simple",
+        "interes-compuesto",
+        "capitalizacion-continua",
+        "deposito",
+        "plazo-fijo",
+        "tae",
+        "fgd"
+      ],
+      "operaciones": [
+        "capitalizacion",
+        "deposito-plazo"
+      ],
+      "patrones": [
+        "P-001",
+        "P-002",
+        "P-003",
+        "P-009",
+        "P-028"
+      ],
+      "ultima_revision": "2026-11-27"
+    },
+    {
+      "ruta": "conocimiento/tipos-interes/equivalencia-de-tipos.md",
+      "titulo": "Equivalencia de tipos: bases, descuento, nominal, efectivo y real",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "tipos-interes",
+      "etiquetas": [
+        "act-360",
+        "act-365",
+        "tipo-de-descuento",
+        "tipo-efectivo",
+        "tipo-real",
+        "fisher",
+        "inflacion"
+      ],
+      "operaciones": [
+        "equivalencia-tipos",
+        "tipo-real"
+      ],
+      "patrones": [
+        "P-001",
+        "P-003",
+        "P-028",
+        "P-029",
+        "P-031"
+      ],
+      "ultima_revision": "2026-11-27"
+    },
+    {
+      "ruta": "conocimiento/tipos-interes/forward-de-tipos-y-fra.md",
+      "titulo": "Tipo forward implícito y FRA",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "tipos-interes",
+      "etiquetas": [
+        "forward",
+        "fra",
+        "euribor",
+        "mercado-monetario",
+        "cobertura",
+        "curva-de-tipos"
+      ],
+      "operaciones": [
+        "forward-tipos"
+      ],
+      "patrones": [
+        "P-001",
+        "P-002",
+        "P-030"
+      ],
+      "ultima_revision": "2026-11-27"
+    },
+    {
+      "ruta": "conocimiento/tipos-interes/intereses-de-demora.md",
+      "titulo": "Intereses de demora",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "tipos-interes",
+      "etiquetas": [
+        "demora",
+        "interes-legal-del-dinero",
+        "ley-3-2004",
+        "morosidad",
+        "impago"
+      ],
+      "operaciones": [
+        "intereses-demora"
+      ],
+      "patrones": [
+        "P-001",
+        "P-002"
+      ],
+      "ultima_revision": "2026-11-27"
+    },
+    {
+      "ruta": "conocimiento/tipos-interes/saldos-medios-y-liquidacion-de-cuentas.md",
+      "titulo": "Saldo medio y liquidación de intereses de una cuenta",
+      "idioma": "es",
+      "traduccion": null,
+      "categoria": "tipos-interes",
+      "etiquetas": [
+        "saldo-medio",
+        "numeros-comerciales",
+        "metodo-hamburgues",
+        "cuenta-corriente",
+        "descubierto",
+        "fecha-valor"
+      ],
+      "operaciones": [
+        "saldos-medios"
+      ],
+      "patrones": [
+        "P-001",
+        "P-027"
+      ],
+      "ultima_revision": "2026-11-27"
     }
   ],
   "operaciones": [
@@ -805,6 +930,121 @@
         "escenarios",
         "sensibilidad"
       ]
+    },
+    {
+      "id": "capitalizacion",
+      "titulo": "Interés simple, compuesto y continuo",
+      "tituloIngles": "Simple, compound and continuous interest",
+      "resumen": "Compara el capital final con capitalización simple, compuesta (con su periodicidad) y continua.",
+      "categoria": "tipos-interes",
+      "ficha": "conocimiento/tipos-interes/capitalizacion-y-depositos.md",
+      "etiquetas": [
+        "interes-simple",
+        "interes-compuesto",
+        "capitalizacion-continua",
+        "deposito",
+        "plazo-fijo",
+        "tae",
+        "fgd"
+      ]
+    },
+    {
+      "id": "deposito-plazo",
+      "titulo": "Depósito a plazo fijo",
+      "tituloIngles": "Fixed-term deposit",
+      "resumen": "Intereses brutos y netos y TAE de un depósito con pago al vencimiento o liquidaciones periódicas.",
+      "categoria": "tipos-interes",
+      "ficha": "conocimiento/tipos-interes/capitalizacion-y-depositos.md",
+      "etiquetas": [
+        "interes-simple",
+        "interes-compuesto",
+        "capitalizacion-continua",
+        "deposito",
+        "plazo-fijo",
+        "tae",
+        "fgd"
+      ]
+    },
+    {
+      "id": "equivalencia-tipos",
+      "titulo": "Equivalencia de tipos (bases, descuento, nominal y efectivo)",
+      "tituloIngles": "Rate equivalence (day count, discount, nominal and effective)",
+      "resumen": "Pasa un tipo de Act/360 a Act/365, de descuento a interés (y al revés) y de nominal a efectivo.",
+      "categoria": "tipos-interes",
+      "ficha": "conocimiento/tipos-interes/equivalencia-de-tipos.md",
+      "etiquetas": [
+        "act-360",
+        "act-365",
+        "tipo-de-descuento",
+        "tipo-efectivo",
+        "tipo-real",
+        "fisher",
+        "inflacion"
+      ]
+    },
+    {
+      "id": "tipo-real",
+      "titulo": "Tipo de interés real (Fisher)",
+      "tituloIngles": "Real interest rate (Fisher)",
+      "resumen": "Rentabilidad o coste descontando la inflación, exacto y aproximado, y poder adquisitivo de un capital.",
+      "categoria": "tipos-interes",
+      "ficha": "conocimiento/tipos-interes/equivalencia-de-tipos.md",
+      "etiquetas": [
+        "act-360",
+        "act-365",
+        "tipo-de-descuento",
+        "tipo-efectivo",
+        "tipo-real",
+        "fisher",
+        "inflacion"
+      ]
+    },
+    {
+      "id": "forward-tipos",
+      "titulo": "Tipo forward implícito y FRA",
+      "tituloIngles": "Implied forward rate and FRA",
+      "resumen": "Tipo implícito entre dos plazos del mercado monetario y liquidación de un FRA.",
+      "categoria": "tipos-interes",
+      "ficha": "conocimiento/tipos-interes/forward-de-tipos-y-fra.md",
+      "etiquetas": [
+        "forward",
+        "fra",
+        "euribor",
+        "mercado-monetario",
+        "cobertura",
+        "curva-de-tipos"
+      ]
+    },
+    {
+      "id": "intereses-demora",
+      "titulo": "Intereses de demora",
+      "tituloIngles": "Late-payment interest",
+      "resumen": "Intereses por retraso en un pago entre dos fechas: tipo legal del dinero, demora comercial (BCE + 8 pp) o pactado.",
+      "categoria": "tipos-interes",
+      "ficha": "conocimiento/tipos-interes/intereses-de-demora.md",
+      "etiquetas": [
+        "demora",
+        "interes-legal-del-dinero",
+        "ley-3-2004",
+        "morosidad",
+        "impago"
+      ]
+    },
+    {
+      "id": "saldos-medios",
+      "titulo": "Saldo medio y liquidación de una cuenta",
+      "tituloIngles": "Average balance and account interest",
+      "resumen": "Saldo medio diario, números comerciales e intereses acreedores y deudores de un periodo (método hamburgués).",
+      "categoria": "tipos-interes",
+      "ficha": "conocimiento/tipos-interes/saldos-medios-y-liquidacion-de-cuentas.md",
+      "etiquetas": [
+        "saldo-medio",
+        "numeros-comerciales",
+        "metodo-hamburgues",
+        "cuenta-corriente",
+        "descubierto",
+        "fecha-valor"
+      ]
     }
   ],
   "patrones": [
@@ -818,7 +1058,12 @@
         "fx-forward",
         "descuento-comercial",
         "factoring",
-        "confirming"
+        "confirming",
+        "saldos-medios",
+        "deposito-plazo",
+        "equivalencia-tipos",
+        "forward-tipos",
+        "intereses-demora"
       ],
       "otros": [],
       "estado": "Estable"
@@ -834,7 +1079,10 @@
         "fx-forward",
         "descuento-comercial",
         "factoring",
-        "confirming"
+        "confirming",
+        "deposito-plazo",
+        "forward-tipos",
+        "intereses-demora"
       ],
       "otros": [],
       "estado": "Estable"
@@ -850,7 +1098,10 @@
       "operaciones": [
         "tin-tae",
         "prestamo-amortizacion",
-        "poliza-credito"
+        "poliza-credito",
+        "deposito-plazo",
+        "capitalizacion",
+        "equivalencia-tipos"
       ],
       "otros": [],
       "estado": "Estable"
@@ -943,7 +1194,8 @@
       "operaciones": [
         "descuento-comercial",
         "factoring",
-        "confirming"
+        "confirming",
+        "deposito-plazo"
       ],
       "otros": [],
       "estado": "Estable"
@@ -1169,6 +1421,70 @@
       ],
       "operaciones": [
         "analisis-estados-financieros"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-027",
+      "nombre": "Liquidación de una cuenta: tramos por fecha valor, números comerciales, saldo medio e intereses (método hamburgués)",
+      "funciones": [
+        "liquidacionCuenta"
+      ],
+      "operaciones": [
+        "saldos-medios"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-028",
+      "nombre": "Capitalización simple, compuesta y continua",
+      "funciones": [
+        "capitalFinal"
+      ],
+      "operaciones": [
+        "capitalizacion",
+        "tipo-real"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-029",
+      "nombre": "Equivalencias de tipos: cambio de base y descuento ↔ interés",
+      "funciones": [
+        "cambioBase",
+        "descuentoAInteres",
+        "interesADescuento"
+      ],
+      "operaciones": [
+        "equivalencia-tipos"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-030",
+      "nombre": "Tipo forward implícito y liquidación de un FRA",
+      "funciones": [
+        "forwardImplicito",
+        "liquidacionFra"
+      ],
+      "operaciones": [
+        "forward-tipos"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-031",
+      "nombre": "Tipo de interés real (ecuación de Fisher)",
+      "funciones": [
+        "tipoReal"
+      ],
+      "operaciones": [
+        "tipo-real"
       ],
       "otros": [],
       "estado": "Estable"

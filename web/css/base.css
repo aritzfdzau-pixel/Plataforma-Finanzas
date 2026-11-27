@@ -52,6 +52,7 @@ a { color: var(--color-accent); text-underline-offset: 2px; }
 .cat--bolsa-inversion { --cat-color: var(--cat-bolsa-inversion); }
 .cat--real-estate     { --cat-color: var(--cat-real-estate); }
 .cat--macroeconomia   { --cat-color: var(--cat-macroeconomia); }
+.cat--tipos-interes   { --cat-color: var(--cat-tipos-interes); }
 .cat--institucional   { --cat-color: var(--cat-institucional); }
 
 .chip {

@@ -9,15 +9,15 @@ pasen los tests de todas las operaciones que lo usan.
 
 | ID | Nombre | Función(es) | Tests | Usado por | Estado |
 | --- | --- | --- | --- | --- | --- |
-| P-001 | Fracción de año según base (Act/360, Act/365) | `fraccionAnio` | `operativa/tests/finanzas.test.js` | fx-forward, descuento-comercial, factoring, confirming | Estable |
-| P-002 | Interés simple a corto plazo | `factorSimple`, `interesSimple` | `operativa/tests/finanzas.test.js` | fx-forward, descuento-comercial, factoring, confirming | Estable |
-| P-003 | Conversión de tipos entre periodicidades (TIN ↔ TAE) | `tinATae`, `taeATin`, `periodicoAAnual` | `operativa/tests/finanzas.test.js` | tin-tae, prestamo-amortizacion, poliza-credito | Estable |
+| P-001 | Fracción de año según base (Act/360, Act/365) | `fraccionAnio` | `operativa/tests/finanzas.test.js` | fx-forward, descuento-comercial, factoring, confirming, saldos-medios, deposito-plazo, equivalencia-tipos, forward-tipos, intereses-demora | Estable |
+| P-002 | Interés simple a corto plazo | `factorSimple`, `interesSimple` | `operativa/tests/finanzas.test.js` | fx-forward, descuento-comercial, factoring, confirming, deposito-plazo, forward-tipos, intereses-demora | Estable |
+| P-003 | Conversión de tipos entre periodicidades (TIN ↔ TAE) | `tinATae`, `taeATin`, `periodicoAAnual` | `operativa/tests/finanzas.test.js` | tin-tae, prestamo-amortizacion, poliza-credito, deposito-plazo, capitalizacion, equivalencia-tipos | Estable |
 | P-004 | Descuento de flujos (VAN, TIR Newton-Raphson + bisección) | `van`, `tir`, `cambiosDeSigno` | `operativa/tests/finanzas.test.js` | van-tir, tin-tae, prestamo-amortizacion, poliza-credito, bono-precio-rentabilidad | Estable |
 | P-005 | Cuadro de amortización (francés / alemán / americano, carencia) | `cuotaFrancesa`, `pendienteFrances`, `cuadroAmortizacion` | `operativa/tests/finanzas.test.js` | prestamo-amortizacion, hipoteca-variable, tin-tae, escenario-euribor | Estable |
 | P-006 | Rentabilidades, varianza y volatilidad | `rentabilidadesSimples`, `rentabilidadesLog`, `media`, `varianzaMuestral`, `desviacionMuestral`, `volatilidadAnualizada` | `operativa/tests/finanzas.test.js` | rentabilidad-volatilidad, históricos | Estable |
 | P-007 | Paridad cubierta de tipos (forward) | `forwardParidad` | `operativa/tests/finanzas.test.js` | fx-forward | Estable |
 | P-008 | Conversión con tipo de referencia y redondeo | `redondear`, `convertirConReferencia` | `operativa/tests/finanzas.test.js` | fx-conversion-bce | Estable |
-| P-009 | Coste efectivo anual de un único flujo | `costeEfectivoAnual` | `operativa/tests/finanzas.test.js` | descuento-comercial, factoring, confirming | Estable |
+| P-009 | Coste efectivo anual de un único flujo | `costeEfectivoAnual` | `operativa/tests/finanzas.test.js` | descuento-comercial, factoring, confirming, deposito-plazo | Estable |
 | P-010 | Lectura de tipos BCE y variación relativa (hoy / anterior − 1) | `parsearXmlBce`, `variacionRelativa`, `construirDatosBce` (en `scripts/bce.js`) | `tests/bce.test.js` | panel de divisas, fx-conversion-bce, fx-forward | Estable |
 | P-011 | Medias móviles y diferencias | `mediaMovil`, `diferencias` | `operativa/tests/finanzas.test.js` | históricos | Estable |
 | P-012 | Volatilidad EWMA (RiskMetrics, λ = 0,94) | `volatilidadEWMA` | `operativa/tests/finanzas.test.js` | históricos | Estable |
@@ -35,8 +35,13 @@ pasen los tests de todas las operaciones que lo usan.
 | P-024 | Precio de un bono a partir de su TIR y TIR a partir del precio | `precioBono`, `tirBono` | `operativa/tests/finanzas.test.js` | bono-precio-rentabilidad | Estable |
 | P-025 | Rentabilidad acumulada y anualizada entre dos fechas | `rentabilidadAcumulada` | `operativa/tests/finanzas.test.js` | rentabilidad-indice | Estable |
 | P-026 | Valoración de ratios frente a rangos orientativos y evolución entre dos años | `valorarRatio`, `evolucionRatio` | `operativa/tests/finanzas.test.js` | analisis-estados-financieros | Estable |
+| P-027 | Liquidación de una cuenta: tramos por fecha valor, números comerciales, saldo medio e intereses (método hamburgués) | `liquidacionCuenta` | `operativa/tests/finanzas.test.js` | saldos-medios | Estable |
+| P-028 | Capitalización simple, compuesta y continua | `capitalFinal` | `operativa/tests/finanzas.test.js` | capitalizacion, tipo-real | Estable |
+| P-029 | Equivalencias de tipos: cambio de base y descuento ↔ interés | `cambioBase`, `descuentoAInteres`, `interesADescuento` | `operativa/tests/finanzas.test.js` | equivalencia-tipos | Estable |
+| P-030 | Tipo forward implícito y liquidación de un FRA | `forwardImplicito`, `liquidacionFra` | `operativa/tests/finanzas.test.js` | forward-tipos | Estable |
+| P-031 | Tipo de interés real (ecuación de Fisher) | `tipoReal` | `operativa/tests/finanzas.test.js` | tipo-real | Estable |
 
-Las funciones P-001 a P-009 y P-011 a P-026 viven en `operativa/lib/finanzas.js`; P-010, en `scripts/bce.js` (lo usa la tarea programada). Los tests comparan con valores
+Las funciones P-001 a P-009 y P-011 a P-031 viven en `operativa/lib/finanzas.js`; P-010, en `scripts/bce.js` (lo usa la tarea programada). Los tests comparan con valores
 calculados por **LibreOffice Calc** (`operativa/tests/referencias/referencias.fods`, con las
 fórmulas visibles; resultados en `referencias.json`). Cualquier hoja de cálculo (Google Sheets,
 Excel) puede abrir el `.fods` para comprobarlos.

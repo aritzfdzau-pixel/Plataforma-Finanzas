@@ -842,6 +842,115 @@ export function rentabilidadAcumulada(inicial, final, dias) {
 }
 
 // ---------------------------------------------------------------------------
+// P-027 · Liquidación de una cuenta: saldos por tramos, números comerciales, saldo medio e
+// intereses (método hamburgués)
+// ---------------------------------------------------------------------------
+/**
+ * Cada movimiento cambia el saldo desde su día (fecha valor) incluido. `dia` es el número de días
+ * desde el inicio del periodo (0 = primer día) y `dias` la duración total (días naturales).
+ * Números comerciales = saldo × días; intereses = Σ números × tipo / divisor de la base.
+ */
+export function liquidacionCuenta({ saldoInicial, movimientos = [], dias, tipoAcreedor = 0, tipoDeudor = 0, base = 'ACT/365', retencion = 0 }) {
+  comprobarFinito(saldoInicial, 'saldo inicial');
+  comprobarFinito(tipoAcreedor, 'tipo acreedor'); comprobarFinito(tipoDeudor, 'tipo deudor'); comprobarFinito(retencion, 'retención');
+  if (!Number.isInteger(dias) || dias <= 0) throw new Error('El periodo debe tener al menos 1 día');
+  const divisor = BASES[base];
+  if (!divisor) throw new Error(`Base de cálculo no soportada: ${base}`);
+  const movs = movimientos.map((m, k) => {
+    comprobarFinito(m.importe, 'importe');
+    if (!Number.isInteger(m.dia) || m.dia < 0 || m.dia >= dias) throw new Error(`El movimiento ${k + 1} cae fuera del periodo`);
+    return { dia: m.dia, importe: m.importe, k };
+  }).sort((a, b) => a.dia - b.dia || a.k - b.k);
+  const tramos = [];
+  let saldo = saldoInicial;
+  let desde = 0;
+  let i = 0;
+  while (desde < dias) {
+    while (i < movs.length && movs[i].dia === desde) saldo += movs[i++].importe;
+    const hasta = i < movs.length ? movs[i].dia : dias;
+    tramos.push({ desde, hasta, dias: hasta - desde, saldo, numeros: saldo * (hasta - desde) });
+    desde = hasta;
+  }
+  const numerosAcreedores = tramos.reduce((s, t) => s + Math.max(t.numeros, 0), 0);
+  const numerosDeudores = tramos.reduce((s, t) => s + Math.max(-t.numeros, 0), 0);
+  const interesesAcreedores = numerosAcreedores * tipoAcreedor / divisor;
+  const interesesDeudores = numerosDeudores * tipoDeudor / divisor;
+  const importeRetencion = interesesAcreedores * retencion;
+  return {
+    tramos, dias, saldoFinal: saldo,
+    numerosAcreedores, numerosDeudores,
+    saldoMedio: (numerosAcreedores - numerosDeudores) / dias,
+    saldoMedioAcreedor: numerosAcreedores / dias,
+    saldoMedioDeudor: numerosDeudores / dias,
+    interesesAcreedores, retencion: importeRetencion, interesesNetos: interesesAcreedores - importeRetencion,
+    interesesDeudores, liquidacion: interesesAcreedores - importeRetencion - interesesDeudores,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// P-028 · Capitalización simple, compuesta y continua
+// ---------------------------------------------------------------------------
+/** Capital final de `capital` a `tipo` anual durante `anios` (simple, compuesta con m capitalizaciones al año o continua). */
+export function capitalFinal({ capital, tipo, anios, regimen = 'compuesto', m = 1 }) {
+  comprobarFinito(capital, 'capital'); comprobarFinito(tipo, 'tipo'); comprobarFinito(anios, 'años');
+  if (anios < 0) throw new Error('El plazo no puede ser negativo');
+  if (regimen === 'simple') return capital * (1 + tipo * anios);
+  if (regimen === 'continuo') return capital * Math.exp(tipo * anios);
+  if (regimen !== 'compuesto') throw new Error(`Régimen desconocido: ${regimen}`);
+  if (!Number.isInteger(m) || m <= 0) throw new Error('Capitalizaciones al año no válidas');
+  if (tipo / m <= -1) throw new Error('Tipo no válido');
+  return capital * (1 + tipo / m) ** (m * anios);
+}
+
+// ---------------------------------------------------------------------------
+// P-029 · Equivalencias de tipos: cambio de base y tipo de descuento ↔ tipo de interés
+// ---------------------------------------------------------------------------
+/** Tipo simple equivalente en otra base (mismos intereses en los mismos días): r · divisor(a) / divisor(de). */
+export function cambioBase(tipo, de, a) {
+  comprobarFinito(tipo, 'tipo');
+  if (!BASES[de] || !BASES[a]) throw new Error('Base de cálculo no soportada');
+  return tipo * BASES[a] / BASES[de];
+}
+/** Tipo de interés (vencido) equivalente a un tipo de descuento (anticipado): d / (1 − d·t). */
+export function descuentoAInteres(d, dias, base = 'ACT/360') {
+  const t = fraccionAnio(dias, base); comprobarFinito(d, 'tipo de descuento');
+  if (d * t >= 1) throw new Error('El descuento no puede ser igual o mayor que el nominal');
+  return d / (1 - d * t);
+}
+/** Tipo de descuento equivalente a un tipo de interés: i / (1 + i·t). */
+export function interesADescuento(i, dias, base = 'ACT/360') {
+  const t = fraccionAnio(dias, base); comprobarFinito(i, 'tipo de interés');
+  if (1 + i * t <= 0) throw new Error('Tipo no válido');
+  return i / (1 + i * t);
+}
+
+// ---------------------------------------------------------------------------
+// P-030 · Tipo forward implícito y liquidación de un FRA
+// ---------------------------------------------------------------------------
+/** Tipo implícito entre dos plazos del mercado monetario (interés simple): ((1+r₂t₂)/(1+r₁t₁) − 1) / (t₂ − t₁). */
+export function forwardImplicito({ tipoCorto, diasCorto, tipoLargo, diasLargo, base = 'ACT/360' }) {
+  if (!(diasLargo > diasCorto)) throw new Error('El plazo largo debe ser mayor que el corto');
+  const t1 = fraccionAnio(diasCorto, base); const t2 = fraccionAnio(diasLargo, base);
+  return { forward: ((factorSimple(tipoLargo, diasLargo, base) / factorSimple(tipoCorto, diasCorto, base)) - 1) / (t2 - t1), dias: diasLargo - diasCorto };
+}
+/** Liquidación de un FRA al inicio del periodo (positivo = cobra el comprador): N·(L − K)·t / (1 + L·t). */
+export function liquidacionFra({ nominal, tipoFra, tipoReferencia, dias, base = 'ACT/360' }) {
+  comprobarFinito(nominal, 'nominal'); comprobarFinito(tipoFra, 'tipo FRA'); comprobarFinito(tipoReferencia, 'tipo de referencia');
+  const t = fraccionAnio(dias, base);
+  return nominal * (tipoReferencia - tipoFra) * t / (1 + tipoReferencia * t);
+}
+
+// ---------------------------------------------------------------------------
+// P-031 · Tipo de interés real (ecuación de Fisher)
+// ---------------------------------------------------------------------------
+/** Tipo real exacto (1 + n) / (1 + π) − 1 y aproximación n − π. */
+export function tipoReal(nominal, inflacion) {
+  comprobarFinito(nominal, 'tipo nominal'); comprobarFinito(inflacion, 'inflación');
+  if (inflacion <= -1) throw new Error('Inflación no válida');
+  return { exacto: (1 + nominal) / (1 + inflacion) - 1, aproximado: nominal - inflacion };
+}
+
+// ---------------------------------------------------------------------------
 // Validaciones comunes
 // ---------------------------------------------------------------------------
 function comprobarPares(a, b) {

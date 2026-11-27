@@ -1,7 +1,8 @@
 // Convierte los textos de un formulario en los valores que espera `calcular`. Puro (sin DOM).
-import { leerNumero, leerSerie } from './formato.js';
+import { leerNumero, leerSerie, leerFecha } from './formato.js';
 
-export const TIPOS_CAMPO = ['numero', 'entero', 'porcentaje', 'seleccion', 'serie', 'casilla'];
+// 'fecha' (dd/mm/aaaa → 'AAAA-MM-DD') y 'lineas' (texto de varias líneas que interpreta la operación).
+export const TIPOS_CAMPO = ['numero', 'entero', 'porcentaje', 'seleccion', 'serie', 'casilla', 'fecha', 'lineas'];
 
 /**
  * Un campo con `visibleSi: { campo, valor }` solo se muestra (y se lee) cuando el campo
@@ -36,7 +37,7 @@ export function leerCampos(campos, textos = {}) {
 
 export function leerCampo(c, texto) {
   if (c.tipo === 'casilla') return texto === 'si';
-  if (c.tipo !== 'seleccion' && c.tipo !== 'serie' && String(texto ?? '').trim() === '') {
+  if (c.tipo !== 'seleccion' && c.tipo !== 'serie' && c.tipo !== 'lineas' && String(texto ?? '').trim() === '') {
     if (c.opcional) return null; // campo opcional vacío
     throw new Error('Obligatorio: introduce un valor');
   }
@@ -62,6 +63,13 @@ export function leerCampo(c, texto) {
     }
     case 'serie':
       return leerSerie(texto);
+    case 'fecha': {
+      const f = leerFecha(texto);
+      if (!f) throw new Error('Fecha no válida (dd/mm/aaaa)');
+      return f;
+    }
+    case 'lineas':
+      return String(texto ?? '');
     default:
       throw new Error(`Tipo de campo desconocido: ${c.tipo}`);
   }

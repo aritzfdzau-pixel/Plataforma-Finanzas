@@ -145,12 +145,12 @@ function campo(c, textos, recalcular, prefijo = 'campo') {
   if (c.tipo === 'seleccion') {
     control = h('select', { id: idInput, onchange: alCambiar },
       c.opciones.map((o) => h('option', { value: o.valor, selected: o.valor === textos[c.id] }, o.etiqueta)));
-  } else if (c.tipo === 'serie') {
-    control = h('textarea', { id: idInput, rows: 6, spellcheck: 'false', oninput: alCambiar });
+  } else if (c.tipo === 'serie' || c.tipo === 'lineas') {
+    control = h('textarea', { id: idInput, rows: c.filas ?? 6, spellcheck: 'false', oninput: alCambiar });
     control.value = textos[c.id];
   } else {
-    control = h('input', { id: idInput, type: 'text', inputmode: c.tipo === 'entero' ? 'numeric' : 'decimal', autocomplete: 'off', spellcheck: 'false', oninput: alCambiar,
-      placeholder: c.opcional ? 'opcional' : null });
+    control = h('input', { id: idInput, type: 'text', inputmode: c.tipo === 'entero' ? 'numeric' : c.tipo === 'fecha' ? 'text' : 'decimal', autocomplete: 'off', spellcheck: 'false', oninput: alCambiar,
+      placeholder: c.opcional ? 'opcional' : c.tipo === 'fecha' ? 'dd/mm/aaaa' : null });
     control.value = textos[c.id];
   }
   return h('div', { class: `campo campo--${c.tipo}`, 'data-campo': c.id },
@@ -166,6 +166,8 @@ function lectura(c, texto, valor) {
   if (c.tipo === 'seleccion' || c.tipo === 'casilla') return '';
   if (valor === null) return 'Sin dato (opcional)';
   if (c.tipo === 'serie') return `${valor.length} valores leídos`;
+  if (c.tipo === 'lineas') return '';
+  if (c.tipo === 'fecha') return `= ${fechaEs(valor)}`;
   const n = leerNumero(texto);
   const base = c.tipo === 'porcentaje' ? `= ${numero(n, 2, 6)} %` : `= ${numero(n, c.tipo === 'entero' ? 0 : 2, 6)}`;
   return esMilesConPunto(texto) ? `${base} (punto leído como separador de miles)` : base;
@@ -287,5 +289,6 @@ function tabla(t) {
     h('div', { class: 'tabla-scroll' }, h('table', { class: 'tabla-num' },
       h('thead', {}, h('tr', {}, t.columnas.map((c) => h('th', { scope: 'col' }, c.etiqueta)))),
       h('tbody', {}, t.filas.map((f) => h('tr', {}, t.columnas.map((c) =>
-        h('td', { class: 'num' }, Number.isFinite(f[c.id]) ? formatear(f[c.id], c.formato) : '—'))))))));
+        c.formato === 'texto' ? h('td', {}, String(f[c.id] ?? '—'))
+          : h('td', { class: 'num' }, Number.isFinite(f[c.id]) ? formatear(f[c.id], c.formato) : '—'))))))));
 }

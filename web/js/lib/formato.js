@@ -51,6 +51,27 @@ export function leerSerie(texto) {
   });
 }
 
+/**
+ * Lee una fecha «dd/mm/aaaa» (también con «-» o «.», o ISO «aaaa-mm-dd») y la devuelve en ISO
+ * «AAAA-MM-DD». Devuelve null si no es una fecha real (p. ej. 30/02).
+ */
+export function leerFecha(texto) {
+  const t = String(texto ?? '').trim();
+  let m = /^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/.exec(t);
+  let a; let mes; let d;
+  if (m) [, d, mes, a] = m.map(Number);
+  else if ((m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(t))) [, a, mes, d] = m.map(Number);
+  else return null;
+  const f = new Date(Date.UTC(a, mes - 1, d));
+  if (f.getUTCFullYear() !== a || f.getUTCMonth() !== mes - 1 || f.getUTCDate() !== d) return null;
+  return f.toISOString().slice(0, 10);
+}
+
+/** Días naturales de `desde` a `hasta` (fechas ISO); negativo si `hasta` es anterior. */
+export function diasEntre(desde, hasta) {
+  return Math.round((Date.parse(`${hasta}T00:00:00Z`) - Date.parse(`${desde}T00:00:00Z`)) / 86400000);
+}
+
 const cache = new Map();
 function nf(min, max) {
   const clave = `${min}-${max}`;
