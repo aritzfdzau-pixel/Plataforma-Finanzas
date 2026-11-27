@@ -559,6 +559,9 @@ export function ratiosFinancieros(d) {
   const campos = ['ventas', 'ebit', 'amortizaciones', 'gastosFinancieros', 'beneficioNeto', 'deudaCorto',
     'deudaLargo', 'caja', 'fondosPropios', 'activoTotal', 'activoCorriente', 'pasivoCorriente', 'flujoServicioDeuda', 'servicioDeuda'];
   for (const c of campos) comprobarFinito(d[c], c);
+  const inversionesCorto = d.inversionesCorto ?? 0; // inversiones financieras a corto (opcional)
+  comprobarFinito(inversionesCorto, 'inversiones financieras a corto');
+  const pasivo = d.activoTotal - d.fondosPropios; // pasivo exigible = activo − patrimonio neto
   const ebitda = d.ebit + d.amortizaciones;
   const deudaFinanciera = d.deudaCorto + d.deudaLargo;
   const dfn = deudaFinanciera - d.caja;
@@ -569,9 +572,14 @@ export function ratiosFinancieros(d) {
     deudaFinanciera,
     dfn,
     dfnEbitda: ebitda > 0 ? dfn / ebitda : null, // con EBITDA ≤ 0 el ratio no es significativo
+    deudaEbitda: ebitda > 0 ? deudaFinanciera / ebitda : null, // deuda financiera bruta / EBITDA
+    pasivo,
+    endeudamiento: d.fondosPropios > 0 ? pasivo / d.fondosPropios : null, // pasivo / patrimonio neto
+    solvencia: pasivo > 0 ? d.activoTotal / pasivo : null, // activo / pasivo exigible
     autonomiaFinanciera: cociente(d.fondosPropios, d.activoTotal),
     fondoManiobra: d.activoCorriente - d.pasivoCorriente,
     liquidez: cociente(d.activoCorriente, d.pasivoCorriente),
+    tesoreria: cociente(d.caja + inversionesCorto, d.pasivoCorriente), // (disponible + inversiones a corto) / PC
     tesoreriaNeta: d.caja - d.deudaCorto,
     dscr: cociente(d.flujoServicioDeuda, d.servicioDeuda),
     coberturaIntereses: cociente(ebitda, d.gastosFinancieros),
@@ -610,6 +618,59 @@ export function semaforoDscr(dscr) {
   if (dscr >= UMBRALES_DSCR.aceptable) return { nivel: 'ok', texto: 'aceptable' };
   if (dscr < UMBRALES_DSCR.noCubre) return { nivel: 'alto', texto: 'no cubre el servicio de la deuda' };
   return { nivel: 'vigilancia', texto: 'ajustado' };
+}
+
+// ---------------------------------------------------------------------------
+// P-026 · Valoración de ratios frente a rangos orientativos y evolución entre dos años
+// ---------------------------------------------------------------------------
+// Rangos: referencias generales de manuales de análisis de estados financieros; dependen del
+// sector y del tamaño, y NO son criterios de ningún banco (D-042). ⚠️ Pendiente de verificar.
+// mejor: 'alto' (cuanto más, mejor) o 'bajo' (cuanto menos, mejor). Cada tramo: [desde, nivel]
+// en orden creciente; el último tramo cuyo «desde» sea ≤ valor es el que aplica.
+export const RANGOS_RATIOS = Object.freeze({
+  ebitda: { texto: '> 0', mejor: 'alto', tramos: [[-Infinity, 'alto'], [Number.MIN_VALUE, 'ok']] },
+  margenEbitda: { texto: '≥ 10 % (según sector)', mejor: 'alto', tramos: [[-Infinity, 'alto'], [0.05, 'vigilancia'], [0.10, 'ok']] },
+  margenNeto: { texto: '≥ 5 %', mejor: 'alto', tramos: [[-Infinity, 'alto'], [0, 'vigilancia'], [0.05, 'ok']] },
+  crecimientoVentas: { texto: '≥ 0 % (idealmente por encima de la inflación)', mejor: 'alto', tramos: [[-Infinity, 'alto'], [-0.05, 'vigilancia'], [0, 'ok']] },
+  dfnEbitda: { texto: '< 3x (3x–5x vigilancia; ≥ 5x elevado)', mejor: 'bajo', tramos: [[-Infinity, 'ok'], [3, 'vigilancia'], [5, 'alto']] },
+  deudaEbitda: { texto: '< 3,5x', mejor: 'bajo', tramos: [[-Infinity, 'ok'], [3.5, 'vigilancia'], [5, 'alto']] },
+  endeudamiento: { texto: '0,7 – 1,5 (≤ 1,5)', mejor: 'bajo', tramos: [[-Infinity, 'ok'], [1.5, 'vigilancia'], [2.5, 'alto']] },
+  solvencia: { texto: '≥ 1,5', mejor: 'alto', tramos: [[-Infinity, 'alto'], [1, 'vigilancia'], [1.5, 'ok']] },
+  autonomiaFinanciera: { texto: '≥ 30 %', mejor: 'alto', tramos: [[-Infinity, 'alto'], [0.2, 'vigilancia'], [0.3, 'ok']] },
+  liquidez: { texto: '1,5 – 2,0', mejor: 'alto', tramos: [[-Infinity, 'alto'], [1, 'vigilancia'], [1.5, 'ok']] },
+  tesoreria: { texto: '0,1 – 0,3', mejor: 'alto', tramos: [[-Infinity, 'alto'], [0.05, 'vigilancia'], [0.1, 'ok']] },
+  fondoManiobra: { texto: '> 0', mejor: 'alto', tramos: [[-Infinity, 'alto'], [Number.MIN_VALUE, 'ok']] },
+  tesoreriaNeta: { texto: '≥ 0 (la caja cubre la deuda a corto)', mejor: 'alto', tramos: [[-Infinity, 'vigilancia'], [0, 'ok']] },
+  dscr: { texto: '≥ 1,20x (< 1,00x no cubre)', mejor: 'alto', tramos: [[-Infinity, 'alto'], [1, 'vigilancia'], [1.2, 'ok']] },
+  coberturaIntereses: { texto: '≥ 3x', mejor: 'alto', tramos: [[-Infinity, 'alto'], [1.5, 'vigilancia'], [3, 'ok']] },
+  roe: { texto: '≥ 8 % (por encima del coste del capital)', mejor: 'alto', tramos: [[-Infinity, 'alto'], [0, 'vigilancia'], [0.08, 'ok']] },
+  roa: { texto: '≥ 5 %', mejor: 'alto', tramos: [[-Infinity, 'alto'], [0, 'vigilancia'], [0.05, 'ok']] },
+});
+
+const TEXTO_NIVEL = { ok: 'dentro del rango recomendado', vigilancia: 'en zona de vigilancia', alto: 'fuera del rango recomendado', nd: 'no significativo' };
+
+/** Valoración de un ratio: { nivel: 'ok'|'vigilancia'|'alto'|'nd', texto, rango }. */
+export function valorarRatio(id, valor) {
+  const r = RANGOS_RATIOS[id];
+  if (!r) throw new Error(`Ratio sin rango: ${id}`);
+  if (valor === null || valor === undefined) return { nivel: 'nd', texto: TEXTO_NIVEL.nd, rango: r.texto };
+  comprobarFinito(valor, id);
+  let nivel = r.tramos[0][1];
+  for (const [desde, n] of r.tramos) if (valor >= desde) nivel = n;
+  return { nivel, texto: TEXTO_NIVEL[nivel], rango: r.texto };
+}
+
+/**
+ * Evolución de un ratio entre el año anterior y el actual: diferencia (actual − anterior) y si
+ * mejora según el sentido del ratio (null si no se puede comparar o no cambia).
+ */
+export function evolucionRatio(id, actual, anterior) {
+  const r = RANGOS_RATIOS[id];
+  if (!r) throw new Error(`Ratio sin rango: ${id}`);
+  if (!Number.isFinite(actual) || !Number.isFinite(anterior)) return { diferencia: null, mejora: null };
+  const diferencia = actual - anterior;
+  if (Math.abs(diferencia) < 1e-12) return { diferencia: 0, mejora: null };
+  return { diferencia, mejora: r.mejor === 'alto' ? diferencia > 0 : diferencia < 0 };
 }
 
 // ---------------------------------------------------------------------------

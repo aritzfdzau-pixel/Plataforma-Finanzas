@@ -444,3 +444,23 @@ a.noticia__titulo:hover { color: var(--color-accent); text-decoration: underline
 .tabla-mercados th[scope="row"], .tabla-mercados td:not(.num) { text-align: left; }
 .historicos__resumen { min-width: 0; max-width: 100%; }
 .historicos > *, .mercados__panel > *, .zona__cuerpo--mercados > * { min-width: 0; }
+
+/* ---------- Análisis de estados financieros: rango, comentario e informe (D-042) ---------- */
+.res__rango { color: var(--color-text-muted); }
+.res__comentario { color: var(--color-text); }
+.informe-op { margin-top: var(--space-4); display: grid; gap: var(--space-3); }
+.informe-op > .button { justify-self: start; }
+.informe { padding: var(--space-4); border: var(--border-width) solid var(--color-border); background: var(--color-surface); }
+.informe h5 { margin: var(--space-4) 0 var(--space-2); font-size: var(--fs-sm); color: var(--color-accent); }
+.informe__titulo { margin: 0; }
+.informe__subtitulo { margin: var(--space-1) 0 0; color: var(--color-text-muted); font-size: var(--fs-sm); }
+.informe__tabla th[scope="row"], .informe__tabla td { text-align: left; }
+.informe__comentarios { font-size: var(--fs-xs); color: var(--color-text-muted); }
+.informe__acciones { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+#area-impresion { display: none; }
+@media print {
+  body.imprimir-informe > :not(#area-impresion) { display: none !important; }
+  body.imprimir-informe #area-impresion { display: block; }
+  body.imprimir-informe .informe { border: 0; background: none; }
+}
+.informe__tabla th { text-align: left; }

@@ -524,3 +524,22 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
   «Reloj» → Run workflow, o pidiéndoselo a Claude). GitHub puede limitar el uso continuo de
   Actions si lo considera abusivo.
 
+## D-042 · 2026-11-27 · Ajuste · Análisis de estados financieros: ratios nuevos, rangos, comparación e informe
+- **Decisión (Aritz):** se añaden tesorería ((disponible + inversiones financieras a corto) / PC),
+  endeudamiento (pasivo / patrimonio neto), solvencia (activo / pasivo) y deuda financiera /
+  EBITDA. Liquidez, ROA, ROE y margen neto ya existían y se mantienen. Cada ratio muestra su
+  nombre con la fórmula, el **rango recomendado**, la valoración y un comentario.
+- **Rangos (P-026):** referencias generales de manuales de análisis financiero, con la tabla de
+  la ficha `ratios-analisis-financiero.md`. Dependen del sector y del tamaño y **no son
+  criterios de ningún banco**. ⚠️ Pendiente de verificar con medias sectoriales (Central de
+  Balances del Banco de España).
+- **Pasivo** = activo total − patrimonio neto (pasivo exigible). El campo «Fondos propios» pasa a
+  llamarse «Patrimonio neto», el dato que piden los ratios nuevos.
+- **Comparación entre años:** cada ratio muestra los dos años, la evolución (p. p. en los
+  porcentajes) con ▲▼ y un comentario. En endeudamiento, DFN/EBITDA y deuda/EBITDA, bajar es
+  mejorar (color invertido, como los costes, D-013). Los comentarios y el informe se generan con
+  reglas fijas a partir de los cálculos; no los redacta una IA.
+- **Informe:** resumen (cuántos ratios están dentro, en vigilancia y fuera de rango; puntos
+  fuertes y débiles; evolución), conclusión, tablas por bloque con rango y valoración, y aviso.
+  Se descarga en Markdown o se imprime (también como PDF) desde el navegador; no sale de él.
+

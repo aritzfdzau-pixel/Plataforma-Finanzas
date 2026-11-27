@@ -385,6 +385,22 @@
    "descripcion": "ROA = BN / activo total",
    "valor": 0.0416666666666667
   },
+  "rat_tesoreria": {
+   "descripcion": "Tesorería = (disponible 120.000 + inversiones a corto 30.000) / PC 700.000",
+   "valor": 0.214285714285714
+  },
+  "rat_endeudamiento": {
+   "descripcion": "Endeudamiento = pasivo (2.400.000 - 900.000) / PN 900.000",
+   "valor": 1.66666666666667
+  },
+  "rat_solvencia": {
+   "descripcion": "Solvencia = activo 2.400.000 / pasivo (2.400.000 - 900.000)",
+   "valor": 1.6
+  },
+  "rat_deuda_ebitda": {
+   "descripcion": "Deuda financiera (150.000 + 650.000) / EBITDA 250.000",
+   "valor": 3.2
+  },
   "circ_pmc_iva": {
    "descripcion": "PMC con saldos con IVA 21 %: clientes/1,21/ventas x 365",
    "valor": 60.3305785123967

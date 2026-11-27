@@ -25,7 +25,7 @@ async function ejecutar(id, textos = {}) {
 }
 
 // --- Contrato común --------------------------------------------------------
-const FORMATO = /^(eur|entero|texto|pct(:\d+)?|num:\d+|veces:\d+|dias:\d+|divisa:[A-Z]{3}:\d+)$/;
+const FORMATO = /^(eur|entero|texto|pct(:\d+)?|num:\d+|veces:\d+|dias:\d+|pp:\d+|divisa:[A-Z]{3}:\d+)$/;
 
 for (const id of OPERACIONES) {
   test(`contrato: ${id}`, async () => {
@@ -395,4 +395,61 @@ test('rentabilidad-indice: precio y total return aproximado = LibreOffice', asyn
   cerca(valor(r, 'acumulada'), ref('ind_acum')); cerca(valor(r, 'anualizada'), ref('ind_anual'));
   cerca(valor(r, 'totalAcumulada'), ref('ind_total'));
   assert.equal((await cargarOperacion('rentabilidad-indice')).categoria, 'bolsa-inversion');
+});
+
+// --- Ajuste D-042: análisis de estados financieros ampliado ---------------------------
+test('analisis-estados-financieros: ratios nuevos = LibreOffice, rango y comentario en todos', async () => {
+  const r = await ejecutar('analisis-estados-financieros');
+  cerca(valor(r, 'tesoreria'), ref('rat_tesoreria')); cerca(valor(r, 'endeudamiento'), ref('rat_endeudamiento'));
+  cerca(valor(r, 'solvencia'), ref('rat_solvencia')); cerca(valor(r, 'deudaEbitda'), ref('rat_deuda_ebitda'));
+  for (const id of ['liquidez', 'tesoreria', 'endeudamiento', 'solvencia', 'deudaEbitda', 'roa', 'roe', 'margenNeto', 'margenEbitda', 'dfnEbitda',
+    'autonomia', 'fondoManiobra', 'tesoreriaNeta', 'dscr', 'coberturaIntereses', 'ebitda']) {
+    const x = r.resultados.find((y) => y.id === id);
+    assert.ok(x.rango, `${id}: falta el rango recomendado`);
+    assert.ok(x.estado?.texto, `${id}: falta la valoración`);
+    assert.ok(x.comentario, `${id}: falta el comentario`);
+  }
+  assert.equal(r.resultados.find((x) => x.id === 'liquidez').estado.nivel, 'vigilancia'); // 1,43 < 1,5
+  assert.equal(r.resultados.find((x) => x.id === 'endeudamiento').estado.nivel, 'vigilancia'); // 1,67 > 1,5
+  assert.ok(!r.resultados.some((x) => x.anterior !== undefined), 'sin año anterior no hay comparación');
+});
+
+test('analisis-estados-financieros: comparación entre años con evolución y comentario', async () => {
+  const op = (await import('../operaciones/analisis-estados-financieros.js')).default;
+  const t = { conAnterior: 'si' };
+  for (const c of op.campos.filter((x) => x.grupo === 'Año actual')) t[`${c.id}Ant`] = c.defecto;
+  Object.assign(t, { ventasAnt: '1.850.000', fondosPropiosAnt: '800.000', caja: '200.000' });
+  const r = await ejecutar('analisis-estados-financieros', t);
+  const liq = r.resultados.find((x) => x.id === 'liquidez');
+  assert.equal(liq.anterior, liq.valor); // mismos AC y PC
+  const tes = r.resultados.find((x) => x.id === 'tesoreria');
+  cerca(tes.evolucion.valor, (200000 + 30000) / 700000 - ref('rat_tesoreria'));
+  assert.match(tes.comentario, /^Mejora: de 0,21x a 0,33x\./);
+  const end = r.resultados.find((x) => x.id === 'endeudamiento');
+  assert.equal(end.evolucion.variacion, 'coste'); // subir el endeudamiento es desfavorable
+  assert.match(end.comentario, /^Mejora/); // de 2,00x (PN 800.000) a 1,67x
+  // Margen neto: mismo beneficio con menos ventas el año anterior (100.000 / 1.850.000 = 5,41 %) → empeora.
+  assert.match(r.resultados.find((x) => x.id === 'margenNeto').comentario, /^Empeora: de 5,41\s%\sa\s5,00\s%\./);
+  assert.match(r.resultados.find((x) => x.id === 'dscr').comentario, /^Sin cambios: de 1,30x a 1,30x\./);
+  cerca(valor(r, 'crecimientoVentas'), ref('rat_crec_ventas'));
+  assert.equal(r.informe.columnas.length, 6);
+  assert.match(r.informe.resumen.join(' '), /Respecto al año anterior mejoran \d+ ratios y empeoran \d+\./);
+});
+
+test('analisis-estados-financieros: informe con resumen, conclusión, bloques y aviso', async () => {
+  const r = await ejecutar('analisis-estados-financieros');
+  const inf = r.informe;
+  assert.match(inf.resumen[0], /^Valoración global: \d+ de \d+ ratios dentro del rango recomendado/);
+  assert.ok(['Situación financiera sólida en conjunto según estos ratios.', 'Situación financiera aceptable, con puntos que conviene vigilar.']
+    .includes(inf.conclusion) || inf.conclusion.startsWith('Situación financiera tensionada'));
+  assert.deepEqual(inf.bloques.map((b) => b.titulo), ['Análisis financiero', 'Solvencia y endeudamiento', 'Liquidez', 'Riesgo de crédito', 'Rentabilidad']);
+  assert.ok(inf.bloques.every((b) => b.filas.every((f) => f.length === inf.columnas.length)));
+  assert.match(inf.aviso, /no son criterios de ningún banco/);
+  const mala = await ejecutar('analisis-estados-financieros', { ebit: '-100.000', flujoServicioDeuda: '50.000', activoCorriente: '500.000' });
+  assert.match(mala.informe.conclusion, /tensionada/);
+  const { informeAMarkdown } = await import('../../web/js/lib/informe.js');
+  const md = informeAMarkdown(inf);
+  assert.match(md, /^# Informe de análisis de estados financieros/);
+  assert.match(md, /\| Ratio \| Valor \| Rango recomendado \| Valoración \|/);
+  assert.match(md, /Liquidez \(current ratio\) = AC \/ PC \| 1,43x \| 1,5 – 2,0 \| en zona de vigilancia/);
 });

@@ -114,6 +114,10 @@ f('rat_dscr', 'DSCR = CFADS / cuotas', '260000/200000')
 f('rat_cobertura', 'Cobertura de intereses = EBITDA / gastos financieros', '(180000+70000)/40000')
 f('rat_roe', 'ROE = BN / FP', '100000/900000')
 f('rat_roa', 'ROA = BN / activo total', '100000/2400000')
+f('rat_tesoreria', 'Tesorería = (disponible 120.000 + inversiones a corto 30.000) / PC 700.000', '(120000+30000)/700000')
+f('rat_endeudamiento', 'Endeudamiento = pasivo (2.400.000 - 900.000) / PN 900.000', '(2400000-900000)/900000')
+f('rat_solvencia', 'Solvencia = activo 2.400.000 / pasivo (2.400.000 - 900.000)', '2400000/(2400000-900000)')
+f('rat_deuda_ebitda', 'Deuda financiera (150.000 + 650.000) / EBITDA 250.000', '(150000+650000)/(180000+70000)')
 # Circulante: ventas 2.400.000; compras 1.500.000; coste de ventas 1.600.000; clientes 480.000;
 # proveedores 300.000; existencias 250.000; 365 días; saldos con IVA del 21 %.
 f('circ_pmc_iva', 'PMC con saldos con IVA 21 %: clientes/1,21/ventas x 365', '480000/1.21/2400000*365')

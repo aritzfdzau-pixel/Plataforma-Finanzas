@@ -168,7 +168,12 @@ Piezas de la interfaz genérica (fase 7, D-033):
   `visibleSi: { campo, valor }` (oculto → `null`, no se valida) y el tipo `casilla`.
 - **Resultados:** `grupo` (bloque desplegable; lo que no tiene grupo queda a la vista),
   `estado: { nivel: 'ok'|'vigilancia'|'alto'|'nd', texto }` (semáforo con icono y texto) y
-  `anterior` (valor del año anterior). Formatos `veces:N` ("2,72x") y `dias:N`.
+  `anterior` (valor del año anterior), `rango` (rango recomendado), `evolucion: { valor, formato,
+  variacion }` (cambio entre años con ▲▼) y `comentario`. Formatos `veces:N` ("2,72x"),
+  `dias:N` y `pp:N` (puntos porcentuales).
+- **Informe:** una operación puede devolver `informe` (resumen, conclusión, tablas por bloque y
+  aviso); la interfaz lo muestra con «Generar informe» y permite descargarlo en Markdown o
+  imprimirlo, siempre en el navegador (D-042).
 - Una división por cero no rompe la operación: el ratio afectado muestra "no calculable" o
   "no significativo" y un aviso que lo explica.
 
