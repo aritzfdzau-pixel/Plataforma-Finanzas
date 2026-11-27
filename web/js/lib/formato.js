@@ -113,6 +113,8 @@ export function formatear(valor, formato) {
   if (m) return numero(valor, Number(m[1]));
   m = /^veces:(\d+)$/.exec(formato);
   if (m) return `${numero(valor, Number(m[1]))}x`;
+  m = /^pp:(\d+)$/.exec(formato); // diferencia de dos porcentajes, en puntos porcentuales
+  if (m) return `${numero(valor * 100, Number(m[1]))} p. p.`;
   m = /^dias:(\d+)$/.exec(formato);
   if (m) return `${numero(valor, Number(m[1]))} días`;
   m = /^divisa:([A-Z]{3}):(\d+)$/.exec(formato);

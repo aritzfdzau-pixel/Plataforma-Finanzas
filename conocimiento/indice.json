@@ -254,9 +254,10 @@
       ],
       "patrones": [
         "P-018",
-        "P-019"
+        "P-019",
+        "P-026"
       ],
-      "ultima_revision": "2026-11-25"
+      "ultima_revision": "2026-11-27"
     },
     {
       "ruta": "conocimiento/empresas/tin-tae.md",
@@ -677,7 +678,7 @@
       "id": "analisis-estados-financieros",
       "titulo": "Análisis de estados financieros (ratios)",
       "tituloIngles": "Financial statement analysis",
-      "resumen": "EBITDA, márgenes, DFN/EBITDA, liquidez, DSCR, cobertura de intereses, ROE y ROA con semáforo orientativo.",
+      "resumen": "Ratios de liquidez, tesorería, endeudamiento, solvencia, deuda/EBITDA, DSCR y rentabilidad con su rango recomendado, comparación entre años e informe.",
       "categoria": "empresas",
       "ficha": "conocimiento/empresas/ratios-analisis-financiero.md",
       "etiquetas": [
@@ -1155,6 +1156,19 @@
       ],
       "operaciones": [
         "rentabilidad-indice"
+      ],
+      "otros": [],
+      "estado": "Estable"
+    },
+    {
+      "id": "P-026",
+      "nombre": "Valoración de ratios frente a rangos orientativos y evolución entre dos años",
+      "funciones": [
+        "valorarRatio",
+        "evolucionRatio"
+      ],
+      "operaciones": [
+        "analisis-estados-financieros"
       ],
       "otros": [],
       "estado": "Estable"

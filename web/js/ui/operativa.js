@@ -7,6 +7,7 @@ import { formatear, leerNumero, esMilesConPunto, numero, sentidoVariacion } from
 import { buscar } from '../lib/buscar.js';
 import { CATEGORIAS, nombreCategoria } from '../lib/categorias.js';
 import { tablaACsv } from '../lib/csv.js';
+import { informeAMarkdown } from '../lib/informe.js';
 import { cargarTiposBce } from './divisas.js';
 import { tipoBce, aTextoCampo, fechaEs } from '../lib/divisas.js';
 
@@ -182,13 +183,72 @@ function filaResultado(r) {
   return h('div', { class: `res${r.destacado ? ' res--destacado' : ''}` },
     h('dt', { class: 'res__etiqueta' }, r.etiqueta,
       r.nota ? h('small', { class: 'res__nota' }, r.nota) : null,
-      r.anterior !== undefined && r.anterior !== null
-        ? h('small', { class: 'res__nota' }, `Año anterior: ${formatear(r.anterior, r.formato)}`) : null),
+      r.rango ? h('small', { class: 'res__nota res__rango' }, `Rango recomendado: ${r.rango}`) : null,
+      r.anterior !== undefined && r.anterior !== null && Number.isFinite(r.anterior)
+        ? h('small', { class: 'res__nota' }, `Año anterior: ${formatear(r.anterior, r.formato)}`,
+          r.evolucion ? [' · Evolución: ', evolucion(r.evolucion)] : null) : null,
+      r.comentario ? h('small', { class: 'res__nota res__comentario' }, r.comentario) : null),
     h('dd', { class: clases.join(' ') },
       sv ? h('span', { class: 'visually-hidden' }, sv.texto) : null,
       texto,
       r.estado ? h('span', { class: `semaforo semaforo--${r.estado.nivel}` },
         h('span', { 'aria-hidden': 'true' }, ICONO_ESTADO[r.estado.nivel] ?? ''), ` ${r.estado.texto}`) : null));
+}
+
+/** Cambio entre años con ▲ ▼ (color invertido si es un ratio en que subir empeora, D-013). */
+function evolucion(ev) {
+  const sv = sentidoVariacion(ev.valor, ev.variacion);
+  const texto = formatear(Math.abs(ev.valor), ev.formato);
+  return sv ? h('span', { class: `num ${sv.clase}` }, h('span', { class: 'visually-hidden' }, sv.texto), texto) : h('span', { class: 'num' }, texto);
+}
+
+/** Informe en pantalla con descarga (.md) e impresión; se genera en el navegador. */
+function seccionInforme(inf) {
+  const zona = h('section', { class: 'informe', hidden: true, 'aria-labelledby': 'informe-titulo' });
+  const pintar = () => {
+    vaciar(zona).append(
+      h('h4', { id: 'informe-titulo', class: 'informe__titulo' }, inf.titulo),
+      h('p', { class: 'informe__subtitulo' }, inf.subtitulo),
+      h('h5', {}, 'Resumen'),
+      h('ul', {}, inf.resumen.map((f) => h('li', {}, f))),
+      h('p', { class: 'informe__conclusion' }, h('strong', {}, 'Conclusión: '), inf.conclusion),
+      ...inf.bloques.flatMap((b) => [
+        h('h5', {}, b.titulo),
+        h('div', { class: 'tabla-scroll' }, h('table', { class: 'tabla-num informe__tabla' },
+          h('thead', {}, h('tr', {}, inf.columnas.map((c) => h('th', { scope: 'col' }, c)))),
+          h('tbody', {}, b.filas.map((f) => h('tr', {}, f.map((c, k) => (k === 0 ? h('th', { scope: 'row' }, c) : h('td', {}, c)))))))),
+        b.comentarios.length ? h('ul', { class: 'informe__comentarios' }, b.comentarios.map((c) => h('li', {}, c))) : null,
+      ]),
+      h('p', { class: 'aviso' }, inf.aviso),
+      h('p', { class: 'informe__acciones' },
+        h('button', { type: 'button', class: 'button', onclick: descargar }, 'Descargar informe (.md)'),
+        h('button', { type: 'button', class: 'button', onclick: imprimir }, 'Imprimir o guardar en PDF')));
+  };
+  const descargar = () => {
+    const blob = new Blob([informeAMarkdown(inf)], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = h('a', { href: url, download: 'informe-estados-financieros.md' });
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  const imprimir = () => {
+    const area = h('div', { id: 'area-impresion' }, zona.cloneNode(true));
+    area.querySelector('.informe__acciones')?.remove();
+    document.body.append(area);
+    document.body.classList.add('imprimir-informe');
+    const limpiar = () => { area.remove(); document.body.classList.remove('imprimir-informe'); window.removeEventListener('afterprint', limpiar); };
+    window.addEventListener('afterprint', limpiar);
+    window.print();
+  };
+  const boton = h('button', { type: 'button', class: 'button button--acento', 'aria-expanded': 'false', onclick: () => {
+    const abrir = zona.hidden;
+    if (abrir) pintar();
+    zona.hidden = !abrir;
+    boton.setAttribute('aria-expanded', String(abrir));
+    boton.textContent = abrir ? 'Ocultar informe' : 'Generar informe';
+    if (abrir) zona.scrollIntoView({ block: 'nearest' });
+  } }, 'Generar informe');
+  return h('div', { class: 'informe-op' }, boton, zona);
 }
 
 function pintarResultado(salida, res) {
@@ -208,6 +268,7 @@ function pintarResultado(salida, res) {
       h('dl', {}, Object.entries(ETIQUETAS_CONVENCIONES).map(([k, et]) => h('div', {}, h('dt', {}, et), h('dd', {}, res.convenciones[k]))))),
     res.avisos?.length ? h('ul', { class: 'avisos' }, res.avisos.map((a) => h('li', {}, a))) : null,
     res.tabla ? tabla(res.tabla) : null,
+    res.informe ? seccionInforme(res.informe) : null,
   ].filter(Boolean));
 }
 

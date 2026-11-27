@@ -34,8 +34,9 @@ pasen los tests de todas las operaciones que lo usan.
 | P-023 | Diferenciales de rentabilidad en pb (prima de riesgo, pendiente 10a–2a) | `diferencialPb`, `serieDiferencial` | `operativa/tests/finanzas.test.js` | bono-precio-rentabilidad, renta fija (primas en la tarea diaria y panel) | Estable |
 | P-024 | Precio de un bono a partir de su TIR y TIR a partir del precio | `precioBono`, `tirBono` | `operativa/tests/finanzas.test.js` | bono-precio-rentabilidad | Estable |
 | P-025 | Rentabilidad acumulada y anualizada entre dos fechas | `rentabilidadAcumulada` | `operativa/tests/finanzas.test.js` | rentabilidad-indice | Estable |
+| P-026 | Valoración de ratios frente a rangos orientativos y evolución entre dos años | `valorarRatio`, `evolucionRatio` | `operativa/tests/finanzas.test.js` | analisis-estados-financieros | Estable |
 
-Las funciones P-001 a P-009 y P-011 a P-025 viven en `operativa/lib/finanzas.js`; P-010, en `scripts/bce.js` (lo usa la tarea programada). Los tests comparan con valores
+Las funciones P-001 a P-009 y P-011 a P-026 viven en `operativa/lib/finanzas.js`; P-010, en `scripts/bce.js` (lo usa la tarea programada). Los tests comparan con valores
 calculados por **LibreOffice Calc** (`operativa/tests/referencias/referencias.fods`, con las
 fórmulas visibles; resultados en `referencias.json`). Cualquier hoja de cálculo (Google Sheets,
 Excel) puede abrir el `.fods` para comprobarlos.

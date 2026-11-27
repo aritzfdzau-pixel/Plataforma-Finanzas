@@ -405,3 +405,39 @@ test('P-025 rentabilidadAcumulada = LibreOffice (ind_*)', () => {
   cerca(r.acumulada, ref('ind_acum')); cerca(r.anualizada, ref('ind_anual'));
   assert.throws(() => F.rentabilidadAcumulada(0, 1, 10));
 });
+
+// --- Ajuste D-042: ratios nuevos y rangos recomendados -------------------------------
+test('P-018 ratios nuevos = LibreOffice: tesorería, endeudamiento, solvencia y deuda/EBITDA', () => {
+  const r = F.ratiosFinancieros({ ...DATOS_EF, inversionesCorto: 30000 });
+  cerca(r.tesoreria, ref('rat_tesoreria')); cerca(r.endeudamiento, ref('rat_endeudamiento'));
+  cerca(r.solvencia, ref('rat_solvencia')); cerca(r.deudaEbitda, ref('rat_deuda_ebitda'));
+  // Sin inversiones a corto, tesorería = disponible / PC (por definición).
+  cerca(F.ratiosFinancieros(DATOS_EF).tesoreria, 120000 / 700000);
+  const neg = F.ratiosFinancieros({ ...DATOS_EF, fondosPropios: 2400000, ebit: -70000 });
+  assert.equal(neg.solvencia, null); assert.equal(neg.deudaEbitda, null);
+  assert.equal(F.ratiosFinancieros({ ...DATOS_EF, fondosPropios: -5 }).endeudamiento, null);
+});
+
+test('P-026 valorarRatio: tramos por definición (límites incluidos) y no significativo', () => {
+  const n = (id, v) => F.valorarRatio(id, v).nivel;
+  assert.deepEqual([n('liquidez', 0.99), n('liquidez', 1), n('liquidez', 1.5), n('liquidez', 2.4)], ['alto', 'vigilancia', 'ok', 'ok']);
+  assert.deepEqual([n('tesoreria', 0.04), n('tesoreria', 0.05), n('tesoreria', 0.1)], ['alto', 'vigilancia', 'ok']);
+  assert.deepEqual([n('endeudamiento', 1.5), n('endeudamiento', 1.6), n('endeudamiento', 2.5)], ['vigilancia', 'vigilancia', 'alto']);
+  assert.deepEqual([n('endeudamiento', 0.3), n('endeudamiento', 1.49)], ['ok', 'ok']);
+  assert.deepEqual([n('solvencia', 0.9), n('solvencia', 1.2), n('solvencia', 1.5)], ['alto', 'vigilancia', 'ok']);
+  assert.deepEqual([n('deudaEbitda', 3.49), n('deudaEbitda', 3.5), n('deudaEbitda', 5)], ['ok', 'vigilancia', 'alto']);
+  assert.deepEqual([n('roe', -0.01), n('roe', 0.05), n('roe', 0.08)], ['alto', 'vigilancia', 'ok']);
+  assert.deepEqual([n('ebitda', 0), n('ebitda', 1), n('fondoManiobra', -1)], ['alto', 'ok', 'alto']);
+  assert.equal(F.valorarRatio('roe', null).nivel, 'nd');
+  assert.match(F.valorarRatio('liquidez', 1.6).rango, /1,5 – 2,0/);
+  assert.throws(() => F.valorarRatio('inventado', 1));
+  for (const id of Object.keys(F.RANGOS_RATIOS)) assert.ok(F.RANGOS_RATIOS[id].texto && ['alto', 'bajo'].includes(F.RANGOS_RATIOS[id].mejor), id);
+});
+
+test('P-026 evolucionRatio: mejora según el sentido del ratio', () => {
+  assert.equal(F.evolucionRatio('liquidez', 1.6, 1.4).mejora, true);
+  assert.equal(F.evolucionRatio('endeudamiento', 1.6, 1.4).mejora, false); // más endeudamiento = peor
+  assert.equal(F.evolucionRatio('dfnEbitda', 2.5, 3).mejora, true);
+  assert.deepEqual(F.evolucionRatio('roe', 0.1, 0.1), { diferencia: 0, mejora: null });
+  assert.equal(F.evolucionRatio('roe', null, 0.1).mejora, null);
+});

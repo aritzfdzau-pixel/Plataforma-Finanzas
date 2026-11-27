@@ -166,3 +166,8 @@ test('formatear: veces ("x") y días con coma decimal es-ES', async () => {
   assert.equal(formatear(2.72, 'veces:2'), '2,72x');
   assert.equal(formatear(60.33, 'dias:1'), '60,3 días');
 });
+
+test('formatear: diferencia de porcentajes en puntos porcentuales', async () => {
+  const { formatear } = await import('../web/js/lib/formato.js');
+  assert.equal(formatear(0.0125, 'pp:2'), '1,25 p. p.');
+});
