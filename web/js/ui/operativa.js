@@ -44,7 +44,7 @@ export async function pintarOperacion(contenedor, id, params = {}, { prefijo = '
   vaciar(contenedor);
   let op;
   try {
-    op = await cargarOperacion(id);
+    op = await cargarOperacion(id, document.querySelector('meta[name="version"]')?.getAttribute('content'));
   } catch {
     contenedor.append(h('p', { class: 'error' }, `Operación desconocida: ${id}`));
     return;

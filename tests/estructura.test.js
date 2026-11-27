@@ -138,3 +138,15 @@ test('D-027: las páginas HTML publicadas piden no aparecer en buscadores', () =
     assert.match(leer(p), /<meta name="robots" content="noindex, nofollow">/, p);
   }
 });
+
+test('versión publicada: index.html lleva la marca y la publicación la sustituye por el commit (D-046)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const html = readFileSync(new URL('../web/index.html', import.meta.url), 'utf8');
+  assert.match(html, /<meta name="version" content="dev">/);
+  const yml = readFileSync(new URL('../.github/workflows/pages.yml', import.meta.url), 'utf8');
+  assert.match(yml, /sed -i "s\|<meta name=\\"version\\" content=\\"dev\\">\|<meta name=\\"version\\" content=\\"\$\{GITHUB_SHA::12\}\\">\|" _site\/web\/index\.html/);
+  const { sufijoVersion } = await import('../operativa/operaciones/indice.js');
+  assert.equal(sufijoVersion('3bea429904c8'), '?v=3bea429904c8');
+  assert.equal(sufijoVersion('dev'), '');
+  assert.equal(sufijoVersion(undefined), '');
+});

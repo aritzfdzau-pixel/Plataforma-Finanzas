@@ -628,3 +628,16 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
 - **Privacidad:** solo se leen fecha, importe y saldo. El concepto, el preámbulo (donde suelen ir
   la cuenta o el titular) y cualquier otra columna nunca llegan al formulario. El archivo se lee
   en el navegador y no se envía ni se guarda.
+
+## D-046 · 2026-11-27 · Ajuste · Las operaciones se piden con la versión publicada (sin caché vieja)
+- **Problema:** tras publicar la importación de extractos (D-045), Aritz no la veía.
+  - El código estaba publicado, pero cada operación se carga al abrirla, después de la página.
+  - GitHub Pages deja que el navegador guarde los archivos 10 minutos, y Ctrl+F5 no renueva lo
+    que se carga más tarde.
+  - El navegador seguía usando la versión anterior de la operación.
+- **Solución:**
+  - La publicación escribe el commit en `<meta name="version">` de `web/index.html`.
+  - La interfaz pide cada operación con `?v=<commit>`; cada publicación nueva usa una dirección
+    nueva y el navegador no puede servir la antigua.
+  - En local y en los tests no hay versión.
+- **Tras publicar:** basta con recargar la página (Ctrl+F5) para ver los cambios de las operaciones.

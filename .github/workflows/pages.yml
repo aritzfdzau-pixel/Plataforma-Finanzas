@@ -40,6 +40,9 @@ jobs:
           rsync -a --exclude '_plantilla.md' --exclude '.gitkeep' conocimiento/ _site/conocimiento/
           rsync -a --exclude 'README.md' datos/ _site/datos/
           cp web/redireccion.html _site/index.html
+          # Versión publicada = commit: las operaciones se piden con ?v=<commit> (sin caché vieja, D-046).
+          sed -i "s|<meta name=\"version\" content=\"dev\">|<meta name=\"version\" content=\"${GITHUB_SHA::12}\">|" _site/web/index.html
+          grep -q "name=\"version\" content=\"${GITHUB_SHA::12}\"" _site/web/index.html
           touch _site/.nojekyll
       - name: Tipos de referencia del BCE → datos/tipos-bce.json (sin claves)
         # Si el BCE no responde se reutiliza el último archivo publicado; si tampoco hay,
