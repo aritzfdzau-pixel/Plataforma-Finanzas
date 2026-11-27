@@ -9,6 +9,7 @@ import { pintarCabeceraNoticias, pintarPanelNoticias } from './ui/noticias.js';
 import { pintarHistoricos } from './ui/historicos.js';
 import { pintarProyecciones } from './ui/proyecciones.js';
 import { pintarCabeceraMercados, pintarPanelMercados, cargarComposicion } from './ui/mercados.js';
+import { pintarBuscadorEmpresas } from './ui/empresas.js';
 import { elementosBusqueda, destinoDeRuta } from './lib/mercados.js';
 import { h } from './ui/dom.js';
 
@@ -130,7 +131,8 @@ async function iniciar() {
   indiceCargado = indice;
   pintarFichas(listaFichas, indice.fichas);
   filtroOps.addEventListener('input', () => pintarListado(listaOps, operaciones, filtroOps.value));
-  iniciarPaleta({ ...indice, operaciones }, cargarComposicion().then(elementosBusqueda));
+  const buscadorEmpresas = { titulo: 'Buscador de empresas (eInforma, Axesor, BORME, CNMV, Registradores)', descripcion: 'Abre la búsqueda de una empresa en fuentes externas', categoria: 'empresas', tipo: 'Buscador', hash: '#empresa', etiquetas: ['empresa', 'einforma', 'axesor', 'borme', 'cnmv', 'nif', 'cif'] };
+  iniciarPaleta({ ...indice, operaciones }, cargarComposicion().then((c) => [buscadorEmpresas, ...elementosBusqueda(c)]));
 
   const enrutar = async () => {
     const ruta = leerRuta();
@@ -140,6 +142,11 @@ async function iniciar() {
       await pintarOperacion(detalleOp, ruta.id, ruta.params);
       zonaOp.scrollIntoView({ block: 'start', behavior: 'smooth' });
       detalleOp.querySelector('.op__titulo')?.focus?.();
+    } else if (ruta.tipo === 'empresa') {
+      detalleOp.hidden = false;
+      pintarBuscadorEmpresas(detalleOp, ruta.termino);
+      listaOps.querySelectorAll('.lista__item').forEach((a) => a.classList.remove('is-activo'));
+      zonaOp.scrollIntoView({ block: 'start', behavior: 'smooth' });
     } else if (ruta.tipo === 'rv' || ruta.tipo === 'rf') {
       abrirMercados(destinoDeRuta(ruta));
     } else if (ruta.tipo === 'ficha') {

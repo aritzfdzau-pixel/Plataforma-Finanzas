@@ -543,3 +543,19 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
   fuertes y débiles; evolución), conclusión, tablas por bloque con rango y valoración, y aviso.
   Se descarga en Markdown o se imprime (también como PDF) desde el navegador; no sale de él.
 
+## D-043 · 2026-11-27 · Ajuste · Buscador de empresas en fuentes externas
+- **Decisión (Aritz):** en Operativa (y en la barra «/») hay un «Buscador de empresas» que, a partir
+  del nombre o el NIF, abre la búsqueda en **eInforma, Axesor, BORME (BOE), CNMV y Registradores**
+  en una pestaña nueva.
+- **Sin integración de datos:** eInforma y Axesor son servicios de pago con contrato; su API
+  necesita credenciales (no pueden ir en una web estática, AGENTS §6) y sus condiciones no
+  permiten republicar sus datos en una web pública. Tampoco se hace *scraping*. La web no
+  descarga ni guarda nada: solo prepara enlaces.
+- **Cómo:** como no se han encontrado documentados los parámetros de búsqueda por URL de estas
+  webs, el botón abre el buscador de la fuente y copia el término al portapapeles para pegarlo.
+  Con un CIF válido (dígito de control comprobado) se añade el enlace directo a la ficha de
+  eInforma por NIF. ⚠️ Pendiente de verificar en el navegador cada dirección y la de la ficha.
+- **Privacidad:** lo escrito solo sale del navegador al pulsar un enlace y llega a la web
+  elegida. La interfaz avisa de no buscar empresas clientes de la entidad: para eso están los
+  accesos corporativos del banco.
+

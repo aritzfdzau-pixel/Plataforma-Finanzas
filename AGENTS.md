@@ -180,7 +180,8 @@ Piezas de la interfaz genérica (fase 7, D-033):
 Enlaces internos de la web: `#op=<id>` abre una operación (admite valores de campos, p. ej.
 `#op=fx-forward&par=GBP`); `#ficha=<ruta>` abre una ficha; `#rv=<índice>[&valor=<ticker>]`
 abre la renta variable (p. ej. `#rv=IBEX35&valor=SAN`) y `#rf=<código>` la renta fija
-(p. ej. `#rf=ES10Y`, `#rf=PRIMA-ES`).
+(p. ej. `#rf=ES10Y`, `#rf=PRIMA-ES`); `#empresa[=<nombre o NIF>]` abre el buscador de empresas
+(enlaces a eInforma, Axesor, BORME, CNMV y Registradores; la web no descarga sus datos, D-043).
 
 ## 15. Aprendizaje continuo (revisión mensual)
 - Cada mes se repasan las PR fusionadas y las correcciones de Aritz, y lo aprendido se escribe
