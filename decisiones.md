@@ -641,3 +641,10 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
     nueva y el navegador no puede servir la antigua.
   - En local y en los tests no hay versión.
 - **Tras publicar:** basta con recargar la página (Ctrl+F5) para ver los cambios de las operaciones.
+
+## D-047 · 2026-11-27 · Ajuste · Saldo medio: casillas para elegir qué tipos y retención se aplican
+- **Decisión (Aritz):** poder decidir qué se tiene en cuenta en la liquidación. Hay tres casillas,
+  marcadas por defecto: intereses acreedores, intereses deudores y retención. Cada una muestra su
+  tipo solo si está marcada; lo desmarcado cuenta como 0 y su línea desaparece del resultado.
+- La retención solo se aplica si también se aplican intereses acreedores. Sin ningún tipo, la
+  operación da el saldo medio y los números comerciales, sin liquidación.
