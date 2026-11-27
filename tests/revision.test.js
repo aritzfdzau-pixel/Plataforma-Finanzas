@@ -111,7 +111,7 @@ test('mapa: disposición determinista, dentro del lienzo, sin solapes y con meno
   assert.ok(cruces(a) < cruces(disponer(g, { ancho: 1000, iteraciones: 0 })));
   // Las fichas siguen agrupadas por categoría (de arriba abajo).
   const cats = a.nodos.filter((n) => n.tipo === 'ficha').sort((p, q) => p.y - q.y).map((n) => n.categoria);
-  assert.deepEqual(cats, [...cats].sort((p, q) => ['fx', 'empresas', 'bolsa-inversion', 'real-estate', 'macroeconomia'].indexOf(p) - ['fx', 'empresas', 'bolsa-inversion', 'real-estate', 'macroeconomia'].indexOf(q)));
+  assert.deepEqual(cats, [...cats].sort((p, q) => ['fx', 'empresas', 'bolsa-inversion', 'real-estate', 'macroeconomia', 'tipos-interes'].indexOf(p) - ['fx', 'empresas', 'bolsa-inversion', 'real-estate', 'macroeconomia', 'tipos-interes'].indexOf(q)));
 });
 
 test('huecos: detecta patrones sin ficha, fichas sin cálculo y operaciones sin patrón', () => {

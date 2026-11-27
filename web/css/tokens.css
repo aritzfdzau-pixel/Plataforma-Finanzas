@@ -75,6 +75,7 @@
   --cat-bolsa-inversion: #2EC5C5;
   --cat-real-estate: #F08CAE;
   --cat-macroeconomia: #B5CF5A;
+  --cat-tipos-interes: #E3B98C;
   --cat-institucional: #A8B3C2;
 
   /* Series de las gráficas (paleta categórica validada: ΔE CVD ≥ 8, contraste ≥ 3:1) */
@@ -107,6 +108,7 @@
   --cat-bolsa-inversion: #0A7C82;
   --cat-real-estate: #B3315F;
   --cat-macroeconomia: #5C7A00;
+  --cat-tipos-interes: #87501C;
   --cat-institucional: #56606E;
 
   --serie-1: #2A78D6;

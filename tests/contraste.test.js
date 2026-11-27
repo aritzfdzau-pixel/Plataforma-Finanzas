@@ -25,7 +25,7 @@ const temas = {
 const TEXTOS = [
   '--color-text', '--color-text-muted', '--color-accent',
   '--color-up', '--color-down',
-  '--cat-fx', '--cat-empresas', '--cat-bolsa-inversion', '--cat-real-estate', '--cat-macroeconomia', '--cat-institucional',
+  '--cat-fx', '--cat-empresas', '--cat-bolsa-inversion', '--cat-real-estate', '--cat-macroeconomia', '--cat-tipos-interes', '--cat-institucional',
 ];
 const FONDOS = ['--color-bg', '--color-surface', '--color-surface-raised'];
 const AA = 4.5;

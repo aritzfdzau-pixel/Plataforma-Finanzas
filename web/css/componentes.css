@@ -149,6 +149,7 @@ body.sin-scroll { overflow: hidden; }
 .tabla-scroll table, .ficha table { border-collapse: collapse; font-size: var(--fs-xs); }
 .tabla-num { width: 100%; }
 .tabla-scroll th, .tabla-scroll td { padding: var(--space-1) var(--space-2); border-bottom: var(--border-width) solid var(--color-border); }
+.tabla-scroll th.texto { text-align: left; }
 .tabla-scroll th { text-align: right; font-weight: var(--fw-medium); color: var(--color-text-muted); white-space: nowrap; }
 
 /* ---------- Conocimiento ---------- */
@@ -472,3 +473,24 @@ a.noticia__titulo:hover { color: var(--color-accent); text-decoration: underline
 .empresas__desc { margin: var(--space-1) 0 0; font-size: var(--fs-xs); color: var(--color-text-muted); }
 @media (max-width: 760px) { .empresas__fuente { grid-template-columns: minmax(0, 1fr); } }
 #empresa-termino { text-align: left; font-family: var(--font-sans); }
+
+/* ---------- Tipos de interés (D-044) ---------- */
+.zona__cuerpo--tipos { justify-content: flex-start; align-items: stretch; }
+.tipos__bloque + .tipos__bloque { margin-top: var(--space-3); }
+.tipos__tabla { width: 100%; }
+.tipos__tabla th[scope="row"] { text-align: left; font-weight: var(--fw-regular); white-space: normal; }
+.tipos__tabla thead th:first-child { text-align: left; }
+.tipos__nombre {
+  font: inherit; font-size: var(--fs-xs); color: var(--color-text); background: none; border: 0; padding: 0;
+  text-align: left; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px;
+}
+.tipos__nombre:hover { color: var(--color-accent); }
+.tipos__valor { color: var(--color-text); white-space: nowrap; }
+.tipos__cambio { white-space: nowrap; }
+.tipos__dato { display: block; font-size: var(--fs-2xs); color: var(--color-text-muted); }
+.tipos__fuentes { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0 0 var(--space-2); }
+.tipos__tabla th[scope="row"] { padding-top: var(--space-1); padding-bottom: var(--space-1); }
+.tipos__pie { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); margin: var(--space-3) 0 0; }
+@media (max-width: 760px) {
+  .tipos__tabla th, .tipos__tabla td { padding-left: var(--space-1); padding-right: var(--space-1); }
+}

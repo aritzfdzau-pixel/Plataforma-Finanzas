@@ -10,6 +10,7 @@ import { pintarHistoricos } from './ui/historicos.js';
 import { pintarProyecciones } from './ui/proyecciones.js';
 import { pintarCabeceraMercados, pintarPanelMercados, cargarComposicion } from './ui/mercados.js';
 import { pintarBuscadorEmpresas } from './ui/empresas.js';
+import { pintarZonaTipos } from './ui/tipos.js';
 import { elementosBusqueda, destinoDeRuta } from './lib/mercados.js';
 import { h } from './ui/dom.js';
 
@@ -113,6 +114,14 @@ document.getElementById('abrir-noticias').addEventListener('click', () => {
 });
 document.getElementById('cerrar-noticias').addEventListener('click', () => panelNoticias.close());
 pintarCabeceraNoticias(document.getElementById('cuerpo-noticias'));
+// ---- Tipos de interés (D-044) ----
+pintarZonaTipos(document.getElementById('cuerpo-tipos'), () => {
+  if (filtroOps.value) { filtroOps.value = ''; filtroOps.dispatchEvent(new Event('input')); }
+  zonaOp.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  const grupo = listaOps.querySelector('.grupo.cat--tipos-interes');
+  grupo?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  grupo?.querySelector('a')?.focus({ preventScroll: true });
+});
 pintarHistoricos(document.getElementById('cuerpo-historicos'));
 pintarProyecciones(document.getElementById('cuerpo-proyecciones'));
 

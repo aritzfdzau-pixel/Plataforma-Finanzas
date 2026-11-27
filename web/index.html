@@ -10,7 +10,7 @@
   <meta name="robots" content="noindex, nofollow">
   <meta name="color-scheme" content="dark light">
   <title>Terminal financiero</title>
-  <meta name="description" content="Terminal financiero personal de estudio: operativa, divisas, renta variable y renta fija, noticias y conocimiento.">
+  <meta name="description" content="Terminal financiero personal de estudio: operativa, tipos de interés, divisas, renta variable y renta fija, noticias y conocimiento.">
   <link rel="preload" href="fuentes/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fuentes/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
@@ -40,6 +40,16 @@
         </div>
       </div>
       <div class="zona__cuerpo zona__cuerpo--noticias" id="cuerpo-noticias">
+        <p class="vacio">Cargando…</p>
+      </div>
+    </section>
+
+    <section class="zona zona--tipos" id="zona-tipos" aria-labelledby="t-tipos">
+      <div class="zona__cabecera">
+        <h2 class="zona__titulo" id="t-tipos">Tipos de interés <span class="zona__en">(Interest rates)</span></h2>
+        <span class="chip">referencias oficiales (fuente en cada bloque)</span>
+      </div>
+      <div class="zona__cuerpo zona__cuerpo--tipos" id="cuerpo-tipos">
         <p class="vacio">Cargando…</p>
       </div>
     </section>
@@ -74,6 +84,7 @@
             <li class="chip cat cat--bolsa-inversion">Bolsa e Inversión</li>
             <li class="chip cat cat--real-estate">Real Estate</li>
             <li class="chip cat cat--macroeconomia">Macroeconomía</li>
+            <li class="chip cat cat--tipos-interes">Tipos de interés</li>
           </ul>
           <button type="button" class="button" id="expandir-operativa" aria-pressed="false">Pantalla grande</button>
         </div>

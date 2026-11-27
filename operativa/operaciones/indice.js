@@ -19,6 +19,13 @@ export const OPERACIONES = [
   'avales',
   'bono-precio-rentabilidad',
   'rentabilidad-indice',
+  'saldos-medios',
+  'deposito-plazo',
+  'capitalizacion',
+  'equivalencia-tipos',
+  'forward-tipos',
+  'intereses-demora',
+  'tipo-real',
 ];
 
 export async function cargarOperacion(id) {

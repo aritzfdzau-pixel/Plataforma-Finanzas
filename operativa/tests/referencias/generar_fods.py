@@ -165,6 +165,32 @@ f('ind_acum', 'Índice de 10.000 a 11.500 puntos: rentabilidad acumulada', '1150
 f('ind_anual', 'Idem en 730 días: anualizada base 365', '(11500/10000)^(365/730)-1')
 f('ind_total', 'Idem con dividendo 3 % anual: total acumulada aproximada', '(11500/10000)*(1.03)^(730/365)-1')
 
+# --- Tipos de interés (D-044) ---
+f('sm_dias', 'Cuenta 01/01/2026-31/03/2026: días del periodo (ambos incluidos)', '(DATE(2026;3;31)-DATE(2026;1;1)+1)')
+f('sm_num_acr', 'Cuenta: números acreedores (5.000 hasta 14/01; 8.000 desde 15/01; 3.000 desde 01/03)', '((DATE(2026;1;15)-DATE(2026;1;1))*5000+(DATE(2026;2;10)-DATE(2026;1;15))*8000+(DATE(2026;3;31)-DATE(2026;3;1)+1)*3000)')
+f('sm_num_deu', 'Cuenta: números deudores (-1.000 del 10/02 al 28/02)', '((DATE(2026;3;1)-DATE(2026;2;10))*1000)')
+f('sm_medio', 'Cuenta: saldo medio = (números acreedores - deudores) / días', '(((DATE(2026;1;15)-DATE(2026;1;1))*5000+(DATE(2026;2;10)-DATE(2026;1;15))*8000+(DATE(2026;3;31)-DATE(2026;3;1)+1)*3000)-((DATE(2026;3;1)-DATE(2026;2;10))*1000))/(DATE(2026;3;31)-DATE(2026;1;1)+1)')
+f('sm_int_acr', 'Cuenta: intereses acreedores al 1 % Act/365', '((DATE(2026;1;15)-DATE(2026;1;1))*5000+(DATE(2026;2;10)-DATE(2026;1;15))*8000+(DATE(2026;3;31)-DATE(2026;3;1)+1)*3000)*0.01/365')
+f('sm_int_neto', 'Cuenta: intereses acreedores netos de retención del 19 %', '((DATE(2026;1;15)-DATE(2026;1;1))*5000+(DATE(2026;2;10)-DATE(2026;1;15))*8000+(DATE(2026;3;31)-DATE(2026;3;1)+1)*3000)*0.01/365*(1-0.19)')
+f('sm_int_deu', 'Cuenta: intereses deudores al 7 % Act/365', '((DATE(2026;3;1)-DATE(2026;2;10))*1000)*0.07/365')
+f('cap_simple', 'Capitalización simple 10.000 al 3 % durante 5 años', '10000*(1+0.03*5)')
+f('cap_anual', 'Capitalización compuesta anual 10.000 al 3 % durante 5 años', 'FV(0.03;5;0;-10000)')
+f('cap_mensual', 'Capitalización compuesta mensual 10.000 al 3 % durante 5 años', 'FV(0.03/12;60;0;-10000)')
+f('cap_continua', 'Capitalización continua 10.000 al 3 % durante 5 años', '10000*EXP(0.03*5)')
+f('dep_int', 'Depósito 20.000 al 2,5 % a 180 días Act/365: intereses brutos', '20000*0.025*180/365')
+f('dep_neto', 'Idem: intereses netos de retención del 19 %', '20000*0.025*180/365*(1-0.19)')
+f('dep_tae', 'Idem: TAE (pago al vencimiento) = (1 + 0,025 x 180/365)^(365/180) - 1', '(1+0.025*180/365)^(365/180)-1')
+f('dep_mes_int', 'Depósito 20.000 al 2,5 % a 12 meses con liquidación mensual: intereses de cada mes', '20000*0.025/12')
+f('eq_base', 'Tipo 3 % en Act/360 expresado en Act/365', '0.03*365/360')
+f('eq_dto_int', 'Descuento 4 % a 90 días Act/360: tipo de interés equivalente', '0.04/(1-0.04*90/360)')
+f('eq_int_dto', 'Interés 4 % a 90 días Act/360: tipo de descuento equivalente', '0.04/(1+0.04*90/360)')
+f('fwd_3x6', 'Forward implícito 3x6: 3m 2,00 % (90 d) y 6m 2,20 % (180 d) Act/360', '((1+0.022*180/360)/(1+0.02*90/360)-1)/(90/360)')
+f('fra_liq', 'FRA 1.000.000; K 2,40 %; L 2,60 %; 90 días Act/360: liquidación', '1000000*(0.026-0.024)*90/360/(1+0.026*90/360)')
+f('real_exacto', 'Tipo real: nominal 3 %, inflación 2,2 %', '(1+0.03)/(1+0.022)-1')
+f('dem_dias', 'Demora: días del 01/10/2026 al 15/12/2026', 'DATE(2026;12;15)-DATE(2026;10;1)')
+f('dem_legal', 'Demora: 15.000 al 3,25 % durante esos días (base 365)', '15000*0.0325*(DATE(2026;12;15)-DATE(2026;10;1))/365')
+f('dem_comercial', 'Demora comercial: 15.000 al 2,15 % + 8 pp durante esos días (base 365)', '15000*(0.0215+0.08)*(DATE(2026;12;15)-DATE(2026;10;1))/365')
+
 # --- 6. Rentabilidades: bloque de datos en celdas ---
 precios = [100, 102, 101, 105, 104, 108]
 

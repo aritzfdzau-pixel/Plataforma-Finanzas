@@ -292,6 +292,7 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
 | `bolsa-inversion` | bolsa, ibex, ibex 35, acciones, cotización, dividendo, dividendos, bono, bonos, renta fija, renta variable, fondos de inversión, etf, wall street, s&p 500, nasdaq, stocks, shares, equities, bonds, yields, investors |
 | `real-estate` | vivienda, viviendas, hipoteca, hipotecas, inmobiliario, inmobiliaria, alquiler, euríbor, euribor, promotora, socimi, housing, mortgage, mortgages, property, real estate |
 | `macroeconomia` | inflación, ipc, ipca, pib, paro, desempleo, empleo, déficit, deuda pública, prima de riesgo, tipos de interés, política monetaria, recesión, crecimiento económico, inflation, gdp, unemployment, interest rates, monetary policy, recession, central bank |
+| `tipos-interes` | tipos de interés, tipo de interés, euríbor, euribor, €str, estr, subida de tipos, bajada de tipos, recorte de tipos, sube los tipos, baja los tipos, depósitos, depósito, interest rates, interest rate, rate cut, rate cuts, rate hike, rate hikes, deposit rate |
 | `institucional` | bce, banco central europeo, banco de españa, eurosistema, supervisión bancaria, ecb, eurosystem, banking supervision |
 
 ## D-026 · 2026-11-24 · Ajuste · Verificación de fuentes en la web publicada
@@ -559,3 +560,39 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
   elegida. La interfaz avisa de no buscar empresas clientes de la entidad: para eso están los
   accesos corporativos del banco.
 
+
+## D-044 · 2026-11-27 · Ajuste · Zona «Tipos de interés» y sección de operativa de tipos
+- **Decisión (Aritz):** nueva zona de portada «Tipos de interés (Interest rates)» **debajo de
+  Noticias**, de modo que Noticias, Tipos de interés, Divisas y Renta variable y renta fija forman
+  un bloque de dos columnas (en móvil: Noticias, Tipos de interés, Divisas, Renta variable y renta fija).
+  Y una sección nueva en Operativa con los cálculos de tipos de interés.
+- **Zona (solo fuentes oficiales, sin claves):**
+  - Bancos centrales: BCE (DFR, MRO, MLF), Reserva Federal (objetivo de fondos federales, límites
+    inferior y superior, FRED DFEDTARL/DFEDTARU) y Banco de Inglaterra (Bank Rate, IADB IUDBEDR),
+    con el último cambio en pb y la fecha desde la que está vigente.
+  - Mercado monetario: €STR, Euribor 1, 3, 6 y 12 meses (media mensual, BCE FM), Euribor 12 meses
+    del Banco de España (índice hipotecario oficial), SOFR (FRED) y SONIA (IADB IUDSOIA), con el
+    cambio en pb frente al dato anterior.
+  - Cada bloque muestra la etiqueta de cada fuente; cada nombre abre la serie en Históricos.
+  - El **Euribor diario no se publica**: es un dato con licencia de EMMI. Se usa la media mensual oficial.
+  - Comprobado el 2026-11-27 desde Actions: las 10 series nuevas descargan; el Euribor 12 meses del
+    BCE de octubre de 2026 (3,2386 %) coincide con el del Banco de España (3,239 %).
+- **Categoría nueva `tipos-interes`** («Tipos de interés»), con color fijo `--cat-tipos-interes`:
+  #E3B98C (oscuro) y #87501C (claro), ambos ≥ 4,5:1 sobre los fondos (test de contraste). También
+  etiqueta noticias (palabras clave en la tabla de abajo).
+- **Operaciones nuevas** (patrones P-027 a P-031, referencias de LibreOffice):
+  - Saldo medio y liquidación de una cuenta: método hamburgués por fecha valor, con números
+    comerciales, intereses acreedores y deudores y retención.
+  - Depósito a plazo fijo: pago al vencimiento o liquidación periódica, con TAE.
+  - Interés simple, compuesto y continuo.
+  - Equivalencia de tipos: Act/360 ↔ Act/365, descuento ↔ interés, TIN ↔ TAE.
+  - Tipo de interés real (Fisher).
+  - Tipo forward implícito y FRA.
+  - Intereses de demora: legal del dinero, Ley 3/2004 (MRO + 8 p. p.) o pactado.
+- **Campos nuevos de la interfaz:** `fecha` (dd/mm/aaaa) y `lineas` (texto de varias líneas; lo
+  interpreta la operación, p. ej. los movimientos «fecha; importe; concepto»).
+- ⚠️ **Pendiente de verificar:**
+  - el interés legal del dinero de 2026 (3,25 % por defecto);
+  - el tipo de retención (19 % por defecto).
+  Los dos son editables. El MRO por defecto de la demora comercial (2,15 %) es un ejemplo: el
+  vigente está en la zona.
