@@ -287,7 +287,7 @@ function tabla(t) {
     h('p', {}, h('button', { type: 'button', class: 'button', onclick: descargar }, 'Exportar CSV'),
       h('small', { class: 'campo__ayuda' }, ' Separador «;» y coma decimal. Se genera en tu navegador.')),
     h('div', { class: 'tabla-scroll' }, h('table', { class: 'tabla-num' },
-      h('thead', {}, h('tr', {}, t.columnas.map((c) => h('th', { scope: 'col' }, c.etiqueta)))),
+      h('thead', {}, h('tr', {}, t.columnas.map((c) => h('th', { scope: 'col', class: c.formato === 'texto' ? 'texto' : null }, c.etiqueta)))),
       h('tbody', {}, t.filas.map((f) => h('tr', {}, t.columnas.map((c) =>
         c.formato === 'texto' ? h('td', {}, String(f[c.id] ?? '—'))
           : h('td', { class: 'num' }, Number.isFinite(f[c.id]) ? formatear(f[c.id], c.formato) : '—'))))))));

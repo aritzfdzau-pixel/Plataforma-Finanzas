@@ -40,8 +40,9 @@ export const SERIES_OFICIALES = Object.freeze([
   { id: 'estr', nombre: '€STR (tipo a un día del euro)', tipo: 'tipo', unidad: '%', etiqueta: 'referencia BCE', formato: 'bce-csv', url: BCE('EST/B.EU000A2X2A25.WT') },
   { id: 'euribor-12m', nombre: 'Euribor a un año, media mensual (índice oficial hipotecario)', tipo: 'tipo', unidad: '%', etiqueta: 'referencia Banco de España', formato: 'bde-json', url: 'https://app.bde.es/bierest/resources/srdatosapp/listaSeries?idioma=es&series=D_1NBAF472&rango=60M' },
   // --- Tipos de interés (D-044): Euribor por plazos (media mensual, BCE), bancos centrales y
-  // tipos a un día de EE. UU. y Reino Unido. Sin claves. ⚠️ Pendiente de verificar los códigos
-  // hasta la primera descarga desde Actions.
+  // tipos a un día de EE. UU. y Reino Unido. Sin claves. Comprobado el 2026-11-27 desde GitHub
+  // Actions: las 10 series descargan; Euribor 12m del BCE (oct. 2026) = 3,2386 %, igual que el
+  // índice oficial del Banco de España (3,239 %).
   ...[['1m', '1 mes', 'EURIBOR1MD_'], ['3m', '3 meses', 'EURIBOR3MD_'], ['6m', '6 meses', 'EURIBOR6MD_'], ['12m-bce', '12 meses', 'EURIBOR1YD_']].map(([id, plazo, clave]) =>
     ({ id: `euribor-${id}`, nombre: `Euribor a ${plazo}, media mensual (BCE)`, tipo: 'tipo', unidad: '%', etiqueta: 'referencia BCE', formato: 'bce-csv', url: BCE(`FM/M.U2.EUR.RT.MM.${clave}.HSTA`), grupo: 'monetario' })),
   { id: 'fed-sup', nombre: 'Fondos federales de la Reserva Federal, límite superior del objetivo', tipo: 'tipo', unidad: '%', etiqueta: ETQ_OFICIAL('Reserva Federal'), formato: 'fred-csv', url: FRED('DFEDTARU'), grupo: 'monetario' },

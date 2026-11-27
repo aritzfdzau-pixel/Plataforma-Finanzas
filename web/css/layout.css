@@ -9,7 +9,7 @@
   grid-template-areas:
     "topbar      topbar"
     "noticias    divisas"
-    "noticias    mercados"
+    "tipos       mercados"
     "operativa   operativa"
     "historicos  historicos"
     "proyecciones proyecciones"
@@ -19,6 +19,7 @@
 
 .topbar   { grid-area: topbar; }
 .zona--noticias     { grid-area: noticias; }
+.zona--tipos        { grid-area: tipos; }
 .zona--divisas      { grid-area: divisas; }
 .zona--mercados     { grid-area: mercados; }
 .zona--operativa    { grid-area: operativa; }
@@ -112,6 +113,7 @@
     grid-template-areas:
       "topbar"
       "noticias"
+      "tipos"
       "divisas"
       "mercados"
       "operativa"

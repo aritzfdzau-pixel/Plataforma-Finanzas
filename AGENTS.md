@@ -140,7 +140,8 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 | `operativa/operaciones/` | Una operación por archivo (interfaz + uso de la lib) |
 | `operativa/tests/` | Tests de las funciones y operaciones financieras |
 | `operativa/tests/referencias/` | Hoja `.fods` con las fórmulas de referencia y sus resultados (LibreOffice) |
-| `scripts/` | Utilidades Node sin dependencias (`generar-indice.js`, `descargar-bce.js`, `descargar-noticias.js`, `fuentes-noticias.js`, `descargar-historicos.js`, `series-oficiales.js` —también las de renta fija y las primas de riesgo— y sus funciones puras) |
+| `scripts/` | Utilidades Node sin dependencias (`generar-indice.js`, `descargar-bce.js`, `descargar-noticias.js`, `fuentes-noticias.js`, `descargar-historicos.js`, `series-oficiales.js` —también las de renta fija, las primas de riesgo y los tipos de la zona de tipos de interés— y sus funciones puras) |
+| `web/js/lib/tipos.js` | Tipos que muestra la zona «Tipos de interés» (bancos centrales y mercado monetario; D-044) |
 | `web/js/lib/mercados.js` | Configuración editable de índices y símbolos de TradingView, países y series de renta fija (único sitio donde se eligen los símbolos) |
 | `datos/` | Archivos generados por tareas programadas (no editar a mano; ver `datos/README.md`) |
 | `web/` | Interfaz publicada en GitHub Pages |
@@ -166,7 +167,8 @@ Comunes a todo el sistema, con un color fijo cada una (tokens `--cat-*` en
 
 Piezas de la interfaz genérica (fase 7, D-033):
 - **Campos:** `grupo` (se reúnen en un bloque con título), `opcional` (vacío → `null`),
-  `visibleSi: { campo, valor }` (oculto → `null`, no se valida) y el tipo `casilla`.
+  `visibleSi: { campo, valor }` (oculto → `null`, no se valida) y los tipos `casilla`, `fecha`
+  (dd/mm/aaaa → ISO) y `lineas` (texto de varias líneas que interpreta la operación, D-044).
 - **Resultados:** `grupo` (bloque desplegable; lo que no tiene grupo queda a la vista),
   `estado: { nivel: 'ok'|'vigilancia'|'alto'|'nd', texto }` (semáforo con icono y texto) y
   `anterior` (valor del año anterior), `rango` (rango recomendado), `evolucion: { valor, formato,
