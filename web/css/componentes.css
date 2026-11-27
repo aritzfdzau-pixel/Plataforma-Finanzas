@@ -464,3 +464,11 @@ a.noticia__titulo:hover { color: var(--color-accent); text-decoration: underline
   body.imprimir-informe .informe { border: 0; background: none; }
 }
 .informe__tabla th { text-align: left; }
+
+/* ---------- Buscador de empresas (D-043) ---------- */
+.lista__item--buscador { display: grid; margin: var(--space-2) 0; border: var(--border-width) solid var(--color-border); border-left: 3px solid var(--cat-empresas); }
+.empresas__lista { margin: var(--space-3) 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); }
+.empresas__fuente { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3); align-items: center; padding: var(--space-2) var(--space-3); border: var(--border-width) solid var(--color-border); }
+.empresas__desc { margin: var(--space-1) 0 0; font-size: var(--fs-xs); color: var(--color-text-muted); }
+@media (max-width: 760px) { .empresas__fuente { grid-template-columns: minmax(0, 1fr); } }
+#empresa-termino { text-align: left; font-family: var(--font-sans); }
