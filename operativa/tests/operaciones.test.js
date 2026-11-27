@@ -455,23 +455,45 @@ test('analisis-estados-financieros: informe con resumen, conclusión, bloques y 
 });
 
 // --- Tipos de interés (D-044) ------------------------------------------------
-test('saldos-medios: ejemplo por defecto (fechas valor) y tabla de tramos', async () => {
+test('saldos-medios: ejemplo por defecto (fechas valor), liquidación al céntimo y tabla de tramos', async () => {
   const r = await ejecutar('saldos-medios');
   cerca(valor(r, 'saldoMedio'), ref('sm_medio'));
   assert.equal(valor(r, 'dias'), ref('sm_dias'));
   cerca(valor(r, 'numerosAcreedores'), ref('sm_num_acr'));
-  cerca(valor(r, 'interesesNetos'), ref('sm_int_neto'));
-  cerca(valor(r, 'interesesDeudores'), -ref('sm_int_deu'));
+  cerca(valor(r, 'numerosDeudores'), ref('sm_num_deu'));
+  assert.equal(valor(r, 'interesesAcreedores'), ref('sm_liq_brutos'));
+  assert.equal(valor(r, 'retencion'), -ref('sm_liq_ret'));
+  assert.equal(valor(r, 'interesesDeudores'), -ref('sm_liq_deu'));
+  cerca(valor(r, 'liquidacion'), ref('sm_liq_neta'));
+  assert.equal(valor(r, 'diasDescubierto'), 19);
   assert.deepEqual(r.tabla.filas.map((f) => [f.desde, f.hasta, f.dias]), [
     ['01/01/2026', '14/01/2026', 14], ['15/01/2026', '09/02/2026', 26], ['10/02/2026', '28/02/2026', 19], ['01/03/2026', '31/03/2026', 31]]);
   assert.ok(r.avisos.some((a) => /descubierto/.test(a)));
 });
-test('saldos-medios: líneas no válidas o fuera del periodo dan un error legible', async () => {
+test('saldos-medios: por saldos da lo mismo que por movimientos', async () => {
+  const s = await ejecutar('saldos-medios', { entrada: 'saldos' });
+  cerca(valor(s, 'saldoMedio'), ref('sm_medio'));
+  cerca(valor(s, 'liquidacion'), ref('sm_liq_neta'));
+  // Un saldo diario repetido (mismo saldo varios días) no cambia nada; el último del día manda.
+  const d = await ejecutar('saldos-medios', { entrada: 'saldos', saldos: '15/01/2026; 1\n15/01/2026; 8.000\n16/01/2026; 8.000\n10/02/2026; -1.000\n01/03/2026; 3.000' });
+  cerca(valor(d, 'saldoMedio'), ref('sm_medio'));
+});
+test('saldos-medios: datos anteriores forman la apertura y los posteriores se ignoran', async () => {
+  // Mismo caso con un abono previo de 1.000 (saldo antes del primer dato 4.000) y un cargo posterior.
+  const r = await ejecutar('saldos-medios', { saldoInicial: '4.000', movimientos: `20/12/2025; 1.000\n15/01/2026; 3.000\n10/02/2026; -9.000\n01/03/2026; 4.000\n05/04/2026; -500` });
+  cerca(valor(r, 'saldoMedio'), ref('sm_medio'));
+  assert.equal(valor(r, 'saldoApertura'), 5000);
+  assert.ok(r.avisos.some((a) => /anteriores al 01\/01\/2026/.test(a)));
+  assert.ok(r.avisos.some((a) => /posteriores al 31\/03\/2026/.test(a)));
+  // Movimientos en el mismo día en cualquier orden: el resultado no cambia.
+  const o = await ejecutar('saldos-medios', { movimientos: '01/03/2026; 4.000\n10/02/2026; -9.000\n15/01/2026; 3.000' });
+  cerca(valor(o, 'saldoMedio'), ref('sm_medio'));
+});
+test('saldos-medios: líneas no válidas dan un error legible', async () => {
   const op = await cargarOperacion('saldos-medios');
   const calc = (mov) => op.calcular(leerCampos(op.campos, { movimientos: mov }).valores);
   assert.throws(() => calc('32/01/2026; 100'), /Línea 1: fecha no válida/);
   assert.throws(() => calc('# comentario\n15/01/2026; abc'), /Línea 2: importe no válido/);
-  assert.throws(() => calc('01/04/2026; 100'), /fuera del periodo/);
   assert.equal(valor(calc(''), 'saldoMedio'), 5000);
 });
 test('capitalizacion: simple, compuesta y continua', async () => {

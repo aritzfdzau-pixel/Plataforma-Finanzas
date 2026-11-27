@@ -169,6 +169,8 @@ Piezas de la interfaz genérica (fase 7, D-033):
 - **Campos:** `grupo` (se reúnen en un bloque con título), `opcional` (vacío → `null`),
   `visibleSi: { campo, valor }` (oculto → `null`, no se valida) y los tipos `casilla`, `fecha`
   (dd/mm/aaaa → ISO) y `lineas` (texto de varias líneas que interpreta la operación, D-044).
+  Una operación con `importador: 'extracto'` muestra «Importar extracto (Excel o CSV)», que
+  rellena el formulario leyendo solo fecha, importe y saldo (`web/js/lib/extracto.js`, D-045).
 - **Resultados:** `grupo` (bloque desplegable; lo que no tiene grupo queda a la vista),
   `estado: { nivel: 'ok'|'vigilancia'|'alto'|'nd', texto }` (semáforo con icono y texto) y
   `anterior` (valor del año anterior), `rango` (rango recomendado), `evolucion: { valor, formato,

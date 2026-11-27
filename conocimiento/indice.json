@@ -635,6 +635,7 @@
       ],
       "patrones": [
         "P-001",
+        "P-008",
         "P-027"
       ],
       "ultima_revision": "2026-11-27"
@@ -1034,7 +1035,7 @@
       "id": "saldos-medios",
       "titulo": "Saldo medio y liquidación de una cuenta",
       "tituloIngles": "Average balance and account interest",
-      "resumen": "Saldo medio diario, números comerciales e intereses acreedores y deudores de un periodo (método hamburgués).",
+      "resumen": "Saldo medio diario, números comerciales e intereses acreedores y deudores de un periodo (método hamburgués). Admite un extracto en Excel o CSV.",
       "categoria": "tipos-interes",
       "ficha": "conocimiento/tipos-interes/saldos-medios-y-liquidacion-de-cuentas.md",
       "etiquetas": [
