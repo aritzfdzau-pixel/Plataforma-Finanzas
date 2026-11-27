@@ -171,3 +171,10 @@ test('formatear: diferencia de porcentajes en puntos porcentuales', async () => 
   const { formatear } = await import('../web/js/lib/formato.js');
   assert.equal(formatear(0.0125, 'pp:2'), '1,25 p. p.');
 });
+
+test('informe: las celdas Markdown escapan «\\» antes que «|» (CodeQL)', async () => {
+  const { celdaMarkdown } = await import('../web/js/lib/informe.js');
+  assert.equal(celdaMarkdown('a|b'), 'a\\|b');
+  assert.equal(celdaMarkdown('a\\|b'), 'a\\\\\\|b'); // \ → \\ y | → \|
+  assert.equal(celdaMarkdown('línea\nnueva'), 'línea nueva');
+});

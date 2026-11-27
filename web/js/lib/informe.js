@@ -1,7 +1,10 @@
 // Informe de una operación en Markdown (para descargarlo). Puro: sin DOM.
 // `inf`: { titulo, subtitulo, resumen: [frases], conclusion, columnas: [...], bloques: [{ titulo, filas: [[celdas]], comentarios: [...] }], aviso }
 
-const celda = (t) => String(t ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+// Primero las barras invertidas y luego «|», para que «\|» en un texto no rompa la tabla.
+const celda = (t) => String(t ?? '').replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+
+export { celda as celdaMarkdown };
 
 export function informeAMarkdown(inf) {
   const l = [`# ${inf.titulo}`, '', `_${inf.subtitulo}_`, '', '## Resumen', ''];
