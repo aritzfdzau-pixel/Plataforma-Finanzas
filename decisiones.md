@@ -596,3 +596,35 @@ varias etiquetas. "Institucional" solo se aplica a noticias del BCE y del Banco 
   - el tipo de retención (19 % por defecto).
   Los dos son editables. El MRO por defecto de la demora comercial (2,15 %) es un ejemplo: el
   vigente está en la zona.
+
+## D-045 · 2026-11-27 · Ajuste · Saldo medio: revisión del cálculo e importación de extractos
+- **Decisión (Aritz):** revisar los cálculos del saldo medio y poder cargar los datos desde un
+  Excel o un CSV, en vez de escribirlos a mano. Los archivos no llevan número de cuenta ni titular.
+- **Revisión del cálculo** (P-027, sin cambios en la fórmula):
+  - Se mantiene la definición: saldo medio = Σ(saldo × días) / días del periodo; días naturales
+    con inicio y fin incluidos; cada dato cuenta desde su fecha valor.
+  - Cambios:
+    - la liquidación se redondea al céntimo como en un extracto (P-008): brutos, retención sobre
+      los brutos redondeados e intereses deudores (referencias con `REDONDEAR` en LibreOffice);
+    - lo anterior al inicio forma el saldo de apertura y lo posterior se ignora, con aviso (antes daba error);
+    - el orden de las líneas ya no importa (orden estable por fecha);
+    - nuevo resultado «Días en descubierto».
+  - Datos **por saldos** («fecha; saldo desde ese día»), además de por movimientos; los dos
+    caminos dan lo mismo (test).
+- **Importación** (`web/js/lib/extracto.js`, sin dependencias):
+  - Formatos:
+    - .xlsx: es un ZIP que se abre con `DecompressionStream` del navegador; se lee la primera hoja
+      y las fechas como número de serie de Excel;
+    - .csv: «;», «,» o tabulador, con UTF-8 o Windows-1252;
+    - el .xls antiguo no se admite (se pide guardarlo como .xlsx o .csv).
+  - Lectura de la tabla:
+    - se busca la cabecera (se saltan las filas de preámbulo);
+    - columnas «Fecha valor» o «Fecha», «Importe» o «Cargo»/«Abono», y «Saldo»;
+    - un extracto en orden descendente se ordena por fecha;
+    - las filas de totales se ignoran;
+    - con saldos, se deduce el saldo inicial y se comprueba que cuadren;
+    - se propone un periodo de meses completos.
+  - Plantilla CSV descargable con el ejemplo de la ficha.
+- **Privacidad:** solo se leen fecha, importe y saldo. El concepto, el preámbulo (donde suelen ir
+  la cuenta o el titular) y cualquier otra columna nunca llegan al formulario. El archivo se lee
+  en el navegador y no se envía ni se guarda.

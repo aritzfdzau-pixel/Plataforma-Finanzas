@@ -569,6 +569,22 @@
    "descripcion": "Cuenta: intereses deudores al 7 % Act/365",
    "valor": 3.64383561643836
   },
+  "sm_liq_brutos": {
+   "descripcion": "Cuenta: intereses acreedores redondeados al céntimo",
+   "valor": 10.16
+  },
+  "sm_liq_ret": {
+   "descripcion": "Cuenta: retención = REDONDEAR(brutos redondeados x 19 %; 2)",
+   "valor": 1.93
+  },
+  "sm_liq_deu": {
+   "descripcion": "Cuenta: intereses deudores redondeados al céntimo",
+   "valor": 3.64
+  },
+  "sm_liq_neta": {
+   "descripcion": "Cuenta: liquidación neta = brutos - retención - deudores (redondeados)",
+   "valor": 4.59
+  },
   "cap_simple": {
    "descripcion": "Capitalización simple 10.000 al 3 % durante 5 años",
    "valor": 11500.0

@@ -8,6 +8,7 @@ import { buscar } from '../lib/buscar.js';
 import { CATEGORIAS, nombreCategoria } from '../lib/categorias.js';
 import { tablaACsv } from '../lib/csv.js';
 import { informeAMarkdown } from '../lib/informe.js';
+import { importarExtracto, MAX_BYTES_EXTRACTO, PLANTILLA_EXTRACTO } from '../lib/extracto.js';
 import { cargarTiposBce } from './divisas.js';
 import { tipoBce, aTextoCampo, fechaEs } from '../lib/divisas.js';
 
@@ -106,6 +107,7 @@ export async function pintarOperacion(contenedor, id, params = {}, { prefijo = '
     }
     destino.append(campo(c, textos, recalcular, prefijo));
   }
+  if (op.importador === 'extracto') form.prepend(bloqueImportar(textos, form, prefijo, recalcular));
   for (const c of conBce) {
     const nota = form.querySelector(`[data-nota-bce="${c.id}"]`);
     if (params[c.id] === undefined) nota.textContent = notaBce(c);
@@ -128,6 +130,49 @@ export async function pintarOperacion(contenedor, id, params = {}, { prefijo = '
     h('div', { class: 'op__cuerpo' }, form, salida),
   );
   recalcular();
+}
+
+/**
+ * Importar un extracto (.xlsx o .csv) en el formulario (D-045). El archivo se lee en el navegador y
+ * solo se toman fecha, importe y saldo; no se guarda ni se envía.
+ */
+function descargarPlantilla() {
+  const url = URL.createObjectURL(new Blob([`\ufeff${PLANTILLA_EXTRACTO}`], { type: 'text/csv;charset=utf-8' }));
+  const a = h('a', { href: url, download: 'plantilla-extracto.csv' });
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function bloqueImportar(textos, form, prefijo, recalcular) {
+  const mensaje = h('div', { class: 'importar__mensaje', 'aria-live': 'polite' });
+  const archivo = h('input', { type: 'file', id: `${prefijo}-importar`, accept: '.xlsx,.csv,.txt,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  archivo.addEventListener('change', async () => {
+    const f = archivo.files?.[0];
+    archivo.value = '';
+    if (!f) return;
+    vaciar(mensaje);
+    try {
+      if (f.size > MAX_BYTES_EXTRACTO) throw new Error('El archivo supera 5 MB.');
+      const { textos: nuevos, resumen, avisos } = await importarExtracto(f.name, new Uint8Array(await f.arrayBuffer()), { porDefecto: textos.entrada });
+      for (const [id, texto] of Object.entries(nuevos)) {
+        textos[id] = texto;
+        const control = form.querySelector(`#${prefijo}-${id}`);
+        if (control) control.value = texto;
+      }
+      recalcular();
+      mensaje.append(h('p', {}, `✓ ${resumen}`), h('ul', { class: 'avisos' }, avisos.map((a) => h('li', {}, a))));
+    } catch (e) {
+      mensaje.append(h('p', { class: 'error' }, e.message));
+    }
+  });
+  return h('fieldset', { class: 'op__grupo importar' },
+    h('legend', {}, 'Importar extracto (Excel o CSV)'),
+    h('label', { for: archivo.id }, 'Archivo .xlsx o .csv'),
+    archivo,
+    h('p', {}, h('button', { type: 'button', class: 'button button--mini', onclick: descargarPlantilla }, 'Descargar plantilla CSV')),
+    h('small', { class: 'campo__ayuda' },
+      'Columnas reconocidas: «Fecha valor» o «Fecha», «Importe» (o «Cargo» y «Abono») y/o «Saldo». Solo se leen esas columnas: el concepto y cualquier otro dato se ignoran. El archivo se lee en tu navegador y no se envía ni se guarda.'),
+    mensaje);
 }
 
 function campo(c, textos, recalcular, prefijo = 'campo') {

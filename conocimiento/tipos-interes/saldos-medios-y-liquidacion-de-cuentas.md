@@ -5,7 +5,7 @@ traduccion: ""
 categoria: tipos-interes
 etiquetas: [saldo-medio, numeros-comerciales, metodo-hamburgues, cuenta-corriente, descubierto, fecha-valor]
 operaciones: [saldos-medios]
-patrones: [P-001, P-027]
+patrones: [P-001, P-008, P-027]
 fecha_creacion: 2026-11-27
 ultima_revision: 2026-11-27
 fuentes: ["Banco de España — Portal del Cliente Bancario (cuentas a la vista, fecha valor y descubiertos)", "Ley 16/2011, de contratos de crédito al consumo (límite de la TAE en descubiertos)", "Manuales de matemática financiera: método hamburgués (números comerciales)"]
@@ -29,6 +29,17 @@ fuentes: ["Banco de España — Portal del Cliente Bancario (cuentas a la vista,
 ## Cómo funciona
 - El periodo va del día de inicio al de fin, **ambos incluidos** (días naturales).
 - Cada movimiento cambia el saldo **desde su fecha valor incluida**; la fecha de operación no cuenta.
+- Los datos pueden ser **movimientos** (fecha valor; importe) o **saldos** (fecha; saldo vigente
+  desde ese día). Con saldos, cada importe es la diferencia con el saldo anterior y, si un día se
+  repite, vale el último saldo del día. Las dos formas dan el mismo resultado.
+- Lo anterior al inicio del periodo forma el **saldo de apertura**; lo posterior al fin no cuenta.
+- La liquidación se redondea **al céntimo** como en un extracto: intereses brutos, retención
+  (sobre los brutos ya redondeados) e intereses deudores.
+- **Importar un extracto:** la operación admite un Excel (.xlsx) o un CSV con columnas «Fecha
+  valor» (o «Fecha»), «Importe» (o «Cargo» y «Abono») y/o «Saldo». Solo se leen esas columnas;
+  el concepto y cualquier otra columna o fila de cabecera se ignoran. Si el extracto trae saldos,
+  el saldo inicial se deduce (saldo de la primera fila − su importe) y se comprueba que cuadren.
+  El archivo se lee en el navegador y no se envía ni se guarda.
 - Intereses acreedores = números acreedores × tipo acreedor / base; los deudores, igual con el tipo deudor.
 - Base de cálculo: **Act/365** es lo habitual en cuentas de clientes en España; Act/360 en algunas cuentas de empresa.
 - Sobre los intereses acreedores se practica la **retención** a cuenta del IRPF (19 % en el ejemplo;
@@ -68,7 +79,11 @@ retención 19 %:
 | Intereses deudores | −3,64 € |
 | Liquidación neta | 4,59 € |
 
-Verificado con LibreOffice Calc (días con `FECHA`, números y saldo medio en `referencias.fods`).
+El mismo caso como saldos («15/01/2026; 8.000», «10/02/2026; −1.000», «01/03/2026; 3.000») da lo
+mismo. Es también la plantilla CSV que se descarga desde la operación.
+
+Verificado con LibreOffice Calc (días con `FECHA`, números, saldo medio y liquidación con
+`REDONDEAR` en `referencias.fods`).
 
 ## Ventajas e inconvenientes
 | Ventajas | Inconvenientes |
@@ -77,7 +92,8 @@ Verificado con LibreOffice Calc (días con `FECHA`, números y saldo medio en `r
 | Liquida a la vez saldos a favor y en contra | Depende de las fechas valor que aplique la entidad |
 
 ## Riesgos
-- Confundir la fecha de operación con la fecha valor (cambia los días de cada tramo).
+- Confundir la fecha de operación con la fecha valor (cambia los días de cada tramo). Si el
+  extracto no trae fecha valor, se usa la de operación y la operación lo avisa.
 - Olvidar la comisión de descubierto, que suele pesar más que los intereses deudores.
 - Pegar movimientos reales de clientes: la herramienta es de estudio y no debe usarse con datos de terceros.
 

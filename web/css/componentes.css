@@ -494,3 +494,6 @@ a.noticia__titulo:hover { color: var(--color-accent); text-decoration: underline
 @media (max-width: 760px) {
   .tipos__tabla th, .tipos__tabla td { padding-left: var(--space-1); padding-right: var(--space-1); }
 }
+.importar input[type="file"] { max-width: 100%; font: inherit; font-size: var(--fs-xs); }
+.importar__mensaje p { margin: var(--space-2) 0 0; font-size: var(--fs-xs); }
+.importar__mensaje .avisos { margin: var(--space-1) 0 0; font-size: var(--fs-2xs); }
