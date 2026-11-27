@@ -542,3 +542,20 @@ test('tipo-real: Fisher exacto', async () => {
 test('forward-tipos: diferencia con el plazo largo en pb', async () => {
   cerca(valor(await ejecutar('forward-tipos'), 'primaPb'), (ref('fwd_3x6') - 0.022) * 10000, 1e-9);
 });
+test('saldos-medios: casillas para aplicar o no cada tipo y la retención', async () => {
+  const sinRet = await ejecutar('saldos-medios', { conRetencion: 'no' });
+  assert.equal(valor(sinRet, 'interesesAcreedores'), ref('sm_liq_brutos'));
+  assert.ok(!sinRet.resultados.some((x) => x.id === 'retencion'));
+  cerca(valor(sinRet, 'liquidacion'), ref('sm_liq_brutos') - ref('sm_liq_deu'));
+  const soloAcr = await ejecutar('saldos-medios', { conDeudor: 'no' });
+  assert.ok(!soloAcr.resultados.some((x) => x.id === 'interesesDeudores'));
+  cerca(valor(soloAcr, 'liquidacion'), ref('sm_liq_brutos') - ref('sm_liq_ret'));
+  const soloDeu = await ejecutar('saldos-medios', { conAcreedor: 'no' });
+  assert.ok(!soloDeu.resultados.some((x) => ['interesesAcreedores', 'retencion'].includes(x.id)));
+  cerca(valor(soloDeu, 'liquidacion'), -ref('sm_liq_deu'));
+  const nada = await ejecutar('saldos-medios', { conAcreedor: 'no', conDeudor: 'no' });
+  cerca(valor(nada, 'saldoMedio'), ref('sm_medio'));
+  assert.ok(!nada.resultados.some((x) => x.id === 'liquidacion'));
+  assert.ok(nada.avisos.some((a) => /ningún tipo/.test(a)));
+  assert.ok(!nada.avisos.some((a) => /comisión de descubierto/.test(a)));
+});

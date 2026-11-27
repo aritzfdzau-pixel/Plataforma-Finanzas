@@ -28,7 +28,15 @@ export const OPERACIONES = [
   'tipo-real',
 ];
 
-export async function cargarOperacion(id) {
+/**
+ * `version` (opcional) es la versión publicada: la interfaz la pasa para que cada publicación nueva
+ * pida archivos nuevos y no sirva la caché del navegador (D-046). Sin versión en local y en tests.
+ */
+export function sufijoVersion(version) {
+  return version && version !== 'dev' ? `?v=${encodeURIComponent(version)}` : '';
+}
+
+export async function cargarOperacion(id, version = '') {
   if (!OPERACIONES.includes(id)) throw new Error(`Operación desconocida: ${id}`);
-  return (await import(`./${id}.js`)).default;
+  return (await import(`./${id}.js${sufijoVersion(version)}`)).default;
 }

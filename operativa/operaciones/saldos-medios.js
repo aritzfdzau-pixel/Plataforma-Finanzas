@@ -38,17 +38,23 @@ export default {
     { id: 'saldos', etiqueta: 'Saldos (fecha; saldo desde ese día)', tipo: 'lineas', filas: 7, grupo: 'Periodo y datos', defecto: EJEMPLO_SALDOS,
       visibleSi: { campo: 'entrada', valor: 'saldos' },
       ayuda: 'Una línea por cada cambio de saldo (o un saldo por día). Si un día se repite, vale el último.' },
-    { id: 'tipoAcreedor', etiqueta: 'Tipo acreedor (saldos a favor)', unidad: '% anual', tipo: 'porcentaje', defecto: '1,00', grupo: 'Condiciones' },
-    { id: 'tipoDeudor', etiqueta: 'Tipo deudor (descubiertos)', unidad: '% anual', tipo: 'porcentaje', defecto: '7,00', grupo: 'Condiciones' },
-    { id: 'base', etiqueta: 'Base de cálculo', tipo: 'seleccion', defecto: 'ACT/365', opciones: BASES_OPCIONES, grupo: 'Condiciones' },
-    { id: 'retencion', etiqueta: 'Retención sobre intereses acreedores', unidad: '%', tipo: 'porcentaje', defecto: '19,00', grupo: 'Condiciones',
+    { id: 'conAcreedor', etiqueta: 'Aplicar intereses acreedores (saldos a favor)', tipo: 'casilla', defecto: 'si', grupo: 'Condiciones' },
+    { id: 'tipoAcreedor', etiqueta: 'Tipo acreedor', unidad: '% anual', tipo: 'porcentaje', defecto: '1,00', grupo: 'Condiciones', visibleSi: { campo: 'conAcreedor', valor: 'si' } },
+    { id: 'conDeudor', etiqueta: 'Aplicar intereses deudores (descubiertos)', tipo: 'casilla', defecto: 'si', grupo: 'Condiciones' },
+    { id: 'tipoDeudor', etiqueta: 'Tipo deudor', unidad: '% anual', tipo: 'porcentaje', defecto: '7,00', grupo: 'Condiciones', visibleSi: { campo: 'conDeudor', valor: 'si' } },
+    { id: 'conRetencion', etiqueta: 'Aplicar retención sobre los intereses acreedores', tipo: 'casilla', defecto: 'si', grupo: 'Condiciones' },
+    { id: 'retencion', etiqueta: 'Retención', unidad: '%', tipo: 'porcentaje', defecto: '19,00', grupo: 'Condiciones', visibleSi: { campo: 'conRetencion', valor: 'si' },
       ayuda: 'Retención a cuenta del IRPF sobre rendimientos del capital mobiliario; comprueba el tipo vigente.' },
+    { id: 'base', etiqueta: 'Base de cálculo', tipo: 'seleccion', defecto: 'ACT/365', opciones: BASES_OPCIONES, grupo: 'Condiciones' },
   ],
   calcular(v) {
     const dias = diasEntre(v.desde, v.hasta) + 1;
     exigir(dias >= 1, 'El fin del periodo debe ser igual o posterior al inicio');
     exigir(dias <= 3660, 'El periodo no puede superar 10 años');
-    noNegativo(v.retencion, 'Retención');
+    // Lo que no está marcado no se aplica (tipo 0 / sin retención).
+    const tipoAcreedor = v.conAcreedor ? v.tipoAcreedor : 0;
+    const tipoDeudor = v.conDeudor ? v.tipoDeudor : 0;
+    const tasaRetencion = v.conAcreedor && v.conRetencion ? noNegativo(v.retencion, 'Retención') : 0;
     const porSaldos = v.entrada === 'saldos';
     const lineas = leerMovimientos(porSaldos ? v.saldos : v.movimientos, leerFecha, leerNumero)
       .map((m) => ({ ...m, dia: diasEntre(v.desde, m.fecha) }));
@@ -61,18 +67,19 @@ export default {
     const despues = movs.filter((m) => m.dia >= dias);
     const dentro = movs.filter((m) => m.dia >= 0 && m.dia < dias);
     const apertura = v.saldoInicial + antes.reduce((s, m) => s + m.importe, 0);
-    const r = liquidacionCuenta({ saldoInicial: apertura, movimientos: dentro, dias, tipoAcreedor: v.tipoAcreedor, tipoDeudor: v.tipoDeudor, base: v.base, retencion: v.retencion });
+    const r = liquidacionCuenta({ saldoInicial: apertura, movimientos: dentro, dias, tipoAcreedor, tipoDeudor, base: v.base, retencion: tasaRetencion });
 
     // Liquidación como en un extracto: cada importe se redondea al céntimo (P-008).
     const brutos = redondear(r.interesesAcreedores);
-    const retencion = redondear(brutos * v.retencion);
+    const retencion = redondear(brutos * tasaRetencion);
     const deudores = redondear(r.interesesDeudores);
     const liquidacion = redondear(brutos - retencion - deudores);
 
     const avisos = [];
     if (antes.length) avisos.push(`${antes.length} ${porSaldos ? 'saldos' : 'movimientos'} anteriores al ${fechaEs(v.desde)} forman el saldo de apertura: ${new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(apertura)} €.`);
     if (despues.length) avisos.push(`${despues.length} ${porSaldos ? 'saldos' : 'movimientos'} posteriores al ${fechaEs(v.hasta)} quedan fuera del periodo y no se tienen en cuenta.`);
-    if (r.numerosDeudores > 0) avisos.push('Hay días en descubierto: además de los intereses deudores, la entidad puede cobrar una comisión de descubierto (no incluida). En cuentas de consumidores la TAE del descubierto tiene un límite legal (Ley 16/2011 de crédito al consumo).');
+    if (!v.conAcreedor && !v.conDeudor) avisos.push('No se aplica ningún tipo: solo se calculan el saldo medio y los números comerciales.');
+    if (r.numerosDeudores > 0 && v.conDeudor) avisos.push('Hay días en descubierto: además de los intereses deudores, la entidad puede cobrar una comisión de descubierto (no incluida). En cuentas de consumidores la TAE del descubierto tiene un límite legal (Ley 16/2011 de crédito al consumo).');
     if (!dentro.length) avisos.push('Ningún dato dentro del periodo: el saldo es constante todos los días.');
     return {
       resultados: [
@@ -85,16 +92,18 @@ export default {
         { id: 'numerosAcreedores', etiqueta: 'Números acreedores (saldo × días)', valor: r.numerosAcreedores, formato: 'num:0', grupo: 'Números comerciales' },
         { id: 'numerosDeudores', etiqueta: 'Números deudores (saldo × días)', valor: r.numerosDeudores, formato: 'num:0', grupo: 'Números comerciales' },
         { id: 'diasDescubierto', etiqueta: 'Días en descubierto', valor: r.tramos.filter((t) => t.saldo < 0).reduce((s, t) => s + t.dias, 0), formato: 'entero', grupo: 'Números comerciales' },
-        { id: 'interesesAcreedores', etiqueta: 'Intereses acreedores brutos', valor: brutos, formato: 'eur', grupo: 'Liquidación' },
-        { id: 'retencion', etiqueta: 'Retención', valor: -retencion, formato: 'eur', grupo: 'Liquidación' },
-        { id: 'interesesNetos', etiqueta: 'Intereses acreedores netos', valor: brutos - retencion, formato: 'eur', grupo: 'Liquidación' },
-        { id: 'interesesDeudores', etiqueta: 'Intereses deudores', valor: -deudores, formato: 'eur', grupo: 'Liquidación' },
-        { id: 'liquidacion', etiqueta: 'Liquidación neta del periodo', valor: liquidacion, formato: 'eur', grupo: 'Liquidación', destacado: true },
+        ...(v.conAcreedor ? [{ id: 'interesesAcreedores', etiqueta: 'Intereses acreedores brutos', valor: brutos, formato: 'eur', grupo: 'Liquidación' }] : []),
+        ...(v.conAcreedor && v.conRetencion ? [
+          { id: 'retencion', etiqueta: 'Retención', valor: -retencion, formato: 'eur', grupo: 'Liquidación' },
+          { id: 'interesesNetos', etiqueta: 'Intereses acreedores netos', valor: brutos - retencion, formato: 'eur', grupo: 'Liquidación' }] : []),
+        ...(v.conDeudor ? [{ id: 'interesesDeudores', etiqueta: 'Intereses deudores', valor: -deudores, formato: 'eur', grupo: 'Liquidación' }] : []),
+        ...(v.conAcreedor || v.conDeudor ? [{ id: 'liquidacion', etiqueta: 'Liquidación neta del periodo', valor: liquidacion, formato: 'eur', grupo: 'Liquidación', destacado: true }] : []),
       ],
       convenciones: {
         base: `${v.base === 'ACT/360' ? 'Act/360' : 'Act/365'}; días naturales con el inicio y el fin incluidos; cada dato cuenta desde su fecha (fecha valor)`,
         periodicidad: `Una liquidación al final del periodo (${r.dias} días); importes redondeados al céntimo`,
-        nominalEfectivo: 'Tipos nominales anuales, interés simple',
+        nominalEfectivo: [v.conAcreedor ? 'tipo acreedor aplicado' : 'sin tipo acreedor', v.conDeudor ? 'tipo deudor aplicado' : 'sin tipo deudor',
+          v.conAcreedor && v.conRetencion ? 'con retención' : 'sin retención'].join(' · ') + ' (tipos nominales anuales, interés simple)',
         comisiones: 'No incluidas (mantenimiento, descubierto)',
       },
       avisos,

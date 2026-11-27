@@ -33,6 +33,9 @@ fuentes: ["Banco de España — Portal del Cliente Bancario (cuentas a la vista,
   desde ese día). Con saldos, cada importe es la diferencia con el saldo anterior y, si un día se
   repite, vale el último saldo del día. Las dos formas dan el mismo resultado.
 - Lo anterior al inicio del periodo forma el **saldo de apertura**; lo posterior al fin no cuenta.
+- Con tres casillas se decide qué se aplica: **intereses acreedores**, **intereses deudores** y
+  **retención**. Lo desmarcado no se aplica; sin ningún tipo solo se calculan el saldo medio y
+  los números comerciales.
 - La liquidación se redondea **al céntimo** como en un extracto: intereses brutos, retención
   (sobre los brutos ya redondeados) e intereses deudores.
 - **Importar un extracto:** la operación admite un Excel (.xlsx) o un CSV con columnas «Fecha
